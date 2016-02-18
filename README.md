@@ -16,6 +16,7 @@ The main goal is to provide robust and fast basic abstract layer for various typ
 [Codeception](http://codeception.com/) as a testing framework  
 [git](https://git-scm.com/) as a VCS  
 [Swagger](http://swagger.io/) as REST API planner  
+[phinx](https://phinx.org/) as a DB migration tool
 
 ####Basic concepts
 [MVC](https://docs.phalconphp.com/en/latest/reference/mvc.html) as a primary pattern  
