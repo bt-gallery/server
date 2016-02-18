@@ -19,7 +19,6 @@ The main goal is to provide robust and fast basic abstract layer for various typ
 [phinx](https://phinx.org/) as a DB migration tool
 
 ####Basic concepts
-[MVC](https://docs.phalconphp.com/en/latest/reference/mvc.html) as a primary pattern  
 [Agile](http://agilemanifesto.org/iso/en/) as a development workflow framework  
 [TDD](https://en.wikipedia.org/wiki/Test-driven_development) all over the public API  
 [Material design](https://www.google.com/design/spec/material-design/introduction.html) as admin web interface UI guidance
