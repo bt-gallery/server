@@ -1,0 +1,6 @@
+<?php
+class Job 
+{
+    const MAIL_DECLARANT_REGISTRATION = 1;
+    const MAIL_PARTICIPANT_REGISTRATION = 2;
+}

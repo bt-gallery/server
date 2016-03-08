@@ -1,0 +1,6 @@
+{
+    "require": {
+        "monolog/monolog": "^1.18",
+        "phalcon-ext/mailer": "^2.0"
+    }
+}
