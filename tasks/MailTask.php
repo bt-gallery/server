@@ -10,17 +10,16 @@ class MailTask extends \Phalcon\Cli\Task
     /**
      * @param array $params
      */
-    public function testAction(array $params)
+    public function registeredAction(array $params=[])
     {
-        echo sprintf('hello %s', $params[0]) . PHP_EOL;
-        echo sprintf('best regards, %s', $params[1]) . PHP_EOL;
-
         $config = $this->getDI()->getService("config")->getDefinition();
-        $logger = $this->getDI()->getService("logger")->getDefinition();
+        $logger = $this->getDI()->getShared("logger");
+
+        $params = [];
 
         $mailer = new \Phalcon\Ext\Mailer\Manager($config);
 
-        $message = $mailer->createMessage()
+        $message = $mailer->createMessageFromView('register', $params)
             ->to('yourchev@gmail.com', 'OPTIONAL NAME')
             ->subject('Hello world!')
             ->content('Hello world!');
