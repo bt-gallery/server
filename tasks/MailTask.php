@@ -1,5 +1,5 @@
 <?php
-
+use 
 class MailTask extends \Phalcon\Cli\Task
 {
     public function mainAction()
