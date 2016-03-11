@@ -11,7 +11,8 @@ use Monolog\Handler\FirePHPHandler;
 $di = new FactoryDefault();
 
 $logger = new Logger('logger');
-$handler = new Monolog\Handler\LogEntriesHandler('62fd4665-e33f-413a-887e-fcea157b583e');
+//$handler = new Monolog\Handler\LogEntriesHandler('62fd4665-e33f-413a-887e-fcea157b583e');
+$handler = new \Monolog\Handler\NullHandler();
 $logger->pushHandler($handler);
 
 /**
@@ -70,10 +71,11 @@ $di['saver'] = function (&$model) use ($logger) {
     return $result;
 };
 
-$di['queue'] = function ($data, $job) use ($logger) {
+$di['queue'] = function ($data, $job, $status) use ($logger) {
     $model = new Queue;
     $model->data = serialize($data);
     $model->job = $job;
+    $model->status = $status;
 
     if (!$model->save()) {
         $result["error"] = array_map(

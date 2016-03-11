@@ -1,5 +1,4 @@
 <?php
-use 
 class MailTask extends \Phalcon\Cli\Task
 {
     public function mainAction()
@@ -13,23 +12,36 @@ class MailTask extends \Phalcon\Cli\Task
     public function registeredAction(array $params=[])
     {
         $config = $this->getDI()->getService("config")->getDefinition();
-        $logger = $this->getDI()->getShared("logger");
-
-        $params = [];
+        $saver = $this->getDI()->getService("saver")->getDefinition();
+        $logger = $this->getDI()->getShared("mailLogger");
 
         $mailer = new \Phalcon\Ext\Mailer\Manager($config);
 
-        $message = $mailer->createMessageFromView('register', $params)
-            ->to('yourchev@gmail.com', 'OPTIONAL NAME')
-            ->subject('Hello world!')
-            ->content('Hello world!');
+	$queue = Queue::findFirst("job=".Job::MAIL_DECLARANT_REGISTRATION." AND status=".Status::NEW_ONE);
 
-         // Set the Bcc addresses of this message.
-         $message->bcc('yurchev_di@mirtv.ru');
+	if(!$queue) {
+		$logger->addInfo("no job");
+		return;
+	} else {
+		$logger->addInfo("processing queue ",["queue" => $queue]);
+	}
 
+	$params = unserialize($queue->toArray()['data']);
+
+        $message = $mailer->createMessageFromView('register', $params )
+            ->to($params["email"])
+            ->subject('Конкурс рисунка');
+	$message->bcc('d.yurchev@mail.ru');
          // Send message
-        $message->send();
+	$result = $message->send();
+	if($result) {
+		$logger->addInfo("message sent", ["queue ID" => $queue->id_queue]);
+		$queue->status = Status::DONE;
+		$saver($queue);
+	}	
+	else
+		$logger->addCritical("mailer fails", ["queue ID" => $queue->id_queue]);
 
-        $logger->addInfo("message sent");
+	return;
     }
 }

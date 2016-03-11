@@ -5,9 +5,9 @@ return new \Phalcon\Config(array(
 
     'database' => array(
         'adapter'    => 'Mysql',
-        'host'       => 'localhost',
-        'username'   => 'root',
-        'password'   => 'VfrcGkfyr1MS',
+        'host'       => '192.168.250.2',
+        'username'   => 'contestuser',
+        'password'   => 'wK3ErJ9dcMCUyxDm',
         'dbname'     => 'contest',
     ),
 

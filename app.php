@@ -28,7 +28,7 @@ $app->get(
 );
 
 $app->post(
-    '/api/v1/{modelName:declarant|address|participant}',
+    '/api/v1/{modelName:declarant}',
     function ($modelName) use ($app, $responder, $servant, $logger) {
         $modelName = ucfirst($modelName);
         $model = new $modelName;
@@ -40,7 +40,42 @@ $app->post(
             $mapper($model,$data)
         );
 
-        $queue($model->toArray(),Job::MAIL_DECLARANT_REGISTRATION);
+        $queue($model->toArray(),Job::MAIL_DECLARANT_REGISTRATION,Status::NEW_ONE);
+        $responder($result, ["Content-Type"=>"application/json"]);
+    }
+);
+
+$app->post(
+    '/api/v1/{modelName:participant}',
+    function ($modelName) use ($app, $responder, $servant, $logger) {
+        $modelName = ucfirst($modelName);
+        $model = new $modelName;
+        $data = $app->request->getPost();
+        $mapper = $servant("mapper");
+        $saver = $servant("saver");
+        $queue = $app->di->getService("queue")->getDefinition();
+        $result = $saver(
+            $mapper($model,$data)
+        );
+
+        $responder($result, ["Content-Type"=>"application/json"]);
+    }
+);
+
+$app->post(
+    '/api/v1/{modelName:address}',
+    function ($modelName) use ($app, $responder, $servant, $logger) {
+        $modelName = ucfirst($modelName);
+        $model = new $modelName;
+        $data = $app->request->getPost();
+        $mapper = $servant("mapper");
+        $saver = $servant("saver");
+        $queue = $app->di->getService("queue")->getDefinition();
+        $result = $saver(
+            $mapper($model,$data)
+        );
+
+        $queue($model->toArray(),Job::MAIL_ADDRESS_REGISTRATION,Status::NEW_ONE);
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
@@ -63,7 +98,8 @@ $app->post(
                 $participant->toArray(),
                 $work->toArray()
             ),
-            Job::MAIL_DECLARANT_REGISTRATION
+            Job::MAIL_PARTICIPANT_REGISTRATION,
+	    Status::NEW_ONE
         );
         $responder($result, ["Content-Type"=>"application/json"]);
     }

@@ -5,7 +5,14 @@ return $config = [
     'driver'     => 'sendmail',
     'sendmail'   => '/usr/sbin/sendmail -bs',
     'from'       => [
-        'email' => 'example@gmail.com',
-        'name'  => 'Конкурс рисунка, Мир24'
+        'email' => 'risunok@mirtv.ru',
+        'name'  => 'Мир24'
+    ],
+    "database" => [
+	    "host" => "192.168.250.2",
+	    'host'       => '192.168.250.2',
+	    'username'   => 'contestuser',
+	    'password'   => 'wK3ErJ9dcMCUyxDm',
+	    'dbname'     => 'contest'
     ]
 ];
