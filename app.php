@@ -99,7 +99,7 @@ $app->post(
                 $work->toArray()
             ),
             Job::MAIL_PARTICIPANT_REGISTRATION,
-	    Status::NEW_ONE
+            Status::NEW_ONE
         );
         $responder($result, ["Content-Type"=>"application/json"]);
     }

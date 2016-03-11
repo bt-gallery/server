@@ -17,31 +17,32 @@ class MailTask extends \Phalcon\Cli\Task
 
         $mailer = new \Phalcon\Ext\Mailer\Manager($config);
 
-	$queue = Queue::findFirst("job=".Job::MAIL_DECLARANT_REGISTRATION." AND status=".Status::NEW_ONE);
+        $queue = Queue::findFirst("job=".Job::MAIL_DECLARANT_REGISTRATION." AND status=".Status::NEW_ONE);
 
-	if(!$queue) {
-		$logger->addInfo("no job");
-		return;
-	} else {
-		$logger->addInfo("processing queue ",["queue" => $queue]);
-	}
+        if(!$queue) {
+            $logger->addInfo("no job");
+            return;
+        } else {
+            $logger->addInfo("processing queue ", ["queue" => $queue]);
+        }
 
-	$params = unserialize($queue->toArray()['data']);
+        $params = unserialize($queue->toArray()['data']);
 
-        $message = $mailer->createMessageFromView('register', $params )
+        $message = $mailer->createMessageFromView('register', $params)
             ->to($params["email"])
             ->subject('Конкурс рисунка');
-	$message->bcc('d.yurchev@mail.ru');
+        $message->bcc('d.yurchev@mail.ru');
          // Send message
-	$result = $message->send();
-	if($result) {
-		$logger->addInfo("message sent", ["queue ID" => $queue->id_queue]);
-		$queue->status = Status::DONE;
-		$saver($queue);
-	}	
-	else
-		$logger->addCritical("mailer fails", ["queue ID" => $queue->id_queue]);
+        $result = $message->send();
+        if($result) {
+            $logger->addInfo("message sent", ["queue ID" => $queue->id_queue]);
+            $queue->status = Status::DONE;
+            $saver($queue);
+        }    
+        else {
+            $logger->addCritical("mailer fails", ["queue ID" => $queue->id_queue]); 
+        }
 
-	return;
+        return;
     }
 }
