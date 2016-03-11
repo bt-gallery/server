@@ -1,11 +1,10 @@
-#Phalcon Contests
+#Contest
 ### Server API.
 Web-application based on PhalconPHP framework.  
 The main goal is to provide robust and fast basic abstract layer for various types of online contest, polls and competitions.
 
 ####Third party libraries used  
 [PhalconPHP](https://phalconphp.com) as a server side framework  
-[Phalcon REST](https://phalconist.com/redound/phalcon-rest) as a RESTful server core  
 [HybridAuth](http://hybridauth.sourceforge.net/) as social sign on library  
 [Monolog](https://github.com/Seldaek/monolog) as logger  
 
