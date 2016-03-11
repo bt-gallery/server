@@ -9,7 +9,6 @@ return $config = [
         'name'  => 'Мир24'
     ],
     "database" => [
-	    "host" => "",
 	    'host'       => '',
 	    'username'   => '',
 	    'password'   => '',
