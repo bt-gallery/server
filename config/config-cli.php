@@ -9,10 +9,10 @@ return $config = [
         'name'  => 'Мир24'
     ],
     "database" => [
-	    "host" => "192.168.250.2",
-	    'host'       => '192.168.250.2',
-	    'username'   => 'contestuser',
-	    'password'   => 'wK3ErJ9dcMCUyxDm',
+	    "host" => "",
+	    'host'       => '',
+	    'username'   => '',
+	    'password'   => '',
 	    'dbname'     => 'contest'
     ]
 ];
