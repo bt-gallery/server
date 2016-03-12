@@ -1,4 +1,15 @@
 <?php
+/**
+ * Registration REST microservice
+ *
+ * @category REST-microservice
+ * @package  ContestServer
+ * @author   barantaran <yourchev@gmail.com>
+ * @license  https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
+ * @link     https://github.com/barantaran/contest-server
+*/
+
+/* Utilities */
 $responder = function ($content, $headers = []) use ($app) {
     foreach ($headers as $key => $value) {
         $app->response->setHeader($key, $value);
@@ -15,6 +26,7 @@ $servant = function ($serviceName) use ($app) {
     return $app->di->getService($serviceName)->getDefinition();
 };
 
+/* GET routes */
 $app->get(
     '/', function () use ($app) {
         echo $app['view']->render('index');
@@ -27,6 +39,7 @@ $app->get(
     }
 );
 
+/* POST routes */
 $app->post(
     '/api/v1/{modelName:declarant}',
     function ($modelName) use ($app, $responder, $servant, $logger) {
