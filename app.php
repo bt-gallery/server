@@ -119,7 +119,7 @@ $app->post(
 );
 
 $app->post(
-    '/api/v1/competitive/upload',
+    '/api/v1/competitive-work/upload',
     function () use ($app, $config, $responder, $logger) {
         if ($app->request->hasFiles()) {
             $saver = $app->di->getService("saver")->getDefinition();
