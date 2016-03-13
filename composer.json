@@ -1,6 +1,7 @@
 {
     "require": {
         "monolog/monolog": "^1.18",
-        "phalcon-ext/mailer": "^2.0"
+        "phalcon-ext/mailer": "^2.0",
+        "swiftmailer/swiftmailer": "^5.4"
     }
 }
