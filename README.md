@@ -9,7 +9,6 @@ The main goal is to provide robust and fast basic abstract layer for various typ
 
 ####Environment & tools used
 [LAMP](https://en.wikipedia.org/wiki/LAMP_(software_bundle)) as a server-side environment  
-[nginx](http://nginx.org/) as Apache's front  
 [Composer](https://getcomposer.org/) as a PHP dependencies manager  
 [Codeception](http://codeception.com/) as a testing framework  
 [git](https://git-scm.com/) as a VCS  
