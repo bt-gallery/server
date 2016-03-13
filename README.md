@@ -15,8 +15,3 @@ The main goal is to provide robust and fast basic abstract layer for various typ
 [git](https://git-scm.com/) as a VCS  
 [Swagger](http://swagger.io/) as REST API planner  
 [phinx](https://phinx.org/) as a DB migration tool
-
-####Basic concepts
-[Agile](http://agilemanifesto.org/iso/en/) as a development workflow framework  
-[TDD](https://en.wikipedia.org/wiki/Test-driven_development) all over the public API  
-[Material design](https://www.google.com/design/spec/material-design/introduction.html) as admin web interface UI guidance
