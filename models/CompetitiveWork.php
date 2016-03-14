@@ -15,6 +15,11 @@ class CompetitiveWork extends \Phalcon\Mvc\Model
      */
     public $store_path;
 
+    public function initialize()
+    {
+        $this->hasMany('idCompetitiveWork', 'ModerationStack', 'idCompetitiveWork');
+    }
+
     /**
      * Independent Column Mapping.
      */
@@ -24,7 +29,11 @@ class CompetitiveWork extends \Phalcon\Mvc\Model
             'id_competitive_work' => 'idCompetitiveWork', 
             'store_path' => 'storePath',
             'web_path' => 'webPath',
-            'file_name' => 'fileName'
+            'file_name' => 'fileName',
+            'id_participant' => 'idParticipant',
+            'id_declarant' => 'idDeclarant',
+            'bet' => 'bet',
+            'moderation' => 'moderation'
         );
     }
 }

@@ -31,8 +31,13 @@ class Participant extends \Phalcon\Mvc\Model
      *
      * @var integer
      */
-    public $declarant_id_declarant;
+    public $id_declarant;
 
+    public function initialize()
+    {
+        $this->hasMany('idParticipant', 'CompetitiveWork', 'idParticipant');
+        $this->belongsTo('idDeclarant', 'Declarant', 'idDeclarant');
+    }
     /**
      * Independent Column Mapping.
      */
@@ -43,7 +48,7 @@ class Participant extends \Phalcon\Mvc\Model
             'name' => 'name', 
             'surname' => 'surname', 
             'patronymic' => 'patronymic', 
-            'declarant_id_declarant' => 'idDeclarant'
+            'id_declarant' => 'idDeclarant'
         );
     }
 

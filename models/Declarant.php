@@ -41,6 +41,11 @@ class Declarant extends \Phalcon\Mvc\Model
      */
     public $phone;
 
+    public function initialize()
+    {
+        $this->hasMany('idDeclarant', 'Participant', 'idParticipant');
+        $this->hasMany('idDeclarant', 'CompetitiveWork', 'idDeclarant');
+    }
     /**
      * Validations and business logic
      */
