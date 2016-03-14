@@ -29,12 +29,36 @@ CREATE TABLE IF NOT EXISTS `contest`.`participant` (
   `name` VARCHAR(255) NULL,
   `surname` VARCHAR(255) NULL,
   `patronymic` VARCHAR(255) NULL,
-  `declarant_id_declarant` INT NOT NULL,
-  PRIMARY KEY (`id_participant`, `declarant_id_declarant`),
-  INDEX `fk_participant_declarant1_idx` (`declarant_id_declarant` ASC),
+  `id_declarant` INT NOT NULL,
+  PRIMARY KEY (`id_participant`, `id_declarant`),
+  INDEX `fk_participant_declarant1_idx` (`id_declarant` ASC),
   CONSTRAINT `fk_participant_declarant1`
-    FOREIGN KEY (`declarant_id_declarant`)
+    FOREIGN KEY (`id_declarant`)
     REFERENCES `contest`.`declarant` (`id_declarant`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_general_ci;
+
+
+-- -----------------------------------------------------
+-- Table `contest`.`competitive_work`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `contest`.`competitive_work` (
+  `id_competitive_work` INT NOT NULL AUTO_INCREMENT,
+  `store_path` VARCHAR(255) NULL,
+  `web_path` VARCHAR(255) NULL,
+  `file_name` VARCHAR(255) NULL,
+  `id_participant` INT NULL,
+  `id_declarant` INT NULL,
+  `bet` TINYINT(1) NULL DEFAULT 0,
+  `moderation` TINYINT(1) NULL DEFAULT 0,
+  PRIMARY KEY (`id_competitive_work`),
+  INDEX `fk_competitive_work_participant1_idx` (`id_participant` ASC, `id_declarant` ASC),
+  CONSTRAINT `fk_competitive_work_participant1`
+    FOREIGN KEY (`id_participant` , `id_declarant`)
+    REFERENCES `contest`.`participant` (`id_participant` , `id_declarant`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -50,103 +74,12 @@ CREATE TABLE IF NOT EXISTS `contest`.`vote` (
   `vote_ip` VARCHAR(45) NULL,
   `vote_agent` VARCHAR(45) NULL,
   `voted_at` VARCHAR(45) NULL,
-  PRIMARY KEY (`id_vote`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
-
-
--- -----------------------------------------------------
--- Table `contest`.`competitive_work`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `contest`.`competitive_work` (
-  `id_competitive_work` INT NOT NULL AUTO_INCREMENT,
-  `store_path` VARCHAR(255) NULL,
-  `web_path` VARCHAR(255) NULL,
-  `file_name` VARCHAR(255) NULL,
-  PRIMARY KEY (`id_competitive_work`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
-
-
--- -----------------------------------------------------
--- Table `contest`.`contest`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `contest`.`contest` (
-  `id_contest` INT NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`id_contest`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
-
-
--- -----------------------------------------------------
--- Table `contest`.`contest_has_competitive_work`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `contest`.`contest_has_competitive_work` (
-  `contest_id_contest` INT NOT NULL,
   `competitive_work_id_competitive_work` INT NOT NULL,
-  `bet_is_placed` TINYINT(1) NULL DEFAULT 0,
-  PRIMARY KEY (`contest_id_contest`, `competitive_work_id_competitive_work`),
-  INDEX `fk_contest_has_competitive_work_competitive_work1_idx` (`competitive_work_id_competitive_work` ASC),
-  INDEX `fk_contest_has_competitive_work_contest_idx` (`contest_id_contest` ASC),
-  CONSTRAINT `fk_contest_has_competitive_work_contest`
-    FOREIGN KEY (`contest_id_contest`)
-    REFERENCES `contest`.`contest` (`id_contest`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_contest_has_competitive_work_competitive_work1`
+  PRIMARY KEY (`id_vote`),
+  INDEX `fk_vote_competitive_work1_idx` (`competitive_work_id_competitive_work` ASC),
+  CONSTRAINT `fk_vote_competitive_work1`
     FOREIGN KEY (`competitive_work_id_competitive_work`)
     REFERENCES `contest`.`competitive_work` (`id_competitive_work`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
-
-
--- -----------------------------------------------------
--- Table `contest`.`participant_has_competitive_work`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `contest`.`participant_has_competitive_work` (
-  `participant_id_participant` INT NOT NULL,
-  `competitive_work_id_competitive_work` INT NOT NULL,
-  PRIMARY KEY (`participant_id_participant`, `competitive_work_id_competitive_work`),
-  INDEX `fk_participant_has_competitive_work_competitive_work1_idx` (`competitive_work_id_competitive_work` ASC),
-  INDEX `fk_participant_has_competitive_work_participant1_idx` (`participant_id_participant` ASC),
-  CONSTRAINT `fk_participant_has_competitive_work_participant1`
-    FOREIGN KEY (`participant_id_participant`)
-    REFERENCES `contest`.`participant` (`id_participant`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_participant_has_competitive_work_competitive_work1`
-    FOREIGN KEY (`competitive_work_id_competitive_work`)
-    REFERENCES `contest`.`competitive_work` (`id_competitive_work`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
-
-
--- -----------------------------------------------------
--- Table `contest`.`competitive_work_has_vote`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `contest`.`competitive_work_has_vote` (
-  `competitive_work_id_competitive_work` INT NOT NULL,
-  `vote_id_vote` INT NOT NULL,
-  PRIMARY KEY (`competitive_work_id_competitive_work`, `vote_id_vote`),
-  INDEX `fk_competitive_work_has_vote_vote1_idx` (`vote_id_vote` ASC),
-  INDEX `fk_competitive_work_has_vote_competitive_work1_idx` (`competitive_work_id_competitive_work` ASC),
-  CONSTRAINT `fk_competitive_work_has_vote_competitive_work1`
-    FOREIGN KEY (`competitive_work_id_competitive_work`)
-    REFERENCES `contest`.`competitive_work` (`id_competitive_work`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_competitive_work_has_vote_vote1`
-    FOREIGN KEY (`vote_id_vote`)
-    REFERENCES `contest`.`vote` (`id_vote`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -183,11 +116,29 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `contest`.`queue` (
   `id_queue` INT NOT NULL AUTO_INCREMENT,
-  `created_at` TIMESTAMP NULL,
+  `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
   `data` TEXT NULL,
   `job` INT NULL,
   `status` VARCHAR(45) NULL,
   PRIMARY KEY (`id_queue`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `contest`.`moderation_stack`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `contest`.`moderation_stack` (
+  `id_moderation_stack` INT NOT NULL AUTO_INCREMENT,
+  `id_competitive_work` INT NOT NULL,
+  `queue_num` INT(11) NULL,
+  `status` TINYINT(1) NULL DEFAULT 0,
+  PRIMARY KEY (`id_moderation_stack`),
+  INDEX `fk_moderation_stack_competitive_work1_idx` (`id_competitive_work` ASC),
+  CONSTRAINT `fk_moderation_stack_competitive_work1`
+    FOREIGN KEY (`id_competitive_work`)
+    REFERENCES `contest`.`competitive_work` (`id_competitive_work`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
