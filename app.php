@@ -162,6 +162,13 @@ $app->post(
     }
 );
 
+/** PUT routes */
+$app->put(
+    "/competitive-bit/register/{bidID:bidID}",
+    function($bidID) use ($logger, $servant) {
+
+    }
+
 /**
  * Not found handler
  */
