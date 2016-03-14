@@ -1,6 +1,6 @@
 /cache/
 /config/development/
-/public/files/
+/public/files
 !/public/app*
 !/public/main.css
 /vendor/
