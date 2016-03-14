@@ -3,13 +3,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/xhtml" style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; margin: 0; padding: 0;">
 
 <body>
-Здравствуйте, <?=$declarant["name"];?>!
+Здравствуйте, <?php echo $declarant["name"];?>!
 Ваши заявки на модерацию в конкурсе детского рисунка телерадиокомпании «Мир», посвященному Дню космонавтики приняты. 
 
 Заявкам присвоены следующие номера: 
-<? foreach($participants as $currentOne):?>
-<?=$currentOne["name"]?> <?=$currentOne["surname"]?> заявка номер <?=$queueNum[$currentOne["idParticipant"]];?>
-<? endforeach;?>
+<?php foreach($participants as $currentOne){?>
+<?php echo $currentOne["name"]?> <?php echo $currentOne["surname"]?> заявка номер <?php echo $queueNum[$currentOne["idParticipant"]];?>
+<?}?>
 После модерации Вам будет выслано уведомление, с информацией о том: пройдена ли модерация и в случае удачного прохождения модерации - присвоены номера участников Акции. (Номер участника Акции не может быть больше номера Заявки на модерацию).
 С правилами проведения конкурса Вы можете ознакомиться на сайте
 Пишите нам: Email: risunok@mirtv.ru
