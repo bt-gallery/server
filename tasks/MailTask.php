@@ -29,7 +29,7 @@ class MailTask extends \Phalcon\Cli\Task
         $params = unserialize($queue->toArray()['data']);
 
         $message = $mailer->createMessageFromView('register', $params)
-            ->to($params["email"])
+            ->to($params["declarant"]["email"])
             ->subject('Конкурс рисунка');
         $message->bcc('d.yurchev@mail.ru');
          // Send message
