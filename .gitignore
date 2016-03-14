@@ -1,6 +1,8 @@
 /cache/
 /config/development/
-/public/
+/public/files/
+!/public/app*
+!/public/main.css
 /vendor/
 *.swp
 *.log
