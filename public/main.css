@@ -133,6 +133,11 @@ body {
   .span_2_of_2, .span_1_of_2 { width: 100%; }
 }
 
+.paragraph_margined p {
+  margin: 20px 0 0 0;
+  text-align:left;
+}
+
 .info-block{
   font-size: 19px;
   color: grey;
@@ -140,7 +145,7 @@ body {
 
 .info-block-2{
   font-size: 19px;
-  color: grey;
+  color: #404040;
   margin: 10% !important;
   width: 35%;
 }
