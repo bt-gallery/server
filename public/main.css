@@ -121,10 +121,21 @@ body {
   width: 58%;
 }
 
+/*  GRID OF THREE  */
+.span_3_of_3 { width: 100%; }
+.span_2_of_3 { width: 66.13%; }
+.span_1_of_3 { width: 32.26%; }
+
+/*  GO FULL WIDTH BELOW 480 PIXELS */
+@media only screen and (max-width: 480px) {
+  .col {  margin: 1% 0 1% 0%; }
+  .span_3_of_3, .span_2_of_3, .span_1_of_3 { width: 100%; }
+}
+
 /*  GO FULL WIDTH AT LESS THAN 480 PIXELS */
 
 @media only screen and (max-width: 480px) {
-  .col { 
+  .col {
     margin: 1% 0 1% 0%;
   }
 }
@@ -147,7 +158,6 @@ body {
   font-size: 19px;
   color: #404040;
   margin: 10% !important;
-  width: 35%;
 }
 
 .info-block-3{
