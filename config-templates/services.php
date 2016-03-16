@@ -5,14 +5,12 @@ use Phalcon\DI\FactoryDefault;
 use Phalcon\Db\Adapter\Pdo\Mysql as DbAdapter;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
-use Monolog\Handler\FirePHPHandler;
-
 
 $di = new FactoryDefault();
-
 $logger = new Logger('logger');
-//$handler = new Monolog\Handler\LogEntriesHandler('62fd4665-e33f-413a-887e-fcea157b583e');
-$handler = new \Monolog\Handler\NullHandler();
+$handler = new StreamHandler(
+    $config->application->logDir . "app.log", Logger::DEBUG
+);
 $logger->pushHandler($handler);
 
 /**

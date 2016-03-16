@@ -1,7 +1,11 @@
 <?php
+if (!defined('APP_PATH')) {
+    define('APP_PATH', __DIR__.('/../../current')); 
+}
+
 return $config = [
-    'viewsDir'   => __DIR__ . '/../views/email/',
-    'logDir'   => __DIR__ . '/../log/',
+    'viewsDir'   => APP_PATH . '/views/email/',
+    'logDir'   => APP_PATH . '/log/',
     'driver'     => 'sendmail',
     'sendmail'   => '/usr/sbin/sendmail -bs',
     'from'       => [
@@ -10,8 +14,8 @@ return $config = [
     ],
     "database" => [
         'host'       => 'localhost',
-        'username'   => 'root',
-        'password'   => 'VfrcGkfyr1MS',
+        'username'   => 'contestuser',
+        'password'   => 'userpass',
         'dbname'     => 'contest'
     ]
 ];

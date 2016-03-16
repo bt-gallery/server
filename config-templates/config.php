@@ -1,5 +1,6 @@
 <?php
-if(!defined('APP_PATH')) { define('APP_PATH', __DIR__.('/..')); 
+if (!defined('APP_PATH')) {
+    define('APP_PATH', __DIR__.('/../../current'));
 }
 
 return new \Phalcon\Config(
@@ -8,15 +9,16 @@ return new \Phalcon\Config(
     'database' => array(
         'adapter'    => 'Mysql',
         'host'       => 'localhost',
-        'username'   => 'root',
-        'password'   => 'VfrcGkfyr1MS',
-        'dbname'     => 'contest',
+        'username'   => 'contest_user',
+        'password'   => 'userpass',
+        'dbname'     => 'contest'
     ),
 
     'application' => array(
         'modelsDir'      => APP_PATH . '/models/',
         'viewsDir'       => APP_PATH . '/views/',
         'uploadDir'       => APP_PATH . '/public/files/',
+        'logDir'       => APP_PATH . '/log/',
         'baseUri'        => '/konkurs/',
     )
     )
