@@ -11,7 +11,8 @@ return new \Phalcon\Config(
         'host'       => 'localhost',
         'username'   => 'contest_user',
         'password'   => 'userpass',
-        'dbname'     => 'contest'
+        'dbname'     => 'contest',
+        'charset'    => 'utf8'
     ),
 
     'application' => array(
