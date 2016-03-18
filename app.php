@@ -158,12 +158,7 @@ $app->post(
         $declarant = Declarant::findFirst($data["idDeclarant"]);
 
         $jobData["declarant"] = $declarant->toArray();
-/*
-        foreach ($declarant->Participant as $currentOne){
-            $jobData["participants"][] = $currentOne->toArray();
-        }*/
         $jobData["participants"] = Participant::find("idDeclarant={$declarant->idDeclarant}")->toArray();
-//        $jobData["participants"] = $declarant->Participant->toArray();
 
         foreach($declarant->CompetitiveWork as $competitiveWork){
             $competitiveWork->bet = 1;
