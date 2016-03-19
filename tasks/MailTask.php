@@ -45,4 +45,29 @@ class MailTask extends \Phalcon\Cli\Task
 
         return;
     }
+
+    public function formRegisteredQueueAction(array $params=[])
+    {
+        $db = $this->getDI()->getShared("db");
+        $queue = $this->getDI()->getService("queue")->getDefinition();
+        $query = "SELECT declarant.* FROM declarant LEFT JOIN competitive_work ON competitive_work.id_declarant = declarant.id_declarant WHERE competitive_work.bet = 1 ORDER BY `declarant`.`id_declarant`  DESC";
+        $result = $db->query($query);
+        $result->setFetchMode(Phalcon\Db::FETCH_ASSOC);
+        $result = $result->fetchAll($result);
+
+        foreach($result as $currentOne) {
+            $competitiveWork = CompetitiveWork::find("idDeclarant={$currentOne["id_declarant"]} AND bet=1");
+            foreach($competitiveWork as $currentWork){
+                $moderationStack = ModerationStack::findFirst("idCompetitiveWork={$currentWork->idCompetitiveWork}");
+                if(!$moderationStack) $queueNum = 0;
+                else $queueNum = $moderationStack->queueNum;
+                $jobData["queueNum"][$currentWork->idParticipant] = $queueNum;
+            }
+            $jobData["declarant"] = $currentOne;
+            $jobData["participants"] = Participant::find("idDeclarant={$currentOne["id_declarant"]}")->toArray();
+
+            $queue($jobData, Job::MAIL_DECLARANT_REGISTRATION,Status::NEW_ONE);
+            unset($jobData["queueNum"]);
+        }
+    }
 }

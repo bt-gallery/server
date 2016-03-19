@@ -105,6 +105,27 @@ $di['saver'] = function (&$model) use ($logger) {
     return $result;
 };
 
+$di['queue'] = function ($data, $job, $status) use ($logger) {
+    $model = new Queue;
+    $model->data = serialize($data);
+    $model->job = $job;
+    $model->status = $status;
+
+    if (!$model->save()) {
+        $result["error"] = array_map(
+            function ($message) {
+                return $message->getMessage();
+            }, $model->getMessages()
+        );
+        $logger->addCritical("model saving fails", $result);
+    } else {
+        $result["success"] = $model->toArray();
+        $logger->addInfo("model saving ok", $result);
+    }
+
+    return $result;
+};
+
 // Создаем консольное приложение
 $console = new ConsoleApp();
 $console->setDI($di);
