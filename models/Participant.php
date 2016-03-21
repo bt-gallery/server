@@ -48,7 +48,8 @@ class Participant extends \Phalcon\Mvc\Model
             'name' => 'name', 
             'surname' => 'surname', 
             'patronymic' => 'patronymic', 
-            'id_declarant' => 'idDeclarant'
+            'id_declarant' => 'idDeclarant',
+            'age' => 'age'
         );
     }
 
