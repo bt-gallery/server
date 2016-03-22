@@ -59,6 +59,12 @@ class Address extends \Phalcon\Mvc\Model
 
     /**
      *
+     * @var string
+     */
+    public $phone;
+
+    /**
+     *
      * @var integer
      */
     public $declarant_id_declarant;
@@ -78,6 +84,7 @@ class Address extends \Phalcon\Mvc\Model
             'building' => 'building', 
             'appartment' => 'appartment', 
             'zip_code' => 'zipCode', 
+            'phone' => 'phone',
             'declarant_id_declarant' => 'idDeclarant'
         );
     }
