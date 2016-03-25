@@ -57,6 +57,22 @@ $app->get(
     }
 );
 
+$app->get(
+    '/api/v1/competitvework/list/{limit}/{offset}',
+    function ($limit, $offset) use ($app, $responder, $logger) {
+        $targetWorks = CompetitiveWork::find(array("limit" => $limit, "offset" => $offset));
+        $responder($targetWorks->toArray(), ["Content-Type"=>"application/json"]);
+    }
+);
+
+$app->get(
+    '/api/v1/competitivework/{id}',
+    function ($id) use ($app, $responder, $logger) {
+        $targetWork = CompetitiveWork::findFirst($id);
+        $responder($targetWork, ["Content-Type"=>"application/json"]);
+    }
+);
+
 /* POST routes */
 $app->post(
     '/api/v1/{modelName:declarant}',
