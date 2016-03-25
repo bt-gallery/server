@@ -8,6 +8,7 @@
  * @license  https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link     https://github.com/barantaran/contest-server
 */
+use Phalcon\Filter;
 
 /* Utilities */
 $responder = function ($content, $headers = [], $status = ["code"=>200,"message"=>"Ok"]) use ($app) {
@@ -36,6 +37,39 @@ $app->get(
 $app->get(
     '/declarant', function () use ($app) {
         echo $app['view']->render('index');
+    }
+);
+
+$app->get(
+    '/api/v1/search/bymail', function () use ($app, $responder) {
+        $filter = new Filter();
+        $db = $app->getDI()->getShared("db");
+
+        $rawQuery = $app->request->getQuery("q");
+        $query = $filter->sanitize($rawQuery, "email");
+
+        $sqlQuery = "SELECT * FROM moderation_stack_10 WHERE email='{$query}'";
+
+        $resultSet = $db->query($sqlQuery);
+        $resultSet->setFetchMode(Phalcon\Db::FETCH_NUM);
+        $result = $resultSet->fetchAll();
+        $responder($result, ["Content-Type"=>"application/json"]);
+    }
+);
+
+$app->get(
+    '/api/v1/competitvework/list/{limit}/{offset}',
+    function ($limit, $offset) use ($app, $responder, $logger) {
+        $targetWorks = CompetitiveWork::find(array("limit" => $limit, "offset" => $offset));
+        $responder($targetWorks->toArray(), ["Content-Type"=>"application/json"]);
+    }
+);
+
+$app->get(
+    '/api/v1/competitivework/{id}',
+    function ($id) use ($app, $responder, $logger) {
+        $targetWork = CompetitiveWork::findFirst($id);
+        $responder($targetWork, ["Content-Type"=>"application/json"]);
     }
 );
 

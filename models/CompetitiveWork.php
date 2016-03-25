@@ -7,13 +7,13 @@ class CompetitiveWork extends \Phalcon\Mvc\Model
      *
      * @var integer
      */
-    public $id_competitive_work;
+    public $idCompetitiveWork;
 
     /**
      *
      * @var string
      */
-    public $store_path;
+    public $storePath;
 
     public function initialize()
     {
