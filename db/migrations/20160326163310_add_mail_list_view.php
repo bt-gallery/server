@@ -25,8 +25,13 @@ class AddMailListView extends AbstractMigration
      * Remember to call "create()" or "update()" and NOT "save()" when working
      * with the Table class.
      */
-    public function change()
+    public function up()
     {
+        $this->query("CREATE VIEW mail_list AS SELECT * FROM declarant GROUP BY email ORDER BY email");
+    }
 
+    public function down()
+    {
+        $this->query("DROP VIEW mail_list");
     }
 }
