@@ -48,10 +48,10 @@ $app->get(
         $rawQuery = $app->request->getQuery("q");
         $query = $filter->sanitize($rawQuery, "email");
 
-        $sqlQuery = "SELECT * FROM moderation_stack_10 WHERE email='{$query}'";
+        $sqlQuery = "SELECT * FROM moderation_stack_grouped WHERE email='{$query}'";
 
         $resultSet = $db->query($sqlQuery);
-        $resultSet->setFetchMode(Phalcon\Db::FETCH_NUM);
+        $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
         $result = $resultSet->fetchAll();
         $responder($result, ["Content-Type"=>"application/json"]);
     }
