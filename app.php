@@ -84,7 +84,6 @@ $app->get(
         echo $app['view']->render('gallery', $result);
     }
 );
-
 $app->get(
     '/competitivework/drawing/{id}',
     function ($id) use ($app) {
