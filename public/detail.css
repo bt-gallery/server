@@ -1,0 +1,46 @@
+.image_detail {
+    min-width: 600px;
+    max-width: 50%;
+    float: left;
+    margin-top: 12px;
+    margin-bottom: 39px;
+    margin-left: -80px;
+}
+.image_info {
+    margin-left: 39px;
+    margin-right: 45px;
+    margin-bottom: 50px;
+    line-height: 35px;
+    font-size: 19px;
+    color: #404040;
+}
+.image_info a {
+    text-decoration: none;
+}
+.info-wrap{
+    float:left;
+}
+
+.vote{
+    border:none;
+    padding: 0 28px 0 30px;
+    color: white;
+    font-size: 1.4em;
+    margin-top: 40px;
+    width: 243px;
+    background-color: #0072FF;
+    height: 67px;
+}
+.no-vote{
+    padding: 13px 28px 0 30px;
+    color: white;
+    font-size: 1.2em;
+    margin-top: 40px;
+    width: 294px;
+    background-color: #BBBBBB;
+    height: 50px;
+}
+.vote:hover {
+    background-color: #6cabff;
+    cursor:pointer;
+}
