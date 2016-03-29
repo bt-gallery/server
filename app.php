@@ -9,6 +9,7 @@
  * @link     https://github.com/barantaran/contest-server
 */
 use Phalcon\Filter;
+use Phalcon\Crypt;
 
 /* Utilities */
 $responder = function ($content, $headers = [], $status = ["code"=>200,"message"=>"Ok"]) use ($app) {
@@ -241,9 +242,116 @@ $app->post(
     }
 );
 
+$app->post(
+    '/api/v1/vote',
+    function () use ($app, $responder, $servant, $logger) {
+        $saver = $servant("saver");
+        $data = $app->request->getPost();
+        $cookies = $app->getDI()->getShared("cookies");
+        $app->getDI()->set('crypt', function () {
+            $crypt = new Crypt();
+            $crypt->setKey('CVklkf%$$dx34zx887*&^');
+            return $crypt;
+        });
+        $vote = new Vote;
+        $vote->voteIp = $app->request->getClientAddress();
+        $vote->voteAgent = $app->request->getUserAgent();
+        $vote->votedAt = time();
+        if(isset($data["id_competitive_work"])){
+            $vote->competitiveWorkIdCompetitiveWork = $data["id_competitive_work"];
+        }else{
+            $responder(["error"=>$vote->votedAt], ["Content-Type"=>"application/json"]);
+            return;
+        }
+        $vote->voteHash = hash("sha256", $vote->voteIp . $vote->voteAgent);
+
+        if ($cookies->has("userIdentity") and $cookies->has("lastVoteTime")) {
+            $userIdentity = $cookies->get("userIdentity");
+            $userIdentity = $userIdentity->getValue();
+            $lastVoteTime = $cookies->get("lastVoteTime");
+            $lastVoteTime = $lastVoteTime->getValue();
+            if(date('Ymd') == date('Ymd', (int) $lastVoteTime)){
+                $responder(["denied"=>"time", "label"=>"time constraint", "timestamp"=>date('h:i', time()-(int) $lastVoteTime)], ["Content-Type"=>"application/json"]);
+            }else{
+                $saveResult = $saver($vote);
+                if($saveResult) {
+                    $result["success"][] = $saveResult;
+                    $logger->addInfo("Vote save success", ["votedAt"=>$vote->votedAt, "competitiveWorkIdCompetitiveWork"=>$vote->competitiveWorkIdCompetitiveWork]);
+                    $cookies->get("userIdentity")->delete();
+                    $cookies->get("lastVoteTime")->delete();
+                    $cookies->set("userIdentity", $vote->voteIp.$vote->hash, time()+86400);
+                    $cookies->set("lastVoteTime", $vote->votedAt, time()+86400);
+                    $responder(["success"=>$vote->votedAt], ["Content-Type"=>"application/json"]);
+                }
+                else {
+                    $logger->addError("Vote save failed", ["votedAt"=>$vote->votedAt, "competitiveWorkIdCompetitiveWork"=>$vote->competitiveWorkIdCompetitiveWork]);
+                    $responder(["error"=>$vote->votedAt], ["Content-Type"=>"application/json"]);
+                    return;
+                }
+            }
+        }else{
+            if($lastVotes = Vote::find("voteHash='{$vote->voteHash}'")){
+                $lastVote = $lastVotes->getLast();
+                if(date('Ymd') == date('Ymd', $lastVote->votedAt)){
+                    $voteCount = 0;
+                    foreach ($lastVotes as $tmpVote) {
+                        if(date('Ymd') == date('Ymd', $tmpVote->votedAt)) $voteCount++;
+                    }
+                    if($voteCount >= 50){
+                        $responder(["denied"=>"time", "label"=>"time constraint", "timestamp"=>date('h:i', time()-(int) $lastVoteTime)], ["Content-Type"=>"application/json"]);
+                    }else{
+                        $saveResult = $saver($vote);
+                        if($saveResult) {
+                            $result["success"][] = $saveResult;
+                            $logger->addInfo("Vote save success", ["votedAt"=>$vote->votedAt, "competitiveWorkIdCompetitiveWork"=>$vote->competitiveWorkIdCompetitiveWork]);
+                            $cookies->set("userIdentity", $vote->voteIp.$vote->voteHash, time()+86400);
+                            $cookies->set("lastVoteTime", $vote->votedAt, time()+86400);
+                            $responder(["success"=>$vote->votedAt], ["Content-Type"=>"application/json"]);
+                        }
+                        else {
+                            $logger->addError("Vote save failed", ["votedAt"=>$vote->votedAt, "competitiveWorkIdCompetitiveWork"=>$vote->competitiveWorkIdCompetitiveWork]);
+                            $responder(["error"=>$vote->votedAt], ["Content-Type"=>"application/json"]);
+                            return;
+                        }
+                    }
+                }else{
+                    $saveResult = $saver($vote);
+                    if($saveResult) {
+                        $result["success"][] = $saveResult;
+                        $logger->addInfo("Vote save success", ["votedAt"=>$vote->votedAt, "competitiveWorkIdCompetitiveWork"=>$vote->competitiveWorkIdCompetitiveWork]);
+                        $cookies->set("userIdentity", $vote->voteIp.$vote->voteHash, time()+86400);
+                        $cookies->set("lastVoteTime", $vote->votedAt, time()+86400);
+                        $responder(["success"=>$vote->votedAt], ["Content-Type"=>"application/json"]);
+                    }
+                    else {
+                        $logger->addError("Vote save failed", ["votedAt"=>$vote->votedAt, "competitiveWorkIdCompetitiveWork"=>$vote->competitiveWorkIdCompetitiveWork]);
+                        $responder(["error"=>$vote->votedAt], ["Content-Type"=>"application/json"]);
+                        return;
+                    }
+                }
+            }else{
+                $saveResult = $saver($vote);
+                if($saveResult) {
+                    $result["success"][] = $saveResult;
+                    $logger->addInfo("Vote save success", ["votedAt"=>$vote->votedAt, "competitiveWorkIdCompetitiveWork"=>$vote->competitiveWorkIdCompetitiveWork]);
+                    $cookies->set("userIdentity", $vote->voteIp.$vote->voteHash, time()+86400);
+                    $cookies->set("lastVoteTime", $vote->votedAt, time()+86400);
+                    $responder(["success"=>$vote->votedAt], ["Content-Type"=>"application/json"]);
+                }
+                else {
+                    $logger->addError("Vote save failed", ["votedAt"=>$vote->votedAt, "competitiveWorkIdCompetitiveWork"=>$vote->competitiveWorkIdCompetitiveWork]);
+                    $responder(["error"=>$vote->votedAt], ["Content-Type"=>"application/json"]);
+                    return;
+                }
+            }
+        }
+    }
+);
+
 /**
  * Not found handler
  */
+
 $app->notFound(
     function () use ($app, $responder, $logger) {
         $logger->addWarning("404 sent", $app->request->getHeaders());
