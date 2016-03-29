@@ -23,7 +23,7 @@
 <div class="clearfix"></div>
 <section id="photos">
     <? foreach ($targetWorks as $key => $value) { ?>
-        <a href="/competitivework/drawing/<?= $value['idCompetitiveWork'] ?>">
+        <a href="/competitivework/drawing/<?= $value['idCompetitiveWork'] ?>" target="_blank">
             <div class="tooltip"><img src="http://konkurs.mir24.tv<?= $value['webPath'] ?>"/>
                 <span
                     class="tooltiptext"><?= $value['participant'] ?> <?= $value['age'] ?> <?= $value['age_string'] ?></span>

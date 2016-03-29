@@ -9,9 +9,18 @@
         name="viewport"
         content="width=device-width, initial-scale=1, user-scalable=0, maximum-scale=1, minimum-scale=1"
     >
+    <meta property="og:title" content="Это просто космос!"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:url" content="http://konkurs.mir24.tv/competitivework/drawing/<?= $targetWork['idCompetitiveWork'] ?>"/>
+    <meta property="og:image" content="http://konkurs.mir24.tv<?= $targetWork['webPath'] ?>"/>
+    <meta property="og:site_name" content="Конкурс рисунка"/>
+    <meta property="og:description" content='Конкурс рисунка "Дети рисуют космос". Заходи и оцени таланты подрастающего поколения!'/>
     <link rel="stylesheet" type="text/css" href="/main.css">
     <link rel='stylesheet' type="text/css" href='/detail.css'>
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico"/>
+    <script type="text/javascript" src="/detail.js"></script>
+    <script type="text/javascript" src="//yastatic.net/es5-shims/0.0.2/es5-shims.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="//yastatic.net/share2/share.js" charset="utf-8"></script>
 </head>
 <body>
 <header class="header">
@@ -34,14 +43,22 @@
         <div class="image_info">
             <p>Конкурсант: <?= $targetWork['participant_name'] . ' ' . $targetWork['participant_surname'] ?><br/>
                 Возраст: <?= $targetWork['age'] ?> <?= $targetWork['age_string'] ?></p>
-            <? if (1) { ?>
-                <form name="fdfs" method="POST" action="/api/v1/vote">
-                    <input type="hidden" name="id_competitive_work" value="<?= $targetWork['idCompetitiveWork'] ?>"/>
-                    <input type="submit" class="vote" value="Проголосовать">
-                </form>
-            <? } else { ?>
-                <div class="no-vote">Вы уже голосовали сегодня</div>
-            <? } ?>
+            <div id="buttons">
+                <? if (1) { ?>
+                    <div id="vote-btn" class="vote" data-id="<?= $targetWork['idCompetitiveWork'] ?>">Проголосовать
+                    </div>
+                <? } else { ?>
+                    <div class="no-vote">Вы уже голосовали сегодня</div>
+                <? } ?>
+            </div>
+            <br/>
+            <span>Поделиться:</span>
+            <div class="ya-share2"
+                 data-services="vkontakte,facebook,odnoklassniki,moimir,gplus"
+                 data-description='Конкурс рисунка "Дети рисуют космос". Заходи и оцени таланты подрастающего поколения!'
+                 data-image="http://konkurs.mir24.tv<?= $targetWork['webPath'] ?>"
+                 data-title="Это просто космос!"
+                 data-url="http://konkurs.mir24.tv/"></div>
         </div>
     </div>
 </div>
