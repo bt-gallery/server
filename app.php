@@ -9,6 +9,7 @@
  * @link     https://github.com/barantaran/contest-server
 */
 use Phalcon\Filter;
+use Phalcon\Crypt;
 
 /* Utilities */
 $responder = function ($content, $headers = [], $status = ["code"=>200,"message"=>"Ok"]) use ($app) {
@@ -272,9 +273,123 @@ $app->post(
     }
 );
 
+$app->post(
+    '/api/v1/vote',
+    function () use ($app, $responder, $servant, $logger) {
+        $saver = $servant("saver");
+        $data = $app->request->getPost();
+        $cookies = $app->getDI()->getShared("cookies");
+        $app->getDI()->set('crypt', function () {
+            $crypt = new Crypt();
+            $crypt->setKey('CV##@k87?lkf46_7%$$dx3.4zx8*&^g');
+            return $crypt;
+        });
+        $vote = new Vote;
+        $vote->voteIp = $app->request->getClientAddress();
+        $vote->voteAgent = $app->request->getUserAgent();
+        //$vote->votedAt = time();
+        $tomorrowDateTime = new DateTime("tomorrow");
+        if(isset($data["id_competitive_work"])){
+            $vote->competitiveWorkIdCompetitiveWork = $data["id_competitive_work"];
+        }else{
+            $responder(["error"=>time()], ["Content-Type"=>"application/json"]);
+            return;
+        }
+        $vote->voteHash = hash("sha256", $vote->voteIp . $vote->voteAgent);
+
+        if ($cookies->has("userIdentity") and $cookies->has("lastVoteTime")) {
+            $userIdentity = $cookies->get("userIdentity");
+            $userIdentity = $userIdentity->getValue();
+            $lastVoteTime = $cookies->get("lastVoteTime");
+            $lastVoteTime = $lastVoteTime->getValue();
+            $voteDateTime = new DateTime($lastVoteTime);
+            $diffDateTimeCookie = $voteDateTime->diff($tomorrowDateTime);
+            if($diffDateTimeCookie->d == 0){
+                $responder(["denied"=>"time", "label"=>"time constraint", "timestamp"=>$diffDateTimeCookie->format("%h:%I")], ["Content-Type"=>"application/json"]);
+            }else{
+                $saveResult = $saver($vote);
+                if($saveResult) {
+                    $result["success"][] = $saveResult;
+                    $logger->addInfo("Vote save success", ["votedAt"=>(new DateTime("now"))->format("Y-m-d H:i:s"), "competitiveWorkIdCompetitiveWork"=>$vote->competitiveWorkIdCompetitiveWork]);
+                    $cookies->get("userIdentity")->delete();
+                    $cookies->get("lastVoteTime")->delete();
+                    $cookies->set("userIdentity", $vote->voteIp.$vote->hash, time()+86400);
+                    $cookies->set("lastVoteTime", (new DateTime("now"))->format("Y-m-d H:i:s"), time()+86400);
+                    $responder(["success"=>time()], ["Content-Type"=>"application/json"]);
+                }
+                else {
+                    $logger->addError("Vote save failed", ["votedAt"=>(new DateTime("now"))->format("Y-m-d H:i:s"), "competitiveWorkIdCompetitiveWork"=>$vote->competitiveWorkIdCompetitiveWork]);
+                    $responder(["error"=>time()], ["Content-Type"=>"application/json"]);
+                    return;
+                }
+            }
+        }else{
+            if($lastVotes = Vote::find("voteHash='{$vote->voteHash}'")){
+                $lastVote = $lastVotes->getLast();
+                $voteDateTime = new DateTime($lastVote->votedAt);
+                $diffDateTimeHash = $voteDateTime->diff($tomorrowDateTime);
+                if($diffDateTimeHash->d == 0){
+                    $voteCount = 0;
+                    foreach ($lastVotes as $tmpVote) {
+                        $voteDateTime = new DateTime($tmpVote->votedAt);
+                        $diffDateTime = $voteDateTime->diff($tomorrowDateTime);
+                        if($diffDateTime == 0) $voteCount++;
+                    }
+                    if($voteCount >= 50){
+                        $responder(["denied"=>"time", "label"=>"time constraint", "timestamp"=>$diffDateTimeHash->format("%h:%I")], ["Content-Type"=>"application/json"]);
+                    }else{
+                        $saveResult = $saver($vote);
+                        if($saveResult) {
+                            $result["success"][] = $saveResult;
+                            $logger->addInfo("Vote save success", ["votedAt"=>(new DateTime("now"))->format("Y-m-d H:i:s"), "competitiveWorkIdCompetitiveWork"=>$vote->competitiveWorkIdCompetitiveWork]);
+                            $cookies->set("userIdentity", $vote->voteIp.$vote->voteHash, time()+86400);
+                            $cookies->set("lastVoteTime", (new DateTime("now"))->format("Y-m-d H:i:s"), time()+86400);
+                            $responder(["success"=>(new DateTime("now"))->format("Y-m-d H:i:s")], ["Content-Type"=>"application/json"]);
+                        }
+                        else {
+                            $logger->addError("Vote save failed", ["votedAt"=>time(), "competitiveWorkIdCompetitiveWork"=>$vote->competitiveWorkIdCompetitiveWork]);
+                            $responder(["error"=>(new DateTime("now"))->format("Y-m-d H:i:s")], ["Content-Type"=>"application/json"]);
+                            return;
+                        }
+                    }
+                }else{
+                    $saveResult = $saver($vote);
+                    if($saveResult) {
+                        $result["success"][] = $saveResult;
+                        $logger->addInfo("Vote save success", ["votedAt"=>(new DateTime("now"))->format("Y-m-d H:i:s"), "competitiveWorkIdCompetitiveWork"=>$vote->competitiveWorkIdCompetitiveWork]);
+                        $cookies->set("userIdentity", $vote->voteIp.$vote->voteHash, time()+86400);
+                        $cookies->set("lastVoteTime", (new DateTime("now"))->format("Y-m-d H:i:s"), time()+86400);
+                        $responder(["success"=>(new DateTime("now"))->format("Y-m-d H:i:s")], ["Content-Type"=>"application/json"]);
+                    }
+                    else {
+                        $logger->addError("Vote save failed", ["votedAt"=>(new DateTime("now"))->format("Y-m-d H:i:s"), "competitiveWorkIdCompetitiveWork"=>$vote->competitiveWorkIdCompetitiveWork]);
+                        $responder(["error"=>(new DateTime("now"))->format("Y-m-d H:i:s")], ["Content-Type"=>"application/json"]);
+                        return;
+                    }
+                }
+            }else{
+                $saveResult = $saver($vote);
+                if($saveResult) {
+                    $result["success"][] = $saveResult;
+                    $logger->addInfo("Vote save success", ["votedAt"=>(new DateTime("now"))->format("Y-m-d H:i:s"), "competitiveWorkIdCompetitiveWork"=>$vote->competitiveWorkIdCompetitiveWork]);
+                    $cookies->set("userIdentity", $vote->voteIp.$vote->voteHash, time()+86400);
+                    $cookies->set("lastVoteTime", (new DateTime("now"))->format("Y-m-d H:i:s"), time()+86400);
+                    $responder(["success"=>(new DateTime("now"))->format("Y-m-d H:i:s")], ["Content-Type"=>"application/json"]);
+                }
+                else {
+                    $logger->addError("Vote save failed", ["votedAt"=>(new DateTime("now"))->format("Y-m-d H:i:s"), "competitiveWorkIdCompetitiveWork"=>$vote->competitiveWorkIdCompetitiveWork]);
+                    $responder(["error"=>(new DateTime("now"))->format("Y-m-d H:i:s")], ["Content-Type"=>"application/json"]);
+                    return;
+                }
+            }
+        }
+    }
+);
+
 /**
  * Not found handler
  */
+
 $app->notFound(
     function () use ($app, $responder, $logger) {
         $logger->addWarning("404 sent", $app->request->getHeaders());
