@@ -12,10 +12,10 @@ window.onload = function () {
         } else {
             if (xhr.responseText['error']) {
                 message.className = 'vote error';
-                message.innerHTML = xhr.responseText['error'];
-            } else {
+                message.innerHTML = xhr.responseText['error']['label'];
+            } else if (xhr.responseText['success']){
                 message.className = 'vote success';
-                message.innerHTML = 'Ваш голос учтен!';
+                message.innerHTML =  xhr.responseText['success']['label'];
             }
         }
         this.parentNode.removeChild(this);
