@@ -101,7 +101,12 @@ $app->get(
         $t2 = $age % 100;
         $age = ($t1 == 1 && $t2 != 11 ? "год" : ($t1 >= 2 && $t1 <= 4 && ($t2 < 10 || $t2 >= 20) ? "года" : "лет"));
         $targetWork['age_string'] = $age;
-        echo $app['view']->render('detail', array('targetWork'=>$targetWork));
+
+        $requestHash = hash("sha256", $app->request->getClientAddress() . $app->request->getUserAgent());
+        $cookies = $app->getDI()->getShared("cookies");
+        $canVote = Vote::checkVote($cookies, $requestHash); //true
+
+        echo $app['view']->render('detail', array('targetWork'=>$targetWork, 'canVote'=>$canVote));
     }
 );
 
@@ -292,7 +297,7 @@ $app->post(
         if(isset($data["id_competitive_work"])){
             $vote->competitiveWorkIdCompetitiveWork = $data["id_competitive_work"];
         }else{
-            $responder(["error"=>time()], ["Content-Type"=>"application/json"]);
+            $responder(["error"=>["reason"=>"id not found", "label"=>"Изображение не найдено", (new DateTime("now"))->format("Y-m-d H:i:s")]], ["Content-Type"=>"application/json"]);
             return;
         }
         $vote->voteHash = hash("sha256", $vote->voteIp . $vote->voteAgent);
@@ -305,7 +310,7 @@ $app->post(
             $voteDateTime = new DateTime($lastVoteTime);
             $diffDateTimeCookie = $voteDateTime->diff($tomorrowDateTime);
             if($diffDateTimeCookie->d == 0){
-                $responder(["denied"=>"time", "label"=>"time constraint", "timestamp"=>$diffDateTimeCookie->format("%h:%I")], ["Content-Type"=>"application/json"]);
+                $responder(["error"=>["reason"=>"time constraint", "label"=>"Вы уже голосовали сегодня", "timeStamp"=>$diffDateTimeCookie->format("%h:%I")]], ["Content-Type"=>"application/json"]);
             }else{
                 $saveResult = $saver($vote);
                 if($saveResult) {
@@ -315,11 +320,11 @@ $app->post(
                     $cookies->get("lastVoteTime")->delete();
                     $cookies->set("userIdentity", $vote->voteIp.$vote->hash, time()+86400);
                     $cookies->set("lastVoteTime", (new DateTime("now"))->format("Y-m-d H:i:s"), time()+86400);
-                    $responder(["success"=>time()], ["Content-Type"=>"application/json"]);
+                    $responder(["success"=>["reason"=>"vote saved", "label"=>"Ваш голос принят", (new DateTime("now"))->format("Y-m-d H:i:s")]], ["Content-Type"=>"application/json"]);
                 }
                 else {
                     $logger->addError("Vote save failed", ["votedAt"=>(new DateTime("now"))->format("Y-m-d H:i:s"), "competitiveWorkIdCompetitiveWork"=>$vote->competitiveWorkIdCompetitiveWork]);
-                    $responder(["error"=>time()], ["Content-Type"=>"application/json"]);
+                    $responder(["error"=>["reason"=>"save error", "label"=>"Не удалось сохранить голос", (new DateTime("now"))->format("Y-m-d H:i:s")]], ["Content-Type"=>"application/json"]);
                     return;
                 }
             }
@@ -336,7 +341,7 @@ $app->post(
                         if($diffDateTime == 0) $voteCount++;
                     }
                     if($voteCount >= 50){
-                        $responder(["denied"=>"time", "label"=>"time constraint", "timestamp"=>$diffDateTimeHash->format("%h:%I")], ["Content-Type"=>"application/json"]);
+                        $responder(["error"=>["reason"=>"time constraint", "label"=>"Вы уже голосовали сегодня", "timestamp"=>$diffDateTimeHash->format("%h:%I")]], ["Content-Type"=>"application/json"]);
                     }else{
                         $saveResult = $saver($vote);
                         if($saveResult) {
@@ -344,11 +349,11 @@ $app->post(
                             $logger->addInfo("Vote save success", ["votedAt"=>(new DateTime("now"))->format("Y-m-d H:i:s"), "competitiveWorkIdCompetitiveWork"=>$vote->competitiveWorkIdCompetitiveWork]);
                             $cookies->set("userIdentity", $vote->voteIp.$vote->voteHash, time()+86400);
                             $cookies->set("lastVoteTime", (new DateTime("now"))->format("Y-m-d H:i:s"), time()+86400);
-                            $responder(["success"=>(new DateTime("now"))->format("Y-m-d H:i:s")], ["Content-Type"=>"application/json"]);
+                            $responder(["success"=>["reason"=>"vote saved", "label"=>"Ваш голос принят", (new DateTime("now"))->format("Y-m-d H:i:s")]], ["Content-Type"=>"application/json"]);
                         }
                         else {
-                            $logger->addError("Vote save failed", ["votedAt"=>time(), "competitiveWorkIdCompetitiveWork"=>$vote->competitiveWorkIdCompetitiveWork]);
-                            $responder(["error"=>(new DateTime("now"))->format("Y-m-d H:i:s")], ["Content-Type"=>"application/json"]);
+                            $logger->addError("Vote save failed", ["votedAt"=>(new DateTime("now"))->format("Y-m-d H:i:s"), "competitiveWorkIdCompetitiveWork"=>$vote->competitiveWorkIdCompetitiveWork]);
+                            $responder(["error"=>["reason"=>"save error", "label"=>"Не удалось сохранить голос", (new DateTime("now"))->format("Y-m-d H:i:s")]], ["Content-Type"=>"application/json"]);
                             return;
                         }
                     }
@@ -359,11 +364,11 @@ $app->post(
                         $logger->addInfo("Vote save success", ["votedAt"=>(new DateTime("now"))->format("Y-m-d H:i:s"), "competitiveWorkIdCompetitiveWork"=>$vote->competitiveWorkIdCompetitiveWork]);
                         $cookies->set("userIdentity", $vote->voteIp.$vote->voteHash, time()+86400);
                         $cookies->set("lastVoteTime", (new DateTime("now"))->format("Y-m-d H:i:s"), time()+86400);
-                        $responder(["success"=>(new DateTime("now"))->format("Y-m-d H:i:s")], ["Content-Type"=>"application/json"]);
+                        $responder(["success"=>["reason"=>"vote saved", "label"=>"Ваш голос принят", (new DateTime("now"))->format("Y-m-d H:i:s")]], ["Content-Type"=>"application/json"]);
                     }
                     else {
                         $logger->addError("Vote save failed", ["votedAt"=>(new DateTime("now"))->format("Y-m-d H:i:s"), "competitiveWorkIdCompetitiveWork"=>$vote->competitiveWorkIdCompetitiveWork]);
-                        $responder(["error"=>(new DateTime("now"))->format("Y-m-d H:i:s")], ["Content-Type"=>"application/json"]);
+                        $responder(["error"=>["reason"=>"save error", "label"=>"Не удалось сохранить голос", (new DateTime("now"))->format("Y-m-d H:i:s")]], ["Content-Type"=>"application/json"]);
                         return;
                     }
                 }
@@ -374,11 +379,11 @@ $app->post(
                     $logger->addInfo("Vote save success", ["votedAt"=>(new DateTime("now"))->format("Y-m-d H:i:s"), "competitiveWorkIdCompetitiveWork"=>$vote->competitiveWorkIdCompetitiveWork]);
                     $cookies->set("userIdentity", $vote->voteIp.$vote->voteHash, time()+86400);
                     $cookies->set("lastVoteTime", (new DateTime("now"))->format("Y-m-d H:i:s"), time()+86400);
-                    $responder(["success"=>(new DateTime("now"))->format("Y-m-d H:i:s")], ["Content-Type"=>"application/json"]);
+                    $responder(["success"=>["reason"=>"vote saved", "label"=>"Ваш голос принят",(new DateTime("now"))->format("Y-m-d H:i:s")]], ["Content-Type"=>"application/json"]);
                 }
                 else {
                     $logger->addError("Vote save failed", ["votedAt"=>(new DateTime("now"))->format("Y-m-d H:i:s"), "competitiveWorkIdCompetitiveWork"=>$vote->competitiveWorkIdCompetitiveWork]);
-                    $responder(["error"=>(new DateTime("now"))->format("Y-m-d H:i:s")], ["Content-Type"=>"application/json"]);
+                    $responder(["error"=>["reason"=>"save error", "label"=>"Не удалось сохранить голос", (new DateTime("now"))->format("Y-m-d H:i:s")]], ["Content-Type"=>"application/json"]);
                     return;
                 }
             }

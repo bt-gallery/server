@@ -13,4 +13,28 @@ class Vote extends \Phalcon\Mvc\Model
             'vote_hash' => 'voteHash'
         );
     }
+
+    public static function checkVote($cookies, $hash)
+    {
+        $lastVoteTime = $cookies->get("lastVoteTime")->getValue();
+        $voteDateTime = new DateTime($lastVoteTime);
+        $tomorrowDateTime = new DateTime("tomorrow");
+        $diffDateTimeCookie = $voteDateTime->diff($tomorrowDateTime);
+        if($diffDateTimeCookie->d == 0){
+            if($lastVotes = Vote::find("voteHash='{$vote->voteHash}'")){
+                $lastVote = $lastVotes->getLast();
+                $voteDateTime = new DateTime($lastVote->votedAt);
+                $diffDateTimeHash = $voteDateTime->diff($tomorrowDateTime);
+                if($diffDateTimeHash->d == 0){
+                    return true;
+                }else{
+                    return false;
+                }
+            }else{
+                return true;
+            }
+        }else{
+            return false;
+        }
+    }
 }
