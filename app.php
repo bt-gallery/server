@@ -61,8 +61,17 @@ $app->get(
 $app->get(
     '/competitivework/list/{limit}/{offset}',
     function ($limit, $offset) use ($app, $responder, $logger) {
+        if ($offset % $limit != 0) {
+            echo $app['view']->render('404');
+            return false;
+        }
+        try {
+            $targetWorks = CompetitiveWork::find(array("limit" => $limit, "offset" => $offset))->toArray();
+        } catch (\Exception $e) {
+            echo $app['view']->render('404');
+            return false;
+        }
         $result = array();
-        $targetWorks = CompetitiveWork::find(array("limit" => $limit, "offset" => $offset))->toArray();
         foreach ($targetWorks as $key=>&$work){
             $participant = Participant::findfirst($work['idParticipant']);
             $declarant = Declarant::findfirst($work['idDeclarant']);
