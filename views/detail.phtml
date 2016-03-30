@@ -1,0 +1,67 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Конкурс рисунка</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, user-scalable=0, maximum-scale=1, minimum-scale=1"
+    >
+    <meta property="og:title" content="Это просто космос!"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:url" content="http://konkurs.mir24.tv/competitivework/drawing/<?= $targetWork['idCompetitiveWork'] ?>"/>
+    <meta property="og:image" content="http://konkurs.mir24.tv<?= $targetWork['webPath'] ?>"/>
+    <meta property="og:site_name" content="Конкурс рисунка"/>
+    <meta property="og:description" content='Конкурс рисунка "Дети рисуют космос". Заходи и оцени таланты подрастающего поколения!'/>
+    <link rel="stylesheet" type="text/css" href="/main.css">
+    <link rel='stylesheet' type="text/css" href='/detail.css'>
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico"/>
+    <script type="text/javascript" src="/detail.js"></script>
+    <script type="text/javascript" src="//yastatic.net/es5-shims/0.0.2/es5-shims.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="//yastatic.net/share2/share.js" charset="utf-8"></script>
+</head>
+<body>
+<header class="header">
+    <div id="logo" style="float:left;">
+        <a href="http://mir24.tv">
+            <img src="http://mir24.tv/media/images/mir2/mir_logo_80.png" alt="24 МИР" title="24 МИР">
+        </a>
+    </div>
+    <div style="margin: auto;">
+        <h1 style="margin: 47px;float: left;">
+            Конкурс рисунка
+        </h1>
+    </div>
+</header>
+<div class="content">
+    <a title="Посмотреть в полном размере" href="http://konkurs.mir24.tv<?= $targetWork['webPath'] ?>" target="_blank">
+        <img class="image_detail" src="http://konkurs.mir24.tv<?= $targetWork['webPath'] ?>">
+    </a>
+    <div class="info-wrap">
+        <div class="image_info">
+            <p>Конкурсант: <?= $targetWork['participant_name'] . ' ' . $targetWork['participant_surname'] ?><br/>
+                Возраст: <?= $targetWork['age'] ?> <?= $targetWork['age_string'] ?></p>
+            <div id="buttons">
+                <? if (1) { ?>
+                    <div id="vote-btn" class="vote" data-id="<?= $targetWork['idCompetitiveWork'] ?>">Проголосовать
+                    </div>
+                <? } else { ?>
+                    <div class="no-vote">Вы уже голосовали сегодня</div>
+                <? } ?>
+            </div>
+            <br/>
+            <span>Поделиться:</span>
+            <div class="ya-share2"
+                 data-services="vkontakte,facebook,odnoklassniki,moimir,gplus"
+                 data-description='Конкурс рисунка "Дети рисуют космос". Заходи и оцени таланты подрастающего поколения!'
+                 data-image="http://konkurs.mir24.tv<?= $targetWork['webPath'] ?>"
+                 data-title="Это просто космос!"
+                 data-url="http://konkurs.mir24.tv/"></div>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>
