@@ -25,7 +25,6 @@
     visibility: visible;
     opacity: 1;
 
-
 }
 .tooltips-wrapper {
     background-color: rgba(0, 0, 0, 0.42);
@@ -78,7 +77,9 @@
     padding-bottom: 9px;
     text-align: center;
 }
-
+.navigation:hover{
+    background-color: #338dff;
+}
 .inactive {
     background: #B6BCBF;
 }
@@ -86,7 +87,52 @@
 .clearfix {
     clear: both;
 }
+.search {
+    margin-bottom: 39px;
+    height: 40px;
+    width:450px;
+    position:relative;
+    float: right;
+    margin-top: 47px;
+    margin-right: 120px;
+}
+#searchbox {
+    outline:none;
+    box-sizing: border-box;
+    border:1px solid #dbdbdb;
+    height:100%;
+    position:absolute;
+    top:0;
+    left:0;
+    padding-left: 7px;
+    width: 310px;
+    font-size: 17px;
+}
+#searchbox:focus {
+    border:1px solid #0072ff;
 
+}
+#search-btn {
+    height:100%;
+    position:absolute;
+    top:0;
+    right:0;
+    outline: none;
+    text-transform: uppercase;
+    border:none;
+    margin-left: -4px;
+    background-color: #0072ff;
+    color: #ffffff;
+}
+#search-btn:hover{
+    cursor:pointer;
+    background-color: #338dff;
+}
+/*
+#searchbox:focus{
+    outline: none;
+    border:1px solid #0072ff;
+}*/
 @media (max-width: 1300px) {
     #photos {
         font-size: 1em;
@@ -104,6 +150,15 @@
         -webkit-column-count: 4;
         column-count: 4;
     }
+    .header {
+        height:220px;
+    }
+    .search {
+        float:none;
+        clear:both;
+        margin:auto;
+    }
+
 }
 
 @media (max-width: 1000px) {
@@ -149,6 +204,20 @@
     }
 }
 
+@media (max-width: 450px) {
+    .header {
+        height:360px;
+    }
+    #search-btn {
+        top: 39px;
+        left: 4px;
+        width: 310px;
+    }
+    .search {
+        width:310px;
+    }
+}
+
 @media (max-width: 400px) {
     .tooltip .tooltiptext {
         font-size: 1em;
@@ -158,6 +227,9 @@
         -moz-column-count: 1;
         -webkit-column-count: 1;
         column-count: 1;
+    }
+    .search, #search-btn, #searchbox {
+        width:100%;
     }
 }
 
