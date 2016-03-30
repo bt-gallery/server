@@ -337,19 +337,61 @@ $app->post(
         //$vote->votedAt = time();
         $tomorrowDateTime = new DateTime("tomorrow");
         if(isset($data["id_competitive_work"])){
-            $vote->competitiveWorkIdCompetitiveWork = $data["id_competitive_work"];
+            $filter = new Filter();
+            $vote->competitiveWorkIdCompetitiveWork = $filter->sanitize($data["id_competitive_work"], "int");
         }else{
             $responder(["error"=>["reason"=>"id not found", "label"=>"Изображение не найдено", (new DateTime("now"))->format("Y-m-d H:i:s")]], ["Content-Type"=>"application/json"]);
             return;
         }
+
+        $query = new Query("SELECT Participant.age FROM CompetitiveWork INNER JOIN Participant ON CompetitiveWork.idParticipant = Participant.idParticipant WHERE CompetitiveWork.idCompetitiveWork=$vote->competitiveWorkIdCompetitiveWork ", $app->getDI());
+        $targetAge = $query->execute()->toArray(); 
+        $vote->voteGroup = Participant::getGroupS($targetAge[0]['age']);
+
         $vote->voteHash = hash("sha256", $vote->voteIp . $vote->voteAgent);
 
-        if ($cookies->has("userIdentity") and $cookies->has("lastVoteTime")) {
+        if ($cookies->has("userIdentity")) {
             $userIdentity = $cookies->get("userIdentity");
             $userIdentity = $userIdentity->getValue();
-            $lastVoteTime = $cookies->get("lastVoteTime");
-            $lastVoteTime = $lastVoteTime->getValue();
-            $voteDateTime = new DateTime($lastVoteTime);
+            if ($cookies->has("lastVoteTimeChild")) {
+                $lastVoteTimeChild = $cookies->get("lastVoteTimeChild");
+                $lastVoteTimeChild = $lastVoteTimeChild->getValue();
+            }
+            if ($cookies->has("lastVoteTimeJunior")) {
+                $lastVoteTimeJunior = $cookies->get("lastVoteTimeJunior");
+                $lastVoteTimeJunior = $lastVoteTimeJunior->getValue();
+            }
+            if ($cookies->has("lastVoteTimeTeen")) {
+                $lastVoteTimeTeen = $cookies->get("lastVoteTimeTeen");
+                $lastVoteTimeTeen = $lastVoteTimeTeen->getValue();
+            }
+
+            switch ($vote->voteGroup) {
+                case 1:
+                    if($lastVoteTimeChild){
+                        $voteDateTime = new DateTime($lastVoteTimeChild);
+                        $diffDateTimeCookie = $voteDateTime->diff($tomorrowDateTime);
+                    }else{
+                        $diffDateTimeCookie->d = 0;
+                    }
+                    break;
+                case 2:
+                    if($lastVoteTimeJunior){
+                        $voteDateTime = new DateTime($lastVoteTimeJunior);
+                        $diffDateTimeCookie = $voteDateTime->diff($tomorrowDateTime);
+                    }else{
+                        $diffDateTimeCookie->d = 0;
+                    }
+                    break;
+                case 3:
+                    if($$lastVoteTimeTeen){
+                        $voteDateTime = new DateTime($$lastVoteTimeTeen);
+                        $diffDateTimeCookie = $voteDateTime->diff($tomorrowDateTime);
+                    }else{
+                        $diffDateTimeCookie->d = 0;
+                    }
+                    break;
+            }
             $diffDateTimeCookie = $voteDateTime->diff($tomorrowDateTime);
             if($diffDateTimeCookie->d == 0){
                 $responder(["error"=>["reason"=>"time constraint", "label"=>"Вы уже голосовали сегодня", "timeStamp"=>$diffDateTimeCookie->format("%h:%I")]], ["Content-Type"=>"application/json"]);
@@ -357,11 +399,23 @@ $app->post(
                 $saveResult = $saver($vote);
                 if($saveResult) {
                     $result["success"][] = $saveResult;
-                    $logger->addInfo("Vote save success", ["votedAt"=>(new DateTime("now"))->format("Y-m-d H:i:s"), "competitiveWorkIdCompetitiveWork"=>$vote->competitiveWorkIdCompetitiveWork]);
+                    $logger->addInfo("Vote save success", ["votedGroup"=>"", "votedAt"=>(new DateTime("now"))->format("Y-m-d H:i:s"), "competitiveWorkIdCompetitiveWork"=>$vote->competitiveWorkIdCompetitiveWork]);
                     $cookies->get("userIdentity")->delete();
-                    $cookies->get("lastVoteTime")->delete();
                     $cookies->set("userIdentity", $vote->voteIp.$vote->hash, time()+86400);
-                    $cookies->set("lastVoteTime", (new DateTime("now"))->format("Y-m-d H:i:s"), time()+86400);
+                    switch ($vote->voteGroup) {
+                        case 1:
+                            $cookies->get("lastVoteTimeChild")->delete();
+                            $cookies->set("lastVoteTimeChild", (new DateTime("now"))->format("Y-m-d H:i:s"), time()+86400);
+                            break;
+                        case 2:
+                            $cookies->get("lastVoteTimeJunior")->delete();
+                            $cookies->set("lastVoteTimeJunior", (new DateTime("now"))->format("Y-m-d H:i:s"), time()+86400);
+                            break;
+                        case 3:
+                            $cookies->get("lastVoteTimeTeen")->delete();
+                            $cookies->set("lastVoteTimeTeen", (new DateTime("now"))->format("Y-m-d H:i:s"), time()+86400);
+                            break;
+                    }
                     $responder(["success"=>["reason"=>"vote saved", "label"=>"Ваш голос принят", (new DateTime("now"))->format("Y-m-d H:i:s")]], ["Content-Type"=>"application/json"]);
                 }
                 else {
@@ -390,7 +444,17 @@ $app->post(
                             $result["success"][] = $saveResult;
                             $logger->addInfo("Vote save success", ["votedAt"=>(new DateTime("now"))->format("Y-m-d H:i:s"), "competitiveWorkIdCompetitiveWork"=>$vote->competitiveWorkIdCompetitiveWork]);
                             $cookies->set("userIdentity", $vote->voteIp.$vote->voteHash, time()+86400);
-                            $cookies->set("lastVoteTime", (new DateTime("now"))->format("Y-m-d H:i:s"), time()+86400);
+                            switch ($vote->voteGroup) {
+                                case 1:
+                                    $cookies->set("lastVoteTimeChild", (new DateTime("now"))->format("Y-m-d H:i:s"), time()+86400);
+                                    break;
+                                case 2:
+                                    $cookies->set("lastVoteTimeJunior", (new DateTime("now"))->format("Y-m-d H:i:s"), time()+86400);
+                                    break;
+                                case 3:
+                                    $cookies->set("lastVoteTimeTeen", (new DateTime("now"))->format("Y-m-d H:i:s"), time()+86400);
+                                    break;
+                            }
                             $responder(["success"=>["reason"=>"vote saved", "label"=>"Ваш голос принят", (new DateTime("now"))->format("Y-m-d H:i:s")]], ["Content-Type"=>"application/json"]);
                         }
                         else {
@@ -405,7 +469,17 @@ $app->post(
                         $result["success"][] = $saveResult;
                         $logger->addInfo("Vote save success", ["votedAt"=>(new DateTime("now"))->format("Y-m-d H:i:s"), "competitiveWorkIdCompetitiveWork"=>$vote->competitiveWorkIdCompetitiveWork]);
                         $cookies->set("userIdentity", $vote->voteIp.$vote->voteHash, time()+86400);
-                        $cookies->set("lastVoteTime", (new DateTime("now"))->format("Y-m-d H:i:s"), time()+86400);
+                        switch ($vote->voteGroup) {
+                            case 1:
+                                $cookies->set("lastVoteTimeChild", (new DateTime("now"))->format("Y-m-d H:i:s"), time()+86400);
+                                break;
+                            case 2:
+                                $cookies->set("lastVoteTimeJunior", (new DateTime("now"))->format("Y-m-d H:i:s"), time()+86400);
+                                break;
+                            case 3:
+                                $cookies->set("lastVoteTimeTeen", (new DateTime("now"))->format("Y-m-d H:i:s"), time()+86400);
+                                break;
+                        }
                         $responder(["success"=>["reason"=>"vote saved", "label"=>"Ваш голос принят", (new DateTime("now"))->format("Y-m-d H:i:s")]], ["Content-Type"=>"application/json"]);
                     }
                     else {
@@ -420,7 +494,17 @@ $app->post(
                     $result["success"][] = $saveResult;
                     $logger->addInfo("Vote save success", ["votedAt"=>(new DateTime("now"))->format("Y-m-d H:i:s"), "competitiveWorkIdCompetitiveWork"=>$vote->competitiveWorkIdCompetitiveWork]);
                     $cookies->set("userIdentity", $vote->voteIp.$vote->voteHash, time()+86400);
-                    $cookies->set("lastVoteTime", (new DateTime("now"))->format("Y-m-d H:i:s"), time()+86400);
+                    switch ($vote->voteGroup) {
+                        case 1:
+                            $cookies->set("lastVoteTimeChild", (new DateTime("now"))->format("Y-m-d H:i:s"), time()+86400);
+                            break;
+                        case 2:
+                            $cookies->set("lastVoteTimeJunior", (new DateTime("now"))->format("Y-m-d H:i:s"), time()+86400);
+                            break;
+                        case 3:
+                            $cookies->set("lastVoteTimeTeen", (new DateTime("now"))->format("Y-m-d H:i:s"), time()+86400);
+                            break;
+                    }
                     $responder(["success"=>["reason"=>"vote saved", "label"=>"Ваш голос принят",(new DateTime("now"))->format("Y-m-d H:i:s")]], ["Content-Type"=>"application/json"]);
                 }
                 else {
