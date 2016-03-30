@@ -15,8 +15,9 @@ class Vote extends \Phalcon\Mvc\Model
         );
     }
 
-    public static function checkVote($cookies, $hash, $group)
+    public static function checkVote($cookies, $hash, $age)
     {
+        $group = Participant::getGroupS($age);
         $tomorrowDateTime = new DateTime("tomorrow");
         if ($cookies->has("lastVoteTimeChild")) {
                 $lastVoteTimeChild = $cookies->get("lastVoteTimeChild")->getValue();

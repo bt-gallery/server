@@ -146,7 +146,8 @@ $app->get(
             $crypt->setKey('CV##@k87?lkf46_7%$$dx3.4zx8*&^g');
             return $crypt;
         });
-        $canVote = Vote::checkVote($cookies, $requestHash);
+        
+        $canVote = Vote::checkVote($cookies, $requestHash, $targetWork['age']);
 
         echo $app['view']->render('detail', array('targetWork'=>$targetWork, 'canVote'=>$canVote));
     }
@@ -392,7 +393,6 @@ $app->post(
                     }
                     break;
             }
-            $diffDateTimeCookie = $voteDateTime->diff($tomorrowDateTime);
             if($diffDateTimeCookie->d == 0){
                 $responder(["error"=>["reason"=>"time constraint", "label"=>"Вы уже голосовали сегодня", "timeStamp"=>$diffDateTimeCookie->format("%h:%I")]], ["Content-Type"=>"application/json"]);
             }else{
