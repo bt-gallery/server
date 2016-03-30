@@ -10,6 +10,7 @@
 */
 use Phalcon\Filter;
 use Phalcon\Crypt;
+use Phalcon\Mvc\Model\Query;
 
 /* Utilities */
 $responder = function ($content, $headers = [], $status = ["code"=>200,"message"=>"Ok"]) use ($app) {
@@ -85,6 +86,41 @@ $app->get(
         echo $app['view']->render('gallery', $result);
     }
 );
+
+$app->get(
+    '/competitivework/list/{limit}/{offset}/ages/{minAge}/{maxAge}',
+    function ($limit, $offset, $minAge, $maxAge) use ($app, $responder, $logger) {
+        $result = array();
+        $filter = new Filter();
+        $limit = $filter->sanitize($limit, "int");
+        $offset = $filter->sanitize($offset, "int");
+        $minAge = $filter->sanitize($minAge, "int");
+        $maxAge = $filter->sanitize($maxAge, "int");
+        $query = new Query("SELECT CompetitiveWork.* FROM CompetitiveWork INNER JOIN Participant ON CompetitiveWork.idParticipant = Participant.idParticipant WHERE Participant.age BETWEEN $minAge AND $maxAge LIMIT $limit OFFSET $offset", $app->getDI());
+        $targetWorks = $query->execute()->toArray();
+        foreach ($targetWorks as $key=>&$work){
+            $participant = Participant::findfirst($work['idParticipant']);
+            $declarant = Declarant::findfirst($work['idDeclarant']);
+            $work['participant'] = $participant->name.' '.$participant->surname;
+            $work['declarant'] = $declarant->name.' '.$declarant->surname;
+            $work['age']=$participant->age;
+            $age = abs($participant->age);
+            $t1 = $age % 10;
+            $t2 = $age % 100;
+            $age = ($t1 == 1 && $t2 != 11 ? "год" : ($t1 >= 2 && $t1 <= 4 && ($t2 < 10 || $t2 >= 20) ? "года" : "лет"));
+            $work['age_string'] = $age;
+        }
+        $result['targetWorks'] = $targetWorks;
+        if ($offset!=0) {
+            $result['prev_page_offset'] = $offset-$limit; //TODO Это слишком легко поломать
+        }
+        if ($offset<CompetitiveWork::count()-$offset) {
+            $result['next_page_offset'] = $offset+$limit;
+        }
+        echo $app['view']->render('gallery', $result);
+    }
+);
+
 $app->get(
     '/competitivework/drawing/{id}',
     function ($id) use ($app) {
@@ -103,8 +139,14 @@ $app->get(
         $targetWork['age_string'] = $age;
 
         $requestHash = hash("sha256", $app->request->getClientAddress() . $app->request->getUserAgent());
+
         $cookies = $app->getDI()->getShared("cookies");
-        $canVote = Vote::checkVote($cookies, $requestHash); //true
+        $app->getDI()->set('crypt', function () {
+            $crypt = new Crypt();
+            $crypt->setKey('CV##@k87?lkf46_7%$$dx3.4zx8*&^g');
+            return $crypt;
+        });
+        $canVote = Vote::checkVote($cookies, $requestHash);
 
         echo $app['view']->render('detail', array('targetWork'=>$targetWork, 'canVote'=>$canVote));
     }
