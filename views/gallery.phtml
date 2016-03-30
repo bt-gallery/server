@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" type="text/css" href="/main.css?2202">
+    <link rel='stylesheet' type="text/css" href='/gallery.css'>
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico"/>
+    <title>Галерея рисунков</title>
+</head>
+<body>
+<header class="header">
+    <div id="logo" style="float:left;">
+        <a href="http://mir24.tv">
+            <img src="http://mir24.tv/media/images/mir2/mir_logo_80.png" alt="24 МИР" title="24 МИР">
+        </a>
+    </div>
+    <div style="margin: auto;">
+        <h1 style="margin: 47px;float: left;">
+            Конкурс рисунка
+        </h1>
+    </div>
+</header>
+<div class="clearfix"></div>
+<section id="photos">
+    <? foreach ($targetWorks as $key => $value) { ?>
+        <a href="/competitivework/drawing/<?= $value['idCompetitiveWork'] ?>" target="_blank">
+            <div class="tooltip"><img src="http://konkurs.mir24.tv<?= $value['webPath'] ?>"/>
+                <span
+                    class="tooltiptext"><?= $value['participant'] ?> <?= $value['age'] ?> <?= $value['age_string'] ?></span>
+            </div>
+        </a>
+    <? } ?>
+</section>
+<div class="pagination">
+    <? if (isset($prev_page_offset)) { ?>
+        <a href="/competitivework/list/40/<?= $prev_page_offset ?>">
+            <div class="navigation">Предыдущая</div>
+        </a>
+    <? } else { ?>
+        <div class="navigation inactive">Предыдущая</div>
+    <? } ?>
+    <? if (isset($next_page_offset)) { ?>
+        <a href="/competitivework/list/40/<?= $next_page_offset ?>">
+            <div class="navigation">Следующая</div>
+        </a>
+    <? } else { ?>
+        <div class="navigation inactive">Следующая</div>
+    <? } ?>
+</div>
+</body>
+</html>

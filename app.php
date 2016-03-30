@@ -58,18 +58,49 @@ $app->get(
 );
 
 $app->get(
-    '/api/v1/competitvework/list/{limit}/{offset}',
+    '/competitivework/list/{limit}/{offset}',
     function ($limit, $offset) use ($app, $responder, $logger) {
-        $targetWorks = CompetitiveWork::find(array("limit" => $limit, "offset" => $offset));
-        $responder($targetWorks->toArray(), ["Content-Type"=>"application/json"]);
+        $result = array();
+        $targetWorks = CompetitiveWork::find(array("limit" => $limit, "offset" => $offset))->toArray();
+        foreach ($targetWorks as $key=>&$work){
+            $participant = Participant::findfirst($work['idParticipant']);
+            $declarant = Declarant::findfirst($work['idDeclarant']);
+            $work['participant'] = $participant->name.' '.$participant->surname;
+            $work['declarant'] = $declarant->name.' '.$declarant->surname;
+            $work['age']=$participant->age;
+            $age = abs($participant->age);
+            $t1 = $age % 10;
+            $t2 = $age % 100;
+            $age = ($t1 == 1 && $t2 != 11 ? "год" : ($t1 >= 2 && $t1 <= 4 && ($t2 < 10 || $t2 >= 20) ? "года" : "лет"));
+            $work['age_string'] = $age;
+        }
+        $result['targetWorks'] = $targetWorks;
+        if ($offset!=0) {
+            $result['prev_page_offset'] = $offset-$limit; //TODO Это слишком легко поломать
+        }
+        if ($offset<CompetitiveWork::count()-$offset) {
+            $result['next_page_offset'] = $offset+$limit;
+        }
+        echo $app['view']->render('gallery', $result);
     }
 );
-
 $app->get(
-    '/api/v1/competitivework/{id}',
-    function ($id) use ($app, $responder, $logger) {
-        $targetWork = CompetitiveWork::findFirst($id);
-        $responder($targetWork, ["Content-Type"=>"application/json"]);
+    '/competitivework/drawing/{id}',
+    function ($id) use ($app) {
+        $targetWork = CompetitiveWork::findFirst($id)->toArray();
+        $participant = Participant::findfirst($targetWork['idParticipant']);
+        $declarant = Declarant::findfirst($targetWork['idDeclarant']);
+        $targetWork['participant_name']=$participant->name;
+        $targetWork['participant_surname']=$participant->surname;
+        $targetWork['declarant_name']=$declarant->name;
+        $targetWork['declarant_surname']=$declarant->surname;
+        $targetWork['age']=$participant->age;
+        $age = abs($participant->age);
+        $t1 = $age % 10;
+        $t2 = $age % 100;
+        $age = ($t1 == 1 && $t2 != 11 ? "год" : ($t1 >= 2 && $t1 <= 4 && ($t2 < 10 || $t2 >= 20) ? "года" : "лет"));
+        $targetWork['age_string'] = $age;
+        echo $app['view']->render('detail', array('targetWork'=>$targetWork));
     }
 );
 
