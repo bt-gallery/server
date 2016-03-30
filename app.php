@@ -79,7 +79,7 @@ $app->get(
         if ($offset!=0) {
             $result['prev_page_offset'] = $offset-$limit; //TODO Это слишком легко поломать
         }
-        if ($offset<CompetitiveWork::count()-$offset) {
+        if ($limit<CompetitiveWork::count()-$offset) {
             $result['next_page_offset'] = $offset+$limit;
         }
         echo $app['view']->render('gallery', $result);
