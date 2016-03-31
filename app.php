@@ -344,7 +344,7 @@ $app->post(
     '/api/v1/vote',
     function () use ($app, $responder, $servant, $logger) {
         $saver = $servant("saver");
-        $data = $app->request->getPost();
+        $data = $app->request->getPost() ? $app->request->getPost() : (array) json_decode(file_get_contents("php://input"));
         $cookies = $app->getDI()->getShared("cookies");
         $app->getDI()->set('crypt', function () {
             $crypt = new Crypt();
