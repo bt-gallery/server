@@ -27,8 +27,8 @@ class ChangeVotedAtType extends AbstractMigration
      */
     public function change()
     {
-        $contest = $this->table('contest');
-        $contest->changeColumn('vote', 'timestamp', array('null' => true, 'default' => 'CURRENT_TIMESTAMP')
+        $table = $this->table('vote');
+        $table->changeColumn('voted_at', 'timestamp', array('null' => true, 'default' => 'CURRENT_TIMESTAMP'))
               ->save();
     }
 }
