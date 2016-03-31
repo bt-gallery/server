@@ -34,7 +34,7 @@ class Vote extends \Phalcon\Mvc\Model
                     $voteDateTime = new DateTime($lastVoteTimeChild);
                     $diffDateTimeCookie = $voteDateTime->diff($tomorrowDateTime);
                 }else{
-                    $diffDateTimeCookie = (new DateTime("now"))->diff(new DateTime("now"));;
+                    $diffDateTimeCookie = (new DateTime("now"))->diff(new DateTime("tomorrow + 1day"));;
                 }
                 break;
             case 2:
@@ -42,19 +42,21 @@ class Vote extends \Phalcon\Mvc\Model
                     $voteDateTime = new DateTime($lastVoteTimeJunior);
                     $diffDateTimeCookie = $voteDateTime->diff($tomorrowDateTime);
                 }else{
-                    $diffDateTimeCookie = (new DateTime("now"))->diff(new DateTime("now"));
+                    $diffDateTimeCookie = (new DateTime("now"))->diff(new DateTime("tomorrow + 1day"));
                 }
                 break;
             case 3:
-                if(isset($$lastVoteTimeTeen)){
-                    $voteDateTime = new DateTime($$lastVoteTimeTeen);
+                if(isset($lastVoteTimeTeen)){
+                    $voteDateTime = new DateTime($lastVoteTimeTeen);
                     $diffDateTimeCookie = $voteDateTime->diff($tomorrowDateTime);
                 }else{
-                    $diffDateTimeCookie = (new DateTime("now"))->diff(new DateTime("now"));;
+                    $diffDateTimeCookie = (new DateTime("now"))->diff(new DateTime("tomorrow + 1day"));;
                 }
                 break;
         }
         if($diffDateTimeCookie->d == 0){
+            return false;
+        }else{
             if($lastVotes = Vote::find("voteHash='{$hash}'")){
                 $lastVote = $lastVotes->getLast();
                 $voteDateTime = new DateTime($lastVote->votedAt);
@@ -64,7 +66,7 @@ class Vote extends \Phalcon\Mvc\Model
                     foreach ($lastVotes as $tmpVote) {
                         $voteDateTime = new DateTime($tmpVote->votedAt);
                         $diffDateTime = $voteDateTime->diff($tomorrowDateTime);
-                        if($diffDateTime == 0) $voteCount++;
+                        if($diffDateTime->d == 0) $voteCount++;
                     }
                     if($voteCount >= 50){
                         return false;
@@ -77,8 +79,6 @@ class Vote extends \Phalcon\Mvc\Model
             }else{
                 return true;
             }
-        }else{
-            return true;
         }
     }
 }
