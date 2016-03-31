@@ -11,8 +11,8 @@
     >
     <meta property="og:title" content="Это просто космос!"/>
     <meta property="og:type" content="website"/>
-    <meta property="og:url" content="http://konkurs.mir24.tv/competitivework/drawing/<?= $targetWork['idCompetitiveWork'] ?>"/>
-    <meta property="og:image" content="http://konkurs.mir24.tv<?= $targetWork['webPath'] ?>"/>
+    <meta property="og:url" content="http://<?=$_SERVER["SERVER_NAME"]?>/competitivework/drawing/<?= $targetWork['idCompetitiveWork'] ?>"/>
+    <meta property="og:image" content="http://<?=$_SERVER["SERVER_NAME"]?><?= $targetWork['webPath'] ?>"/>
     <meta property="og:site_name" content="Конкурс рисунка"/>
     <meta property="og:description" content='Конкурс рисунка "Дети рисуют космос". Заходи и оцени таланты подрастающего поколения!'/>
     <link rel="stylesheet" type="text/css" href="/main.css">
@@ -57,9 +57,9 @@
             <div class="ya-share2"
                  data-services="vkontakte,facebook,odnoklassniki,moimir,gplus"
                  data-description='Конкурс рисунка "Дети рисуют космос". Заходи и оцени таланты подрастающего поколения!'
-                 data-image="http://konkurs.mir24.tv<?= $targetWork['webPath'] ?>"
+                 data-image="http://<?=$_SERVER["SERVER_NAME"]?><?= $targetWork['webPath'] ?>"
                  data-title="Это просто космос!"
-                 data-url="http://konkurs.mir24.tv/competitivework/drawing/<?= $targetWork['idCompetitiveWork'] ?>"></div>
+                 data-url="http://<?=$_SERVER["SERVER_NAME"]?>/competitivework/drawing/<?= $targetWork['idCompetitiveWork'] ?>"></div>
         </div>
     </div>
 </div>
