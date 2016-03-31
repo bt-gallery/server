@@ -30,7 +30,7 @@
 <section id="photos">
     <? foreach ($targetWorks as $key => $value) { ?>
         <a href="/competitivework/drawing/<?= $value['idCompetitiveWork'] ?>" target="_blank">
-            <div class="tooltip"><img src="http://konkurs.mir24.tv<?= $value['webPath'] ?>"/>
+            <div class="tooltip"><img src="http://<?=$_SERVER["SERVER_NAME"]?><?= $value['webPath'] ?>"/>
                 <div class="tooltips-wrapper">
                     <div class="tooltiptext name"><?= $value['participant'] ?></div>
                     <div class="tooltiptext age"><?= $value['age'] ?> <?= $value['age_string'] ?></div>
