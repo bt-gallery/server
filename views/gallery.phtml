@@ -41,16 +41,28 @@
 </section>
 <div class="pagination">
     <? if (isset($prev_page_offset)) { ?>
-        <a href="/competitivework/list/40/<?= $prev_page_offset ?>">
+        <? if (isset($min_age) and isset($max_age)) { ?>
+            <a href="/competitivework/list/<?= $limit ?>/<?= $prev_page_offset ?>/ages/<?= $min_age ?>/<?= $max_age ?>">
+                <div class="navigation">Предыдущая</div>
+            </a>
+        <? } else { ?>
+            <a href="/competitivework/list/<?= $limit ?>/<?= $prev_page_offset ?>">
             <div class="navigation">Предыдущая</div>
-        </a>
+            </a>
+        <? } ?>
     <? } else { ?>
         <div class="navigation inactive">Предыдущая</div>
     <? } ?>
     <? if (isset($next_page_offset)) { ?>
-        <a href="/competitivework/list/40/<?= $next_page_offset ?>">
+        <? if (isset($min_age) and isset($max_age)) { ?>
+            <a href="/competitivework/list/<?= $limit ?>/<?= $next_page_offset ?>/ages/<?= $min_age ?>/<?= $max_age ?>">
+                <div class="navigation">Следующая</div>
+            </a>
+        <? } else { ?>
+            <a href="/competitivework/list/<?= $limit ?>/<?= $next_page_offset ?>">
             <div class="navigation">Следующая</div>
-        </a>
+            </a>
+        <? } ?>
     <? } else { ?>
         <div class="navigation inactive">Следующая</div>
     <? } ?>

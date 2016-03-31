@@ -108,6 +108,10 @@ $app->get(
         $offset = $filter->sanitize($offset, "int");
         $minAge = $filter->sanitize($minAge, "int");
         $maxAge = $filter->sanitize($maxAge, "int");
+        if( !($limit >= 0 and $offset >= 0 and $minAge >= 0 and $maxAge > $minAge) ) {
+            echo $app['view']->render('404');
+            return false;
+        }
         $query = new Query("SELECT CompetitiveWork.* FROM CompetitiveWork INNER JOIN Participant ON CompetitiveWork.idParticipant = Participant.idParticipant WHERE Participant.age BETWEEN $minAge AND $maxAge LIMIT $limit OFFSET $offset", $app->getDI());
         try {
             $targetWorks = $query->execute()->toArray();
@@ -136,6 +140,14 @@ $app->get(
         if ($offset<CompetitiveWork::count()-$offset) {
             $result['next_page_offset'] = $offset+$limit;
         }
+        if ($minAge >= 0 and $maxAge > $minAge){
+            $result['min_age'] = $minAge;
+            $result['max_age'] = $maxAge;
+        }
+        if($limit>0){
+            $result['limit'] = $limit;
+        }
+
         echo $app['view']->render('gallery', $result);
     }
 );
@@ -152,12 +164,11 @@ $app->get(
         $targetWork['declarant_surname']=$declarant->surname;
         $targetWork['age']=$participant->age;
         $age = abs($participant->age);
+        $requestHash = hash("sha256", $app->request->getClientAddress() . $app->request->getUserAgent() . Participant::getGroupS($age));
         $t1 = $age % 10;
         $t2 = $age % 100;
         $age = ($t1 == 1 && $t2 != 11 ? "год" : ($t1 >= 2 && $t1 <= 4 && ($t2 < 10 || $t2 >= 20) ? "года" : "лет"));
         $targetWork['age_string'] = $age;
-
-        $requestHash = hash("sha256", $app->request->getClientAddress() . $app->request->getUserAgent() . Participant::getGroupS($age));
 
         $cookies = $app->getDI()->getShared("cookies");
         $app->getDI()->set('crypt', function () {
