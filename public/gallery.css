@@ -41,6 +41,7 @@
 #photos {
     /* Prevent vertical gaps */
     line-height: 0;
+    margin-left: 10px;
 
     -webkit-column-count: 5;
     -webkit-column-gap: 0px;
