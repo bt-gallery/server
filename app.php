@@ -60,47 +60,10 @@ $app->get(
 );
 
 $app->get(
-    '/competitivework/list/{limit}/{offset}',
-    function ($limit, $offset) use ($app, $responder, $logger) {
-        $filter = new Filter();
-        $limit = $filter->sanitize($limit, "int");
-        $offset = $filter->sanitize($offset, "int");
-        try {
-            $targetWorks = CompetitiveWork::find(array("limit" => $limit, "offset" => $offset))->toArray();
-        } catch (\Exception $e) {
-            echo $app['view']->render('404');
-            return false;
-        }
-        $result = array();
-        foreach ($targetWorks as $key=>&$work){
-            $participant = Participant::findfirst($work['idParticipant']);
-            $work['participant'] = $participant->name.' '.$participant->surname;
-            $work['age']=$participant->age;
-            $age = abs($participant->age);
-            $t1 = $age % 10;
-            $t2 = $age % 100;
-            $age = ($t1 == 1 && $t2 != 11 ? "год" : ($t1 >= 2 && $t1 <= 4 && ($t2 < 10 || $t2 >= 20) ? "года" : "лет"));
-            $work['age_string'] = $age;
-        }
-        $result['targetWorks'] = $targetWorks;
-        if ($offset!=0) {
-            if($limit > $offset){
-                $result['prev_page_offset'] = 0;
-            }else{
-                $result['prev_page_offset'] = $offset-$limit;
-            }
-        }
-        if ($limit<CompetitiveWork::count()-$offset) {
-            $result['next_page_offset'] = $offset+$limit;
-        }
-        echo $app['view']->render('gallery', $result);
-    }
-);
-
-$app->get(
-    '/competitivework/list/{limit}/{offset}/ages/{minAge}/{maxAge}',
+    '/gallery/list/{limit}/{offset}/ages/{minAge}/{maxAge}',
     function ($limit, $offset, $minAge, $maxAge) use ($app, $responder, $logger) {
         $result = array();
+        $db = $app->getDI()->getShared("db");
         $filter = new Filter();
         $limit = $filter->sanitize($limit, "int");
         $offset = $filter->sanitize($offset, "int");
@@ -110,22 +73,24 @@ $app->get(
             echo $app['view']->render('404');
             return false;
         }
-        $query = new Query("SELECT CompetitiveWork.* FROM CompetitiveWork INNER JOIN Participant ON CompetitiveWork.idParticipant = Participant.idParticipant WHERE Participant.age BETWEEN $minAge AND $maxAge LIMIT $limit OFFSET $offset", $app->getDI());
+        $sql = "SELECT * FROM moderation_stack_grouped WHERE age BETWEEN '{$minAge}' AND '{$maxAge}' LIMIT {$limit} OFFSET {$offset}";
         try {
-            $targetWorks = $query->execute()->toArray();
+            $resultSet = $db->query($sql);
+            $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
+            $targetWorks = $resultSet->fetchAll();
         } catch (\Exception $e) {
             echo $app['view']->render('404');
             return false;
         }
         foreach ($targetWorks as $key=>&$work){
-            $participant = Participant::findfirst($work['idParticipant']);
-            $work['participant'] = $participant->name.' '.$participant->surname;
-            $work['age']=$participant->age;
-            $age = abs($participant->age);
+            $age = $work["age"];
             $t1 = $age % 10;
             $t2 = $age % 100;
             $age = ($t1 == 1 && $t2 != 11 ? "год" : ($t1 >= 2 && $t1 <= 4 && ($t2 < 10 || $t2 >= 20) ? "года" : "лет"));
             $work['age_string'] = $age;
+            $work['participant'] = $work['name'] . " " .$work["surname"];
+            $work['webPath'] = $work['web_url'];
+            $work['idCompetitiveWork'] = $work['id_competitive_work'];
         }
         $result['targetWorks'] = $targetWorks;
         if ($offset!=0) {
@@ -403,6 +368,7 @@ $app->post(
         //$vote->votedAt = time();
         $tomorrowDateTime = new DateTime("tomorrow");
         if(isset($data["id_competitive_work"])){
+            $db = $app->getDI()->getShared("db");
             $filter = new Filter();
             $vote->competitiveWorkIdCompetitiveWork = $filter->sanitize($data["id_competitive_work"], "int");
         }else{
@@ -410,8 +376,11 @@ $app->post(
             return;
         }
 
-        $query = new Query("SELECT Participant.age FROM CompetitiveWork INNER JOIN Participant ON CompetitiveWork.idParticipant = Participant.idParticipant WHERE CompetitiveWork.idCompetitiveWork=$vote->competitiveWorkIdCompetitiveWork ", $app->getDI());
-        $targetAge = $query->execute()->toArray(); 
+        $sql = "SELECT Participant.age FROM moderation_stack_grouped WHERE id_competitive_work='{$vote->competitiveWorkIdCompetitiveWork}'";
+        $resultSet = $db->query($sql);
+        $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
+        $targetAge = $resultSet->fetchAll();
+
         $vote->voteGroup = Participant::getGroupS($targetAge[0]['age']);
 
         $vote->voteHash = hash("sha256", $vote->voteIp . $vote->voteAgent . $vote->voteGroup);
