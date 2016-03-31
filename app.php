@@ -178,8 +178,14 @@ $app->get(
         });
         
         $canVote = Vote::checkVote($cookies, $requestHash, $targetWork['age']);
+        if($id>0){
+            $prevWork = $id-1;
+        }
+        if (CompetitiveWork::findFirst($id+1)) { //нужно пересмотреть логику
+            $nextWork = $id+1;
+        }
 
-        echo $app['view']->render('detail', array('targetWork'=>$targetWork, 'canVote'=>$canVote));
+        echo $app['view']->render('detail', array('targetWork'=>$targetWork, 'canVote'=>$canVote, 'nextWork'=>$nextWork, 'prevWork'=>$prevWork));
     }
 );
 
