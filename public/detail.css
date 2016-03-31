@@ -39,6 +39,34 @@
     height: 49px;
 }
 
+.pagination {
+    height: 100px;
+    width: 450px;
+    padding: 13px 28px 0 30px;
+    clear: both;
+}
+
+.navigation {
+    float: left;
+    margin: auto;
+    margin-right: 10px;
+    margin-top: 5px;
+    font-size: 1.7em;
+    color: white;
+    width: 175px;
+    background-color: #0072FF;
+    height: 30px;
+    padding-top: 19px;
+    padding-bottom: 9px;
+    text-align: center;
+}
+.navigation:hover{
+    background-color: #338dff;
+}
+.inactive {
+    background: #B6BCBF;
+}
+
 .no-vote {
     padding: 13px 28px 0 30px;
     color: white;
