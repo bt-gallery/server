@@ -157,7 +157,7 @@ $app->get(
         $age = ($t1 == 1 && $t2 != 11 ? "год" : ($t1 >= 2 && $t1 <= 4 && ($t2 < 10 || $t2 >= 20) ? "года" : "лет"));
         $targetWork['age_string'] = $age;
 
-        $requestHash = hash("sha256", $app->request->getClientAddress() . $app->request->getUserAgent());
+        $requestHash = hash("sha256", $app->request->getClientAddress() . $app->request->getUserAgent() . Participant::getGroupS($age));
 
         $cookies = $app->getDI()->getShared("cookies");
         $app->getDI()->set('crypt', function () {
@@ -368,7 +368,7 @@ $app->post(
         $targetAge = $query->execute()->toArray(); 
         $vote->voteGroup = Participant::getGroupS($targetAge[0]['age']);
 
-        $vote->voteHash = hash("sha256", $vote->voteIp . $vote->voteAgent);
+        $vote->voteHash = hash("sha256", $vote->voteIp . $vote->voteAgent . $vote->voteGroup);
 
         if ($cookies->has("userIdentity")) {
             $userIdentity = $cookies->get("userIdentity");
