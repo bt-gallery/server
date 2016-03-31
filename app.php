@@ -60,44 +60,6 @@ $app->get(
 );
 
 $app->get(
-    '/competitivework/list/{limit}/{offset}',
-    function ($limit, $offset) use ($app, $responder, $logger) {
-        $filter = new Filter();
-        $limit = $filter->sanitize($limit, "int");
-        $offset = $filter->sanitize($offset, "int");
-        try {
-            $targetWorks = CompetitiveWork::find(array("limit" => $limit, "offset" => $offset))->toArray();
-        } catch (\Exception $e) {
-            echo $app['view']->render('404');
-            return false;
-        }
-        $result = array();
-        foreach ($targetWorks as $key=>&$work){
-            $participant = Participant::findfirst($work['idParticipant']);
-            $work['participant'] = $participant->name.' '.$participant->surname;
-            $work['age']=$participant->age;
-            $age = abs($participant->age);
-            $t1 = $age % 10;
-            $t2 = $age % 100;
-            $age = ($t1 == 1 && $t2 != 11 ? "год" : ($t1 >= 2 && $t1 <= 4 && ($t2 < 10 || $t2 >= 20) ? "года" : "лет"));
-            $work['age_string'] = $age;
-        }
-        $result['targetWorks'] = $targetWorks;
-        if ($offset!=0) {
-            if($limit > $offset){
-                $result['prev_page_offset'] = 0;
-            }else{
-                $result['prev_page_offset'] = $offset-$limit;
-            }
-        }
-        if ($limit<CompetitiveWork::count()-$offset) {
-            $result['next_page_offset'] = $offset+$limit;
-        }
-        echo $app['view']->render('gallery', $result);
-    }
-);
-
-$app->get(
     '/gallery/list/{limit}/{offset}/ages/{minAge}/{maxAge}',
     function ($limit, $offset, $minAge, $maxAge) use ($app, $responder, $logger) {
         $result = array();
