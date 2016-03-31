@@ -359,7 +359,6 @@ $app->post(
         if(isset($data["id_competitive_work"])){
             $filter = new Filter();
             $vote->competitiveWorkIdCompetitiveWork = $filter->sanitize($data["id_competitive_work"], "int");
-            $a=0;
         }else{
             $responder(["error"=>["reason"=>"id not found", "label"=>"Изображение не найдено", (new DateTime("now"))->format("Y-m-d H:i:s")]], ["Content-Type"=>"application/json"]);
             return;
@@ -405,8 +404,8 @@ $app->post(
                     }
                     break;
                 case 3:
-                    if(isset($$lastVoteTimeTeen)){
-                        $voteDateTime = new DateTime($$lastVoteTimeTeen);
+                    if(isset($lastVoteTimeTeen)){
+                        $voteDateTime = new DateTime($lastVoteTimeTeen);
                         $diffDateTimeCookie = $voteDateTime->diff($tomorrowDateTime);
                     }else{
                         $diffDateTimeCookie = (new DateTime("now"))->diff(new DateTime("tomorrow + 1day"));

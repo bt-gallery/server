@@ -46,8 +46,8 @@ class Vote extends \Phalcon\Mvc\Model
                 }
                 break;
             case 3:
-                if(isset($$lastVoteTimeTeen)){
-                    $voteDateTime = new DateTime($$lastVoteTimeTeen);
+                if(isset($lastVoteTimeTeen)){
+                    $voteDateTime = new DateTime($lastVoteTimeTeen);
                     $diffDateTimeCookie = $voteDateTime->diff($tomorrowDateTime);
                 }else{
                     $diffDateTimeCookie = (new DateTime("now"))->diff(new DateTime("tomorrow + 1day"));;
