@@ -147,7 +147,7 @@ $app->post(
 );
 
 $app->get(
-    '/competitivework/drawing/{id}',
+    '/gallery/drawing/{id}',
     function ($id) use ($app) {
         $targetWork = CompetitiveWork::findFirst($id)->toArray();
         $participant = Participant::findfirst($targetWork['idParticipant']);
