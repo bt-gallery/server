@@ -11,7 +11,7 @@
     >
     <meta property="og:title" content="Это просто космос!"/>
     <meta property="og:type" content="website"/>
-    <meta property="og:url" content="http://<?=$_SERVER["SERVER_NAME"]?>/competitivework/drawing/<?= $targetWork['idCompetitiveWork'] ?>"/>
+    <meta property="og:url" content="http://<?=$_SERVER["SERVER_NAME"]?>/gallery/drawing/<?= $targetWork['idCompetitiveWork'] ?>"/>
     <meta property="og:image" content="http://<?=$_SERVER["SERVER_NAME"]?><?= $targetWork['webPath'] ?>"/>
     <meta property="og:site_name" content="Конкурс рисунка"/>
     <meta property="og:description" content='Конкурс рисунка "Дети рисуют космос". Заходи и оцени таланты подрастающего поколения!'/>
@@ -59,18 +59,18 @@
                  data-description='Конкурс рисунка "Дети рисуют космос". Заходи и оцени таланты подрастающего поколения!'
                  data-image="http://<?=$_SERVER["SERVER_NAME"]?><?= $targetWork['webPath'] ?>"
                  data-title="Это просто космос!"
-                 data-url="http://<?=$_SERVER["SERVER_NAME"]?>/competitivework/drawing/<?= $targetWork['idCompetitiveWork'] ?>"></div>
+                 data-url="http://<?=$_SERVER["SERVER_NAME"]?>/gallery/drawing/<?= $targetWork['idCompetitiveWork'] ?>"></div>
         </div>
         <div class="pagination">
             <? if (isset($prevWork)) { ?>
-                <a href="/competitivework/drawing/<?= $prevWork ?>">
+                <a href="/gallery/drawing/<?= $prevWork ?>">
                     <div class="navigation active">Предыдущая</div>
                 </a>
             <? } else { ?>
                 <div class="navigation inactive">Предыдущая</div>
             <? } ?>
             <? if (isset($nextWork)) { ?>
-                <a href="/competitivework/drawing/<?= $nextWork ?>">
+                <a href="/gallery/drawing/<?= $nextWork ?>">
                     <div class="navigation active">Следующая</div>
                 </a>
             <? } else { ?>
