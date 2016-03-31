@@ -112,19 +112,16 @@ $app->get(
             return false;
         }
         $sql = "SELECT * FROM moderation_stack_grouped WHERE age BETWEEN '{$minAge}' AND '{$maxAge}' LIMIT {$limit} OFFSET {$offset}";
-        $resultSet = $db->query($sql);
-            $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
-            $targetWorks = $resultSet->fetchAll();
-        /*try {
+        try {
             $resultSet = $db->query($sql);
             $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
             $targetWorks = $resultSet->fetchAll();
         } catch (\Exception $e) {
             echo $app['view']->render('404');
             return false;
-        }*/
+        }
         foreach ($targetWorks as $key=>&$work){
-            $age = $work["age"]; 
+            $age = $work["age"];
             $t1 = $age % 10;
             $t2 = $age % 100;
             $age = ($t1 == 1 && $t2 != 11 ? "год" : ($t1 >= 2 && $t1 <= 4 && ($t2 < 10 || $t2 >= 20) ? "года" : "лет"));
