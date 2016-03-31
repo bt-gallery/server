@@ -55,14 +55,29 @@
             <br/>
             <span>Поделиться:</span>
             <div class="ya-share2"
-                 data-services="vkontakte,facebook,odnoklassniki,moimir,gplus"
+                 data-services="vkontakte,facebook,odnoklassniki,gplus"
                  data-description='Конкурс рисунка "Дети рисуют космос". Заходи и оцени таланты подрастающего поколения!'
                  data-image="http://<?=$_SERVER["SERVER_NAME"]?><?= $targetWork['webPath'] ?>"
                  data-title="Это просто космос!"
                  data-url="http://<?=$_SERVER["SERVER_NAME"]?>/competitivework/drawing/<?= $targetWork['idCompetitiveWork'] ?>"></div>
         </div>
+        <div class="pagination">
+            <? if (isset($prevWork)) { ?>
+                <a href="/competitivework/drawing/<?= $prevWork ?>">
+                    <div class="navigation">Предыдущая</div>
+                </a>
+            <? } else { ?>
+                <div class="navigation inactive">Предыдущая</div>
+            <? } ?>
+            <? if (isset($nextWork)) { ?>
+                <a href="/competitivework/drawing/<?= $nextWork ?>">
+                    <div class="navigation">Следующая</div>
+                </a>
+            <? } else { ?>
+                <div class="navigation inactive">Следующая</div>
+            <? } ?>
+        </div>
     </div>
 </div>
 </body>
-
 </html>

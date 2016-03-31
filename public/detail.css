@@ -25,17 +25,46 @@
 }
 
 .vote {
+    text-align:center;
     -moz-user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
     border: none;
-    padding: 11px 0px 0 14px;
+    padding-top: 11px;
     color: white;
     font-size: 1.4em;
     margin-top: 40px;
     width: 200px;
     background-color: #0072FF;
     height: 49px;
+}
+
+.pagination {
+    height: 100px;
+    width: 450px;
+    padding: 13px 28px 0 30px;
+    clear: both;
+}
+
+.navigation {
+    float: left;
+    margin: auto;
+    margin-right: 10px;
+    margin-top: 5px;
+    font-size: 1.7em;
+    color: white;
+    width: 175px;
+    background-color: #0072FF;
+    height: 30px;
+    padding-top: 19px;
+    padding-bottom: 9px;
+    text-align: center;
+}
+.navigation:hover{
+    background-color: #338dff;
+}
+.inactive {
+    background: #B6BCBF;
 }
 
 .no-vote {
@@ -65,6 +94,7 @@
 }
 
 .vote.success {
+    padding-right: 11px;
     padding-left: 57px;
     background-image: url(/icon-check.png);
     background-position: 10px;

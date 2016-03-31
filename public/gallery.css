@@ -1,7 +1,6 @@
 .tooltip {
     word-wrap: break-word;
     position: relative;
-    /*display: inline-block;*/
     margin-right: 10px;
     margin-bottom: 10px;
 }
@@ -22,14 +21,15 @@
 }
 
 .tooltip:hover .tooltips-wrapper {
-    visibility: visible;
+    visibility:visible;
     opacity: 1;
 
 }
 .tooltips-wrapper {
-    background-color: rgba(0, 0, 0, 0.42);
+    background-color: rgba(0, 0, 0, 0.59);
     position: absolute;
     visibility:hidden;
+    opacity:0;
     width: 100%;
     padding-top:5px;
     height:50px;
@@ -52,7 +52,6 @@
 }
 
 #photos img {
-    /* Just in case there are inline attributes */
     width: 100% !important;
     height: auto !important;
 }
@@ -128,6 +127,41 @@
 #search-btn:hover{
     cursor:pointer;
     background-color: #338dff;
+}
+.age-panel{
+    width:80%;
+    margin:auto;
+    height:60px;
+    margin-bottom:40px;
+}
+.age-panel a {
+    text-decoration:none;
+}
+.age-range{
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    cursor:pointer;
+    padding-top: 20px;
+    font-size: 25px;
+    text-align: center;
+    color: white;
+    background: #0072ff;
+    width: 33.33%;
+    height: 60px;
+    float: left;
+}
+.age-range:hover {
+    background-color: #338dff;
+}
+.age-range:first-child{
+    border-right:5px solid #fff;
+}
+.age-range:last-child{
+    border-left:5px solid #fff;
 }
 /*
 #searchbox:focus{
@@ -217,6 +251,28 @@
     .search {
         width:310px;
     }
+    .search, #search-btn, #searchbox, .age-panel {
+        width:100%;
+    }
+    .age-panel {
+        margin-bottom: 100px;
+    }
+
+    .age-range {
+        float:none;
+        width:100%;
+        height:40px;
+        padding-top: 9px;
+        font-size: 22px;
+    }
+    .age-range:first-child{
+        border-right:none;
+        border-bottom:5px solid #fff;
+    }
+    .age-range:last-child{
+        border-left: none;
+        border-top:5px solid #fff;
+    }
 }
 
 @media (max-width: 400px) {
@@ -228,9 +284,6 @@
         -moz-column-count: 1;
         -webkit-column-count: 1;
         column-count: 1;
-    }
-    .search, #search-btn, #searchbox {
-        width:100%;
     }
 }
 
