@@ -1,31 +1,41 @@
 .tooltip {
+    word-wrap: break-word;
     position: relative;
-    display: inline-block;
+    /*display: inline-block;*/
     margin-right: 10px;
     margin-bottom: 10px;
 }
 
 .tooltip .tooltiptext {
     display: block;
-    font-size: 0.89em;
-    visibility: hidden;
+    font-size: 1.1em;
     width: 100%;
-    height: 20px;
-    background-color: rgba(0, 0, 0, 0.42);
     color: #fff;
     text-align: center;
-    padding-top: 20px;
-    position: absolute;
-    bottom: 0;
+    padding-top: 12px;
     left: 0;
     z-index: 1;
-    opacity: 0;
-    transition: opacity 0.5s;
 }
 
-.tooltip:hover .tooltiptext {
+.tooltiptext.name{
+    margin-bottom:10px;
+}
+
+.tooltip:hover .tooltips-wrapper {
     visibility: visible;
     opacity: 1;
+
+}
+.tooltips-wrapper {
+    background-color: rgba(0, 0, 0, 0.42);
+    position: absolute;
+    visibility:hidden;
+    width: 100%;
+    padding-top:5px;
+    height:50px;
+    left: 0;
+    transition: opacity 0.5s;
+    bottom:0;
 }
 
 #photos {
@@ -67,7 +77,9 @@
     padding-bottom: 9px;
     text-align: center;
 }
-
+.navigation:hover{
+    background-color: #338dff;
+}
 .inactive {
     background: #B6BCBF;
 }
@@ -75,17 +87,83 @@
 .clearfix {
     clear: both;
 }
+.search {
+    margin-bottom: 39px;
+    height: 40px;
+    width:450px;
+    position:relative;
+    float: right;
+    margin-top: 47px;
+    margin-right: 120px;
+}
+#searchbox {
+    outline:none;
+    box-sizing: border-box;
+    border:1px solid #dbdbdb;
+    height:100%;
+    position:absolute;
+    top:0;
+    left:0;
+    padding-left: 7px;
+    width: 310px;
+    font-size: 17px;
+}
+#searchbox:focus {
+    border:1px solid #0072ff;
 
+}
+#search-btn {
+    height:100%;
+    position:absolute;
+    top:0;
+    right:0;
+    outline: none;
+    text-transform: uppercase;
+    border:none;
+    margin-left: -4px;
+    background-color: #0072ff;
+    color: #ffffff;
+}
+#search-btn:hover{
+    cursor:pointer;
+    background-color: #338dff;
+}
+/*
+#searchbox:focus{
+    outline: none;
+    border:1px solid #0072ff;
+}*/
+@media (max-width: 1300px) {
+    #photos {
+        font-size: 1em;
+    }
+}
+@media (max-width: 1250px) {
+    #photos {
+        font-size: 0.9em;
+    }
+}
 @media (max-width: 1200px) {
     #photos {
+        font-size: 1em;
         -moz-column-count: 4;
         -webkit-column-count: 4;
         column-count: 4;
     }
+    .header {
+        height:220px;
+    }
+    .search {
+        float:none;
+        clear:both;
+        margin:auto;
+    }
+
 }
 
 @media (max-width: 1000px) {
     #photos {
+        font-size: 1em;
         -moz-column-count: 3;
         -webkit-column-count: 3;
         column-count: 3;
@@ -94,6 +172,7 @@
 
 @media (max-width: 800px) {
     #photos {
+        font-size: 1.1em;
         -moz-column-count: 2;
         -webkit-column-count: 2;
         column-count: 2;
@@ -102,23 +181,46 @@
 
 @media (max-width: 600px) {
     .tooltip .tooltiptext {
-        font-size: 0.7em;
+        font-size: 0.9em;
     }
 }
 
 @media (max-width: 500px) {
     .tooltip .tooltiptext {
-        height: 13px;
-        font-size: 0.6em;
-        padding-top: 13px;
+        font-size: 0.8em;
+    }
+}
+
+@media (max-width: 430px) {
+    .tooltip .tooltiptext {
+        font-size: 0.7em;
+    }
+    .tooltips-wrapper {
+        padding-top: 2px;
+        height: 43px;
+    }
+    .tooltiptext.name {
+        margin-bottom: 6px;
+    }
+}
+
+@media (max-width: 450px) {
+    .header {
+        height:360px;
+    }
+    #search-btn {
+        top: 39px;
+        left: 4px;
+        width: 310px;
+    }
+    .search {
+        width:310px;
     }
 }
 
 @media (max-width: 400px) {
     .tooltip .tooltiptext {
-        height: 20px;
-        padding-top: 20px;
-        font-size: 0.8em;
+        font-size: 1em;
     }
 
     #photos {
@@ -126,42 +228,40 @@
         -webkit-column-count: 1;
         column-count: 1;
     }
-}
-
-@media (max-width: 350px) {
-    .tooltip .tooltiptext {
-        font-size: 0.8em;
+    .search, #search-btn, #searchbox {
+        width:100%;
     }
 }
 
 @media (max-width: 300px) {
     .tooltip .tooltiptext {
-        height: 13px;
-        padding-top: 13px;
         font-size: 0.7em;
     }
 }
 
 @media (max-width: 250px) {
     .tooltip .tooltiptext {
-        height: 13px;
-        padding-top: 13px;
-        font-size: 0.6em;
+        font-size: 0.7em;
     }
 }
 
 @media (max-width: 240px) {
     .tooltip .tooltiptext {
-        font-size: 0.58em;
+        font-size: 0.7em;
     }
 }
 
 @media (max-width: 200px) {
     .tooltip .tooltiptext {
-        font-size: 0.48em;
+        font-size: 0.6em;
     }
 }
 
+@media (max-width: 180px) {
+    .tooltip .tooltiptext {
+        font-size: 0.5em;
+    }
+}
 @media (max-width: 150px) {
     .tooltip .tooltiptext {
         font-size: 0.4em;

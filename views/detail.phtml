@@ -44,7 +44,7 @@
             <p>Конкурсант: <?= $targetWork['participant_name'] . ' ' . $targetWork['participant_surname'] ?><br/>
                 Возраст: <?= $targetWork['age'] ?> <?= $targetWork['age_string'] ?></p>
             <div id="buttons">
-                <? if (1) { ?>
+                <? if ($canVote) { ?>
                     <div id="vote-btn" class="vote" data-id="<?= $targetWork['idCompetitiveWork'] ?>">Проголосовать
                     </div>
                 <? } else { ?>
@@ -58,7 +58,7 @@
                  data-description='Конкурс рисунка "Дети рисуют космос". Заходи и оцени таланты подрастающего поколения!'
                  data-image="http://konkurs.mir24.tv<?= $targetWork['webPath'] ?>"
                  data-title="Это просто космос!"
-                 data-url="http://konkurs.mir24.tv/"></div>
+                 data-url="http://konkurs.mir24.tv/competitivework/drawing/<?= $targetWork['idCompetitiveWork'] ?>"></div>
         </div>
     </div>
 </div>

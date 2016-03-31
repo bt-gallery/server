@@ -19,14 +19,22 @@
             Конкурс рисунка
         </h1>
     </div>
+    <div class="search">
+        <form name="participant-search" method="POST" action="/gallery/search/byname">
+            <input id="searchbox" name="query" type="text"/>
+            <input id="search-btn" type="submit" value="Найти участника"/>
+        </form>
+    </div>
 </header>
 <div class="clearfix"></div>
 <section id="photos">
     <? foreach ($targetWorks as $key => $value) { ?>
         <a href="/competitivework/drawing/<?= $value['idCompetitiveWork'] ?>" target="_blank">
             <div class="tooltip"><img src="http://konkurs.mir24.tv<?= $value['webPath'] ?>"/>
-                <span
-                    class="tooltiptext"><?= $value['participant'] ?> <?= $value['age'] ?> <?= $value['age_string'] ?></span>
+                <div class="tooltips-wrapper">
+                    <div class="tooltiptext name"><?= $value['participant'] ?></div>
+                    <div class="tooltiptext age"><?= $value['age'] ?> <?= $value['age_string'] ?></div>
+                </div>
             </div>
         </a>
     <? } ?>
