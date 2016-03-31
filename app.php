@@ -161,6 +161,7 @@ $app->post(
             $work['age_string'] = $age;
             $work['participant'] = $work['name'] . " " .$work["surname"];
             $work['webPath'] = $work['web_url'];
+            $work['idCompetitiveWork'] = $work['id_competitive_work'];
         }
         $result['targetWorks'] = $targetWorks;
         if ($offset!=0) {
