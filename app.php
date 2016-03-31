@@ -393,7 +393,7 @@ $app->post(
                         $voteDateTime = new DateTime($lastVoteTimeChild);
                         $diffDateTimeCookie = $voteDateTime->diff($tomorrowDateTime);
                     }else{
-                        $diffDateTimeCookie = (new DateTime("now"))->diff(new DateTime("now"));
+                        $diffDateTimeCookie = (new DateTime("now"))->diff(new DateTime("tomorrow + 1day"));
                     }
                     break;
                 case 2:
@@ -401,7 +401,7 @@ $app->post(
                         $voteDateTime = new DateTime($lastVoteTimeJunior);
                         $diffDateTimeCookie = $voteDateTime->diff($tomorrowDateTime);
                     }else{
-                        $diffDateTimeCookie = (new DateTime("now"))->diff(new DateTime("now"));
+                        $diffDateTimeCookie = (new DateTime("now"))->diff(new DateTime("tomorrow + 1day"));
                     }
                     break;
                 case 3:
@@ -409,7 +409,7 @@ $app->post(
                         $voteDateTime = new DateTime($$lastVoteTimeTeen);
                         $diffDateTimeCookie = $voteDateTime->diff($tomorrowDateTime);
                     }else{
-                        $diffDateTimeCookie = (new DateTime("now"))->diff(new DateTime("now"));
+                        $diffDateTimeCookie = (new DateTime("now"))->diff(new DateTime("tomorrow + 1day"));
                     }
                     break;
             }
@@ -454,7 +454,7 @@ $app->post(
                     foreach ($lastVotes as $tmpVote) {
                         $voteDateTime = new DateTime($tmpVote->votedAt);
                         $diffDateTime = $voteDateTime->diff($tomorrowDateTime);
-                        if($diffDateTime == 0) $voteCount++;
+                        if($diffDateTime->d == 0) $voteCount++;
                     }
                     if($voteCount >= 50){
                         $responder(["error"=>["reason"=>"time constraint", "label"=>"Вы уже голосовали сегодня", "timestamp"=>$diffDateTimeHash->format("%h:%I")]], ["Content-Type"=>"application/json"]);
