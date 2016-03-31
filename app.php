@@ -65,10 +65,6 @@ $app->get(
         $filter = new Filter();
         $limit = $filter->sanitize($limit, "int");
         $offset = $filter->sanitize($offset, "int");
-        if ($offset % $limit != 0) {
-            echo $app['view']->render('404');
-            return false;
-        }
         try {
             $targetWorks = CompetitiveWork::find(array("limit" => $limit, "offset" => $offset))->toArray();
         } catch (\Exception $e) {
@@ -90,7 +86,11 @@ $app->get(
         }
         $result['targetWorks'] = $targetWorks;
         if ($offset!=0) {
-            $result['prev_page_offset'] = $offset-$limit; //TODO Это слишком легко поломать
+            if($limit > $offset){
+                $result['prev_page_offset'] = 0;
+            }else{
+                $result['prev_page_offset'] = $offset-$limit;
+            }
         }
         if ($limit<CompetitiveWork::count()-$offset) {
             $result['next_page_offset'] = $offset+$limit;
