@@ -1,24 +1,18 @@
 window.onload = function () {
-    document.getElementById('vote-btn').onclick = function () {
-        var params = {'id_competitive_work': this.getAttribute('data-id')},
-        message = document.createElement('div'),
-        xhr = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
-        xhr.open('POST', '/api/v1/vote');
-        xhr.send(JSON.stringify(params));
-        if (xhr.status != 200) {
-            message.className = 'vote error';
-            message.innerHTML = 'Ошибка! Попробуйте позднее.';
-            console.log(xhr.status + ': ' + xhr.statusText);
-        } else {
-            if (xhr.responseText['error']) {
+    var btn = document.getElementById('vote-btn');
+    btn.onclick = function () {
+        var params = {'id_competitive_work': this.getAttribute('data-id')};
+        var message = document.createElement('div');
+        $.post("/api/v1/vote", params, function (res) {
+            if (res['error']) {
                 message.className = 'vote error';
-                message.innerHTML = xhr.responseText['error']['label'];
-            } else if (xhr.responseText['success']){
+                message.innerHTML = res['error']['label'];
+            } else if (res['success']) {
                 message.className = 'vote success';
-                message.innerHTML =  xhr.responseText['success']['label'];
+                message.innerHTML = res['success']['label'];
             }
-        }
-        this.parentNode.removeChild(this);
-        document.getElementById('buttons').appendChild(message);
-    };
+            btn.parentNode.removeChild(btn);
+            document.getElementById('buttons').appendChild(message);
+        });
+    }
 };
