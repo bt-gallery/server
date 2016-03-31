@@ -62,6 +62,9 @@ $app->get(
 $app->get(
     '/competitivework/list/{limit}/{offset}',
     function ($limit, $offset) use ($app, $responder, $logger) {
+        $filter = new Filter();
+        $limit = $filter->sanitize($limit, "int");
+        $offset = $filter->sanitize($offset, "int");
         if ($offset % $limit != 0) {
             echo $app['view']->render('404');
             return false;
@@ -106,12 +109,15 @@ $app->get(
         $minAge = $filter->sanitize($minAge, "int");
         $maxAge = $filter->sanitize($maxAge, "int");
         $query = new Query("SELECT CompetitiveWork.* FROM CompetitiveWork INNER JOIN Participant ON CompetitiveWork.idParticipant = Participant.idParticipant WHERE Participant.age BETWEEN $minAge AND $maxAge LIMIT $limit OFFSET $offset", $app->getDI());
-        $targetWorks = $query->execute()->toArray();
+        try {
+            $targetWorks = $query->execute()->toArray();
+        } catch (\Exception $e) {
+            echo $app['view']->render('404');
+            return false;
+        }
         foreach ($targetWorks as $key=>&$work){
             $participant = Participant::findfirst($work['idParticipant']);
-            $declarant = Declarant::findfirst($work['idDeclarant']);
             $work['participant'] = $participant->name.' '.$participant->surname;
-            $work['declarant'] = $declarant->name.' '.$declarant->surname;
             $work['age']=$participant->age;
             $age = abs($participant->age);
             $t1 = $age % 10;
@@ -121,7 +127,11 @@ $app->get(
         }
         $result['targetWorks'] = $targetWorks;
         if ($offset!=0) {
-            $result['prev_page_offset'] = $offset-$limit; //TODO Это слишком легко поломать
+            if($limit > $offset){
+                $result['prev_page_offset'] = 0;
+            }else{
+                $result['prev_page_offset'] = $offset-$limit;
+            }
         }
         if ($offset<CompetitiveWork::count()-$offset) {
             $result['next_page_offset'] = $offset+$limit;
