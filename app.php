@@ -147,7 +147,7 @@ $app->post(
 
         $query = $app->request->getPost("query");
         $query = $filter->sanitize($query, "string");
-        
+
         $sql = "SELECT * FROM `moderation_stack_grouped` where concat(name,' ',surname) rlike '{$query}' AND status='одобрено'";
         $resultSet = $db->query($sql);
         $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
@@ -160,6 +160,7 @@ $app->post(
             $age = ($t1 == 1 && $t2 != 11 ? "год" : ($t1 >= 2 && $t1 <= 4 && ($t2 < 10 || $t2 >= 20) ? "года" : "лет"));
             $work['age_string'] = $age;
             $work['participant'] = $work['name'] . " " .$work["surname"];
+            $work['webPath'] = $work['web_url'];
         }
         $result['targetWorks'] = $targetWorks;
         if ($offset!=0) {
@@ -197,7 +198,7 @@ $app->get(
             $crypt->setKey('CV##@k87?lkf46_7%$$dx3.4zx8*&^g');
             return $crypt;
         });
-        
+
         $canVote = Vote::checkVote($cookies, $requestHash, $targetWork['age']);
 
         echo $app['view']->render('detail', array('targetWork'=>$targetWork, 'canVote'=>$canVote));
