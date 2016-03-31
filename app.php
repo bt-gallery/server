@@ -141,12 +141,7 @@ $app->post(
             $work['idCompetitiveWork'] = $work['id_competitive_work'];
         }
         $result['targetWorks'] = $targetWorks;
-        if ($offset!=0) {
-            $result['prev_page_offset'] = $offset-$limit; //TODO Это слишком легко поломать
-        }
-        if ($offset<CompetitiveWork::count()-$offset) {
-            $result['next_page_offset'] = $offset+$limit;
-        }
+        $result['query'] = $query;
         echo $app['view']->render('gallery', $result);
     }
 );
