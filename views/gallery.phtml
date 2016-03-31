@@ -21,7 +21,7 @@
     </div>
     <div class="search">
         <form name="participant-search" method="POST" action="/gallery/search/byname">
-            <input id="searchbox" name="query" type="text"/>
+            <input id="searchbox" name="query" type="text" value="<?=!isset($query)?:$query?>"/>
             <input id="search-btn" type="submit" value="Найти участника"/>
         </form>
     </div>
@@ -36,7 +36,7 @@
 <section id="photos">
     <? foreach ($targetWorks as $key => $value) { ?>
         <a href="/competitivework/drawing/<?= $value['idCompetitiveWork'] ?>" target="_blank">
-            <div class="tooltip"><img src="<?= $value['webPath'] ?>"/>
+            <div class="tooltip"><img src="<?= $value['webPath'] ?>.resized.jpg"/>
                 <div class="tooltips-wrapper">
                     <div class="tooltiptext name"><?= $value['participant'] ?></div>
                     <div class="tooltiptext age"><?= $value['age'] ?> <?= $value['age_string'] ?></div>
@@ -49,11 +49,11 @@
     <? if (isset($prev_page_offset)) { ?>
         <? if (isset($min_age) and isset($max_age)) { ?>
             <a href="/competitivework/list/<?= $limit ?>/<?= $prev_page_offset ?>/ages/<?= $min_age ?>/<?= $max_age ?>">
-                <div class="navigation">Предыдущая</div>
+                <div class="navigation active">Предыдущая</div>
             </a>
         <? } else { ?>
             <a href="/competitivework/list/<?= $limit ?>/<?= $prev_page_offset ?>">
-            <div class="navigation">Предыдущая</div>
+            <div class="navigation active">Предыдущая</div>
             </a>
         <? } ?>
     <? } else { ?>
@@ -62,11 +62,11 @@
     <? if (isset($next_page_offset)) { ?>
         <? if (isset($min_age) and isset($max_age)) { ?>
             <a href="/competitivework/list/<?= $limit ?>/<?= $next_page_offset ?>/ages/<?= $min_age ?>/<?= $max_age ?>">
-                <div class="navigation">Следующая</div>
+                <div class="navigation active">Следующая</div>
             </a>
         <? } else { ?>
             <a href="/competitivework/list/<?= $limit ?>/<?= $next_page_offset ?>">
-            <div class="navigation">Следующая</div>
+            <div class="navigation active">Следующая</div>
             </a>
         <? } ?>
     <? } else { ?>

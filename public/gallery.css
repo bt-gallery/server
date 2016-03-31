@@ -77,7 +77,7 @@
     padding-bottom: 9px;
     text-align: center;
 }
-.navigation:hover{
+.navigation.active:hover{
     background-color: #338dff;
 }
 .inactive {
