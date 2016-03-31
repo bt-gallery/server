@@ -30,45 +30,55 @@ class Vote extends \Phalcon\Mvc\Model
             }
         switch ($group) {
             case 1:
-                if($lastVoteTimeChild){
+                if(isset($lastVoteTimeChild)){
                     $voteDateTime = new DateTime($lastVoteTimeChild);
                     $diffDateTimeCookie = $voteDateTime->diff($tomorrowDateTime);
                 }else{
-                    $diffDateTimeCookie->d = 0;
+                    $diffDateTimeCookie = (new DateTime("now"))->diff(new DateTime("now"));;
                 }
                 break;
             case 2:
-                if($lastVoteTimeJunior){
+                if(isset($lastVoteTimeJunior)){
                     $voteDateTime = new DateTime($lastVoteTimeJunior);
                     $diffDateTimeCookie = $voteDateTime->diff($tomorrowDateTime);
                 }else{
-                    $diffDateTimeCookie->d = 0;
+                    $diffDateTimeCookie = (new DateTime("now"))->diff(new DateTime("now"));
                 }
                 break;
             case 3:
-                if($$lastVoteTimeTeen){
+                if(isset($$lastVoteTimeTeen)){
                     $voteDateTime = new DateTime($$lastVoteTimeTeen);
                     $diffDateTimeCookie = $voteDateTime->diff($tomorrowDateTime);
                 }else{
-                    $diffDateTimeCookie->d = 0;
+                    $diffDateTimeCookie = (new DateTime("now"))->diff(new DateTime("now"));;
                 }
                 break;
         }
         if($diffDateTimeCookie->d == 0){
-            if($lastVotes = Vote::find("voteHash='{$vote->voteHash}'")){
+            if($lastVotes = Vote::find("voteHash='{$hash}'")){
                 $lastVote = $lastVotes->getLast();
                 $voteDateTime = new DateTime($lastVote->votedAt);
                 $diffDateTimeHash = $voteDateTime->diff($tomorrowDateTime);
                 if($diffDateTimeHash->d == 0){
-                    return true;
+                    $voteCount = 0;
+                    foreach ($lastVotes as $tmpVote) {
+                        $voteDateTime = new DateTime($tmpVote->votedAt);
+                        $diffDateTime = $voteDateTime->diff($tomorrowDateTime);
+                        if($diffDateTime == 0) $voteCount++;
+                    }
+                    if($voteCount >= 50){
+                        return false;
+                    }else{
+                        return true;
+                    }
                 }else{
-                    return false;
+                    return true;
                 }
             }else{
                 return true;
             }
         }else{
-            return false;
+            return true;
         }
     }
 }
