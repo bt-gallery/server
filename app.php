@@ -74,9 +74,7 @@ $app->get(
         $result = array();
         foreach ($targetWorks as $key=>&$work){
             $participant = Participant::findfirst($work['idParticipant']);
-            $declarant = Declarant::findfirst($work['idDeclarant']);
             $work['participant'] = $participant->name.' '.$participant->surname;
-            $work['declarant'] = $declarant->name.' '.$declarant->surname;
             $work['age']=$participant->age;
             $age = abs($participant->age);
             $t1 = $age % 10;
@@ -152,6 +150,42 @@ $app->get(
     }
 );
 
+$app->post(
+    '/gallery/search/byname',
+    function () use ($app, $responder, $logger) {
+        $result = array();
+        $filter = new Filter;
+        $db = $app->getDI()->getShared("db");
+
+        $query = $app->request->getPost("query");
+        $query = $filter->sanitize($query, "string");
+
+        $sql = "SELECT * FROM `moderation_stack_grouped` where concat(name,' ',surname) rlike '{$query}' AND status='одобрено'";
+        $resultSet = $db->query($sql);
+        $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
+        $targetWorks = $resultSet->fetchAll();
+
+        foreach ($targetWorks as $key=>&$work){
+            $age = $work["age"]; 
+            $t1 = $age % 10;
+            $t2 = $age % 100;
+            $age = ($t1 == 1 && $t2 != 11 ? "год" : ($t1 >= 2 && $t1 <= 4 && ($t2 < 10 || $t2 >= 20) ? "года" : "лет"));
+            $work['age_string'] = $age;
+            $work['participant'] = $work['name'] . " " .$work["surname"];
+            $work['webPath'] = $work['web_url'];
+            $work['idCompetitiveWork'] = $work['id_competitive_work'];
+        }
+        $result['targetWorks'] = $targetWorks;
+        if ($offset!=0) {
+            $result['prev_page_offset'] = $offset-$limit; //TODO Это слишком легко поломать
+        }
+        if ($offset<CompetitiveWork::count()-$offset) {
+            $result['next_page_offset'] = $offset+$limit;
+        }
+        echo $app['view']->render('gallery', $result);
+    }
+);
+
 $app->get(
     '/competitivework/drawing/{id}',
     function ($id) use ($app) {
@@ -176,7 +210,7 @@ $app->get(
             $crypt->setKey('CV##@k87?lkf46_7%$$dx3.4zx8*&^g');
             return $crypt;
         });
-        
+
         $canVote = Vote::checkVote($cookies, $requestHash, $targetWork['age']);
         if($id>0){
             $prevWork = $id-1;

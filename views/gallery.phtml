@@ -27,10 +27,16 @@
     </div>
 </header>
 <div class="clearfix"></div>
+<div class="age-panel">
+    <a href="/competitivework/list/40/0/ages/4/6"><div class="age-range">4-6 лет</div></a>
+    <a href="/competitivework/list/40/0/ages/7/12"><div class="age-range">7-12 лет</div></a>
+    <a href="/competitivework/list/40/0/ages/13/18"><div class="age-range">13-18 лет</div></a>
+</div>
+<div class="clearfix"></div>
 <section id="photos">
     <? foreach ($targetWorks as $key => $value) { ?>
         <a href="/competitivework/drawing/<?= $value['idCompetitiveWork'] ?>" target="_blank">
-            <div class="tooltip"><img src="http://<?=$_SERVER["SERVER_NAME"]?><?= $value['webPath'] ?>"/>
+            <div class="tooltip"><img src="<?= $value['webPath'] ?>"/>
                 <div class="tooltips-wrapper">
                     <div class="tooltiptext name"><?= $value['participant'] ?></div>
                     <div class="tooltiptext age"><?= $value['age'] ?> <?= $value['age_string'] ?></div>
