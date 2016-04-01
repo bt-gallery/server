@@ -21,6 +21,7 @@ return new \Phalcon\Config(
         'uploadDir'       => APP_PATH . '/public/files/',
         'logDir'       => APP_PATH . '/log/',
         'baseUri'        => '/konkurs/',
+        'galleryLimit'   => 30
     )
     )
 );

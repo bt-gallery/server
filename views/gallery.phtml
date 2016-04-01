@@ -57,7 +57,9 @@
                 <div class="tooltips-wrapper">
                     <div class="tooltiptext name <?=$value['age']!=0 ?: 'single'?>"><?= $value['participant'] ?></div>
                     <?if ($value['age']!=0){?>
-                        <div class="tooltiptext age"><?= $value['age'] ?> <?= $value['age_string'] ?></div>
+                        <div class="tooltiptext age"><?= $value['age'] ?> <?= $value['age_string'] ?> Голосов: <?= $value['votes'] ?></div>
+                    <?}else{?>
+                        <div class="tooltiptext age">Голосов: <?= $value['votes'] ?></div>
                     <?}?>
                 </div>
             </div>
