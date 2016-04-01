@@ -8,6 +8,18 @@
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico"/>
     <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
     <title>Галерея рисунков</title>
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-75143191-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript"> (function (d, w, c) { (w[c] = w[c] || []).push(function() { try { w.yaCounter28004892 = new Ya.Metrika({ id:28004892, clickmap:true, trackLinks:true, accurateTrackBounce:true }); } catch(e) { } }); var n = d.getElementsByTagName("script")[0], s = d.createElement("script"), f = function () { n.parentNode.insertBefore(s, n); }; s.type = "text/javascript"; s.async = true; s.src = "https://mc.yandex.ru/metrika/watch.js"; if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); } })(document, window, "yandex_metrika_callbacks"); </script> <noscript><div><img src="https://mc.yandex.ru/watch/28004892" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
 </head>
 <body>
 <div id='stars2'></div>
@@ -43,8 +55,12 @@
         <a href="/gallery/drawing/<?= $value['idCompetitiveWork'] ?>" target="_blank">
             <div class="tooltip"><img src="<?= $value['webPath'] ?>.resized.<?=pathinfo($value['webPath'], PATHINFO_EXTENSION)?>"/>
                 <div class="tooltips-wrapper">
-                    <div class="tooltiptext name"><?= $value['participant'] ?></div>
-                    <div class="tooltiptext age"><?= $value['age'] ?> <?= $value['age_string'] ?></div>
+                    <div class="tooltiptext name <?=$value['age']!=0 ?: 'single'?>"><?= $value['participant'] ?></div>
+                    <?if ($value['age']!=0){?>
+                        <div class="tooltiptext age"><?= $value['age'] ?> <?= $value['age_string'] ?> Голосов: <?= $value['votes'] ?></div>
+                    <?}else{?>
+                        <div class="tooltiptext age">Голосов: <?= $value['votes'] ?></div>
+                    <?}?>
                 </div>
             </div>
         </a>

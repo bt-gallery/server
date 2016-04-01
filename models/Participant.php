@@ -63,7 +63,7 @@ class Participant extends \Phalcon\Mvc\Model
         } else if($this->age >= 13 and $this->age <= 18) {
             return 3;
         }else{
-            return;
+            return 0;
         }
     }
 
@@ -76,7 +76,7 @@ class Participant extends \Phalcon\Mvc\Model
         } else if($age >= 13 and $age <= 18) {
             return 3;
         }else{
-            return;
+            return 0;
         }
     }
 }

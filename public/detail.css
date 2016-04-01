@@ -23,6 +23,36 @@
 .info-wrap {
     float: left;
 }
+#close-btn{
+    background-image: url(icon-close.png);
+    background-position: 0% 0%;
+    background-repeat: no-repeat;
+    position: fixed;
+    color: white;
+    width: 73px;
+    height: 73px;
+    right: 80px;
+    top: 70px;
+}
+#close-btn:hover{
+    cursor:pointer;
+    background-image: url(icon-close-red.png);
+}
+#link-input{
+    outline: none;
+    border: 1px solid #dbdbdb;
+    height: 24px;
+    top: 0;
+    left: 0;
+    padding-left: 7px;
+    width: 264px;
+    /*
+    padding-left: 3px;
+    width: 264px;
+    height: 24px;
+    border: 1px solid white;
+    border-radius: 6px;*/
+}
 
 .vote {
     text-align:center;

@@ -19,16 +19,27 @@ class Vote extends \Phalcon\Mvc\Model
     {
         $group = Participant::getGroupS($age);
         $tomorrowDateTime = new DateTime("tomorrow");
+        if ($cookies->has("lastVoteTimeUndef")) {
+            $lastVoteTimeUndef = $cookies->get("lastVoteTimeUndef")->getValue();
+        }
         if ($cookies->has("lastVoteTimeChild")) {
-                $lastVoteTimeChild = $cookies->get("lastVoteTimeChild")->getValue();
-            }
-            if ($cookies->has("lastVoteTimeJunior")) {
-                $lastVoteTimeJunior = $cookies->get("lastVoteTimeJunior")->getValue();
-            }
-            if ($cookies->has("lastVoteTimeTeen")) {
-                $lastVoteTimeTeen = $cookies->get("lastVoteTimeTeen")->getValue();
-            }
+            $lastVoteTimeChild = $cookies->get("lastVoteTimeChild")->getValue();
+        }
+        if ($cookies->has("lastVoteTimeJunior")) {
+            $lastVoteTimeJunior = $cookies->get("lastVoteTimeJunior")->getValue();
+        }
+        if ($cookies->has("lastVoteTimeTeen")) {
+            $lastVoteTimeTeen = $cookies->get("lastVoteTimeTeen")->getValue();
+        }
         switch ($group) {
+            case 0:
+                if(isset($lastVoteTimeUndef)){
+                    $voteDateTime = new DateTime($lastVoteTimeUndef);
+                    $diffDateTimeCookie = $voteDateTime->diff($tomorrowDateTime);
+                }else{
+                    $diffDateTimeCookie = (new DateTime("now"))->diff(new DateTime("tomorrow + 1day"));;
+                }
+                break;
             case 1:
                 if(isset($lastVoteTimeChild)){
                     $voteDateTime = new DateTime($lastVoteTimeChild);
