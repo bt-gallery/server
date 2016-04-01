@@ -36,24 +36,24 @@ class AddPriority extends AbstractMigration
         $this->query($query);
 
         // Update dependent
-        $queryPath = __DIR__ . "/moderation_stack_grouped.sql";
+        $queryPath = __DIR__ . "/moderation_stack_grouped_priority_desc.sql";
         $query = file_get_contents($queryPath);
         $this->query($query);
     }
 
     public function down()
     {
-        // Update dependent
-        $queryPath = __DIR__ . "/moderation_stack_grouped.sql";
-        $query = file_get_contents($queryPath);
-        $this->query($query);
+        $table = $this->table('competitive_work');
+        $table->removeColumn('priority')
+              ->update();
 
         $queryPath = __DIR__ . "/moderation_stack_filtered.sql";
         $query = file_get_contents($queryPath);
         $this->query($query);
 
-        $table = $this->table('competitive_work');
-        $table->removeColumn('priority')
-              ->update();
+        // Update dependent
+        $queryPath = __DIR__ . "/moderation_stack_grouped.sql";
+        $query = file_get_contents($queryPath);
+        $this->query($query);
     }
 }
