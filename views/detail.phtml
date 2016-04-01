@@ -1,0 +1,94 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Конкурс рисунка</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, user-scalable=0, maximum-scale=1, minimum-scale=1"
+    >
+    <meta property="og:title" content="Это просто космос!"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:url" content="http://<?=$_SERVER["SERVER_NAME"]?>/gallery/drawing/<?= $targetWork['idCompetitiveWork'] ?>"/>
+    <meta property="og:image" content="http://<?=$_SERVER["SERVER_NAME"]?><?= $targetWork['webPath'] ?>"/>
+    <meta property="og:site_name" content="Конкурс рисунка"/>
+    <meta property="og:description" content='Конкурс рисунка "Дети рисуют космос". Заходи и оцени таланты подрастающего поколения!'/>
+    <link rel="stylesheet" type="text/css" href="/main.css">
+    <link rel='stylesheet' type="text/css" href='/detail.css'>
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico"/>
+    <script src="https://code.jquery.com/jquery-1.12.2.min.js" integrity="sha256-lZFHibXzMHo3GGeehn1hudTAP3Sc0uKXBXAzHX1sjtk=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/detail.js"></script>
+    <script type="text/javascript" src="//yastatic.net/es5-shims/0.0.2/es5-shims.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="//yastatic.net/share2/share.js" charset="utf-8"></script>
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-75143191-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript"> (function (d, w, c) { (w[c] = w[c] || []).push(function() { try { w.yaCounter28004892 = new Ya.Metrika({ id:28004892, clickmap:true, trackLinks:true, accurateTrackBounce:true }); } catch(e) { } }); var n = d.getElementsByTagName("script")[0], s = d.createElement("script"), f = function () { n.parentNode.insertBefore(s, n); }; s.type = "text/javascript"; s.async = true; s.src = "https://mc.yandex.ru/metrika/watch.js"; if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); } })(document, window, "yandex_metrika_callbacks"); </script> <noscript><div><img src="https://mc.yandex.ru/watch/28004892" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+</head>
+<body>
+<div id='stars2'></div>
+<div id='stars3'></div>
+<header class="header">
+    <div id="logo" style="float:left;">
+        <a href="http://mir24.tv">
+            <img src="http://stream.mirtv.ru/resources/files/uploads/images/mir_logo_80.png" alt="24 МИР" title="24 МИР">
+        </a>
+    </div>
+    <div style="margin: auto;">
+        <h1 style="margin: 60px;float: left;color:#2F508E;">
+            Конкурс рисунка
+        </h1>
+    </div>
+</header>
+<div id="close-btn" onclick="javascript: window.close();" title="Закрыть"></div>
+<div class="content">
+    <a title="Посмотреть в полном размере" href="http://konkurs.mir24.tv<?= $targetWork['webPath'] ?>" target="_blank">
+        <img class="image_detail" src="http://<?=$_SERVER["SERVER_NAME"]?><?= $targetWork['webPath'] ?>">
+    </a>
+    <div class="info-wrap">
+        <div class="image_info">
+            <p>Конкурсант: <?= $targetWork['participant_name'] . ' ' . $targetWork['participant_surname'] ?>
+                <?if ($targetWork['age']) {?>
+                    <br/>
+                    Возраст: <?= $targetWork['age'] ?> <?= $targetWork['age_string'] ?>
+                <?}?>
+            </p>
+            <div>
+                Голосов: <?= $votes ?>
+            </div>
+            <div id="buttons">
+                <? if ($canVote) { ?>
+                    <div id="vote-btn" class="vote" data-id="<?= $targetWork['idCompetitiveWork'] ?>">Проголосовать
+                    </div>
+                <? } else { ?>
+                    <div class="no-vote">Вы уже голосовали сегодня</div>
+                <? } ?>
+            </div>
+            <br/>
+            <span>Поделиться:</span>
+            <div class="ya-share2"
+                 data-services="vkontakte,facebook,odnoklassniki,gplus"
+                 data-description='Конкурс рисунка "Дети рисуют космос". Заходи и оцени таланты подрастающего поколения!'
+                 data-image="http://<?=$_SERVER["SERVER_NAME"]?><?= $targetWork['webPath'] ?>"
+                 data-title="Это просто космос!"
+                 data-url="http://<?=$_SERVER["SERVER_NAME"]?>/gallery/drawing/<?= $targetWork['idCompetitiveWork'] ?>">
+            </div>
+            <br/>
+            <span>Прямая ссылка:</span>
+            <br/>
+            <input id="link-input" type="text" value="http://<?=$_SERVER["SERVER_NAME"]?>/gallery/drawing/<?= $targetWork['idCompetitiveWork'] ?>"/>
+        </div>
+    </div>
+</div>
+</body>
+</html>

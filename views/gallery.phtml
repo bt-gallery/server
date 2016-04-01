@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" type="text/css" href="/main.css?2202">
+    <link rel='stylesheet' type="text/css" href='/gallery.css'>
+    <link rel='stylesheet' type="text/css" href='/stars.css'>
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico"/>
+    <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
+    <title>Галерея рисунков</title>
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-75143191-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript"> (function (d, w, c) { (w[c] = w[c] || []).push(function() { try { w.yaCounter28004892 = new Ya.Metrika({ id:28004892, clickmap:true, trackLinks:true, accurateTrackBounce:true }); } catch(e) { } }); var n = d.getElementsByTagName("script")[0], s = d.createElement("script"), f = function () { n.parentNode.insertBefore(s, n); }; s.type = "text/javascript"; s.async = true; s.src = "https://mc.yandex.ru/metrika/watch.js"; if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); } })(document, window, "yandex_metrika_callbacks"); </script> <noscript><div><img src="https://mc.yandex.ru/watch/28004892" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+</head>
+<body>
+<div id='stars2'></div>
+<div id='stars3'></div>
+<header class="header">
+    <div id="logo" style="float:left;">
+        <a href="http://mir24.tv">
+            <img src="http://stream.mirtv.ru/resources/files/uploads/images/mir_logo_80.png" alt="24 МИР" title="24 МИР">
+        </a>
+    </div>
+    <div style="margin: auto;">
+        <h1 style="margin: 60px;float: left;color:#2F508E;">
+            Конкурс рисунка
+        </h1>
+    </div>
+	<div class="age-panel">
+	    <a href="/gallery/list/<?= $limit ?>/0/ages/4/18"><div class="age-range">Все</div></a>
+	    <a href="/gallery/list/<?= $limit ?>/0/ages/4/6"><div class="age-range">4-6 лет</div></a>
+	    <a href="/gallery/list/<?= $limit ?>/0/ages/7/12"><div class="age-range">7-12 лет</div></a>
+	    <a href="/gallery/list/<?= $limit ?>/0/ages/13/18"><div class="age-range">13-18 лет</div></a>
+	</div>
+    <div class="search">
+        <form name="participant-search" method="POST" action="/gallery/search/byname">
+            <input id="searchbox" name="query" type="text" value="<?=!isset($query)?"":$query?>"/>
+            <input id="search-btn" type="submit" value="Найти участника"/>
+        </form>
+    </div>
+</header>
+<div class="clearfix"></div>
+<div class="clearfix"></div>
+<section id="photos">
+    <? foreach ($targetWorks as $key => $value) { ?>
+        <a href="/gallery/drawing/<?= $value['idCompetitiveWork'] ?>" target="_blank">
+            <div class="tooltip"><img src="<?= $value['webPath'] ?>.resized.<?=pathinfo($value['webPath'], PATHINFO_EXTENSION)?>"/>
+                <div class="tooltips-wrapper">
+                    <div class="tooltiptext name <?=$value['age']!=0 ?: 'single'?>"><?= $value['participant'] ?></div>
+                    <?if ($value['age']!=0){?>
+                        <div class="tooltiptext age"><?= $value['age'] ?> <?= $value['age_string'] ?> Голосов: <?= $value['votes'] ?></div>
+                    <?}else{?>
+                        <div class="tooltiptext age">Голосов: <?= $value['votes'] ?></div>
+                    <?}?>
+                </div>
+            </div>
+        </a>
+    <? } ?>
+</section>
+<div class="pagination">
+    <? if (isset($prev_page_offset)) { ?>
+        <? if (isset($min_age) and isset($max_age)) { ?>
+            <a href="/gallery/list/<?= $limit ?>/<?= $prev_page_offset ?>/ages/<?= $min_age ?>/<?= $max_age ?>">
+                <div class="navigation active">Предыдущая</div>
+            </a>
+        <? } else { ?>
+            <a href="/gallery/list/<?= $limit ?>/<?= $prev_page_offset ?>">
+            <div class="navigation active">Предыдущая</div>
+            </a>
+        <? } ?>
+    <? } else { ?>
+        <div class="navigation inactive">Предыдущая</div>
+    <? } ?>
+    <? if (isset($next_page_offset)) { ?>
+        <? if (isset($min_age) and isset($max_age)) { ?>
+            <a href="/gallery/list/<?= $limit ?>/<?= $next_page_offset ?>/ages/<?= $min_age ?>/<?= $max_age ?>">
+                <div class="navigation active">Следующая</div>
+            </a>
+        <? } else { ?>
+            <a href="/gallery/list/<?= $limit ?>/<?= $next_page_offset ?>">
+            <div class="navigation active">Следующая</div>
+            </a>
+        <? } ?>
+    <? } else { ?>
+        <div class="navigation inactive">Следующая</div>
+    <? } ?>
+</div>
+</body>
+</html>
