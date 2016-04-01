@@ -32,7 +32,7 @@ $servant = function ($serviceName) use ($app) {
 /* GET routes */
 $app->get(
     '/', function () use ($app) {
-        echo $app['view']->render('index');
+        $app->response->redirect("gallery/list/30/0/ages/4/18")->sendHeaders();
     }
 );
 
@@ -118,7 +118,7 @@ $app->get(
 
 $app->post(
     '/gallery/search/byname',
-    function () use ($app, $responder, $logger) {
+    function () use ($app, $responder, $logger, $config) {
         $result = array();
         $filter = new Filter;
         $db = $app->getDI()->getShared("db");
@@ -132,7 +132,7 @@ $app->post(
         $targetWorks = $resultSet->fetchAll();
 
         foreach ($targetWorks as $key=>&$work){
-            $age = $work["age"]; 
+            $age = $work["age"];
             $t1 = $age % 10;
             $t2 = $age % 100;
             $age = ($t1 == 1 && $t2 != 11 ? "год" : ($t1 >= 2 && $t1 <= 4 && ($t2 < 10 || $t2 >= 20) ? "года" : "лет"));
@@ -143,6 +143,8 @@ $app->post(
         }
         $result['targetWorks'] = $targetWorks;
         $result['query'] = $query;
+        $result['limit'] = $config->application->galleryLimit;
+
         echo $app['view']->render('gallery', $result);
     }
 );
