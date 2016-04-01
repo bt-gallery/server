@@ -163,6 +163,8 @@ $app->post(
 $app->get(
     '/gallery/drawing/{id}',
     function ($id) use ($app) {
+        $filter = new Filter();
+        $id = $filter->sanitize($id, "int");
         $targetWork = CompetitiveWork::findFirst($id)->toArray();
         $participant = Participant::findfirst($targetWork['idParticipant']);
         $declarant = Declarant::findfirst($targetWork['idDeclarant']);
