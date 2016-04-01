@@ -78,6 +78,12 @@ $app->get(
             $resultSet = $db->query($sql);
             $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
             $targetWorks = $resultSet->fetchAll();
+
+            $sql = "SELECT * FROM moderation_stack_grouped WHERE age BETWEEN '{$minAge}' AND '{$maxAge}' AND result='одобрено'";
+            $resultSetTmp = $db->query($sql);
+            $resultSetTmp->setFetchMode(Phalcon\Db::FETCH_ASSOC);
+            $targetWorksTmp = $resultSetTmp->fetchAll();
+            $resultSetCount = count($targetWorksTmp);
         } catch (\Exception $e) {
             echo $app['view']->render('404');
             return false;
@@ -91,17 +97,22 @@ $app->get(
             $work['participant'] = $work['name'] . " " .$work["surname"];
             $work['webPath'] = $work['web_url'];
             $work['idCompetitiveWork'] = $work['id_competitive_work'];
-            $work['votes'] = Vote::count("competitiveWorkIdCompetitiveWork = '$id'");
+            $tmpId = $work['id_competitive_work'];
+            $work['votes'] = Vote::count("competitiveWorkIdCompetitiveWork = '$tmpId'");
         }
         $result['targetWorks'] = $targetWorks;
         if ($offset!=0) {
             if($limit > $offset){
                 $result['prev_page_offset'] = 0;
             }else{
-                $result['prev_page_offset'] = $offset-$limit;
+                if($offset-$limit > $resultSetCount){
+                    $result['prev_page_offset'] = $resultSetCount-$limit;
+                }else{
+                    $result['prev_page_offset'] = $offset-$limit;
+                }
             }
         }
-        if ($offset<CompetitiveWork::count()-$offset) {
+        if ($resultSetCount-$offset > $limit) {
             $result['next_page_offset'] = $offset+$limit;
         }
         if ($minAge >= 0 and $maxAge > $minAge){
