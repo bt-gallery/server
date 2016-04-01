@@ -129,13 +129,12 @@
     background-color: #338dff;
 }
 .age-panel{
-    width:80%;
-    margin:auto;
     height:60px;
-    margin-bottom:40px;
+    width:600px;
+    float:left;
+    margin: 40px 0 0 0;
 }
 .age-panel a {
-    text-decoration:none;
 }
 .age-range{
     -webkit-user-select: none;
@@ -149,7 +148,6 @@
     font-size: 25px;
     text-align: center;
     color: white;
-    background: #0072ff;
     width: 25%;
     height: 60px;
     float: left;
@@ -157,17 +155,6 @@
 .age-range:hover {
     background-color: #338dff;
 }
-.age-range:first-child{
-    border-right:5px solid #fff;
-}
-.age-range:last-child{
-    border-left:5px solid #fff;
-}
-/*
-#searchbox:focus{
-    outline: none;
-    border:1px solid #0072ff;
-}*/
 @media (max-width: 1300px) {
     #photos {
         font-size: 1em;
@@ -185,9 +172,6 @@
         -webkit-column-count: 4;
         column-count: 4;
     }
-    .header {
-        height:220px;
-    }
     .search {
         float:none;
         clear:both;
@@ -197,7 +181,8 @@
 }
 
 @media (max-width: 1000px) {
-    #photos {
+    #photos {	
+	margin: 20px 0 0 0;
         font-size: 1em;
         -moz-column-count: 3;
         -webkit-column-count: 3;
@@ -207,6 +192,7 @@
 
 @media (max-width: 800px) {
     #photos {
+	margin: 20px 0 0 0;
         font-size: 1.1em;
         -moz-column-count: 2;
         -webkit-column-count: 2;
@@ -240,9 +226,6 @@
 }
 
 @media (max-width: 450px) {
-    .header {
-        height:360px;
-    }
     #search-btn {
         top: 39px;
         left: 4px;
@@ -267,11 +250,9 @@
     }
     .age-range:first-child{
         border-right:none;
-        border-bottom:5px solid #fff;
     }
     .age-range:last-child{
         border-left: none;
-        border-top:5px solid #fff;
     }
 }
 
