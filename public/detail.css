@@ -23,6 +23,21 @@
 .info-wrap {
     float: left;
 }
+#close-btn{
+    background-image: url(icon-close.png);
+    background-position: 0% 0%;
+    background-repeat: no-repeat;
+    position: fixed;
+    color: white;
+    width: 73px;
+    height: 73px;
+    right: 80px;
+    top: 70px;
+}
+#close-btn:hover{
+    cursor:pointer;
+    background-image: url(icon-close-red.png);
+}
 
 .vote {
     text-align:center;
