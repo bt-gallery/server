@@ -98,18 +98,15 @@
 .inactive {
     background: #B6BCBF;
 }
-.activated {
-    background: #B6BCBF;
-}
 
 .no-vote {
     padding: 13px 28px 0 30px;
     color: white;
-    font-size: 1.2em;
+    font-size: 1.1em;
     margin-top: 40px;
-    width: 294px;
+    width: 293px;
     background-color: #BBBBBB;
-    height: 50px;
+    height: 85px;
     border-radius: 6px;
 }
 
