@@ -77,7 +77,7 @@
                     <?if ($value['age']!=0){?>
                         <div class="tooltiptext age"><?= $value['age'] ?> <?= $value['age_string'] ?> Голосов: <?= $value['votes'] ?></div>
                     <?}else{?>
-                        <div class="tooltiptext age">Голосов: <?= $value['votes'] ?></div>
+                        <div class="tooltiptext age">Голосов: <span id="vote-count"><?= $value['votes'] ?></span></div>
                     <?}?>
                 </div>
             </div>

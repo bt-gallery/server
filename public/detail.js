@@ -19,7 +19,8 @@ window.onload = function () {
                     message.className = 'vote error';
                     message.innerHTML = response['error']['label'];
                 } else if (response['success']) {
-                    message.className = 'vote success';
+                    var counter = document.getElementById('vote-count');
+                    counter.innerHTML = ++counter.innerHTML;
                     message.innerHTML = response['success']['label'];
                 }
             }
