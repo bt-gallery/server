@@ -60,21 +60,39 @@
 
 .pagination {
     height: 125px;
-    width: 500px;
+    width: 570px;
     margin: auto;
     padding-left: 20px;
 }
 
+.navigationarrow {
+    float: left;
+    margin: auto;
+    margin-right: 10px;
+    margin-top: 30px;
+    font-size: 4.2em;
+    color: white;
+    width: 55px;
+    background-color: #0072FF;
+    height: 30px;
+    padding-top: 16px;
+    padding-bottom: 12px;
+    text-align: center;
+    border-radius: 6px;
+}
+.navigationarrow.active:hover{
+    background-color: #338dff;
+}
 .navigation {
     float: left;
     margin: auto;
-    margin-right: 20px;
+    margin-right: 10px;
     margin-top: 30px;
     font-size: 2.2em;
     color: white;
-    width: 230px;
+    width: 210px;
     background-color: #0072FF;
-    height: 34px;
+    height: 30px;
     padding-top: 19px;
     padding-bottom: 9px;
     text-align: center;
