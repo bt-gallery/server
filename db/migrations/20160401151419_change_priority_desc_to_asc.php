@@ -25,8 +25,17 @@ class ChangePriorityDescToAsc extends AbstractMigration
      * Remember to call "create()" or "update()" and NOT "save()" when working
      * with the Table class.
      */
-    public function change()
+    public function up()
     {
+        // Update dependent
+        $queryPath = __DIR__ . "/moderation_stack_grouped.sql";
+        $query = file_get_contents($queryPath);
+        $this->query($query);
+    }
+
+    public function down()
+    {
+        // Update dependent
         $queryPath = __DIR__ . "/moderation_stack_grouped.sql";
         $query = file_get_contents($queryPath);
         $this->query($query);
