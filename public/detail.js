@@ -21,6 +21,7 @@ window.onload = function () {
                 } else if (response['success']) {
                     var counter = document.getElementById('vote-count');
                     counter.innerHTML = ++counter.innerHTML;
+                    message.className = 'vote success';
                     message.innerHTML = response['success']['label'];
                 }
             }
