@@ -136,6 +136,9 @@
 }
 .age-panel a {
 }
+.single {
+    padding-top: 22px !important;
+}
 .age-range{
     -webkit-user-select: none;
     -moz-user-select: none;
