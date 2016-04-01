@@ -78,7 +78,12 @@
                  data-description='Конкурс рисунка "Дети рисуют космос". Заходи и оцени таланты подрастающего поколения!'
                  data-image="http://<?=$_SERVER["SERVER_NAME"]?><?= $targetWork['webPath'] ?>"
                  data-title="Это просто космос!"
-                 data-url="http://<?=$_SERVER["SERVER_NAME"]?>/gallery/drawing/<?= $targetWork['idCompetitiveWork'] ?>"></div>
+                 data-url="http://<?=$_SERVER["SERVER_NAME"]?>/gallery/drawing/<?= $targetWork['idCompetitiveWork'] ?>">
+            </div>
+            <br/>
+            <span>Прямая ссылка:</span>
+            <br/>
+            <input id="link-input" type="text" value="http://<?=$_SERVER["SERVER_NAME"]?>/gallery/drawing/<?= $targetWork['idCompetitiveWork'] ?>"/>
         </div>
     </div>
 </div>
