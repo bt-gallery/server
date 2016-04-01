@@ -7,4 +7,4 @@ GROUP BY `priority`,
          `name`,
          `surname`,
          `age`
-ORDER BY `priority` DESC
+ORDER BY `priority` ASC

@@ -174,7 +174,7 @@ $app->get(
         $targetWork['declarant_surname']=$declarant->surname;
         $targetWork['age']=$participant->age;
         $age = abs($participant->age);
-        $requestHash = hash("sha256", $app->request->getClientAddress() . $app->request->getUserAgent() . Participant::getGroupS($age));
+        $requestHash = hash("sha256", $_SERVER['HTTP_X_FORWARDED_FOR'] . $app->request->getUserAgent() . Participant::getGroupS($age));
         $t1 = $age % 10;
         $t2 = $age % 100;
         $age = ($t1 == 1 && $t2 != 11 ? "год" : ($t1 >= 2 && $t1 <= 4 && ($t2 < 10 || $t2 >= 20) ? "года" : "лет"));
