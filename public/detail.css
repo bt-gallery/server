@@ -67,6 +67,7 @@
     width: 200px;
     background-color: #0072FF;
     height: 49px;
+    border-radius: 6px;
 }
 
 .pagination {
@@ -89,11 +90,15 @@
     padding-top: 19px;
     padding-bottom: 9px;
     text-align: center;
+    border-radius: 6px;
 }
 .navigation:hover{
     background-color: #338dff;
 }
 .inactive {
+    background: #B6BCBF;
+}
+.activated {
     background: #B6BCBF;
 }
 
@@ -105,6 +110,7 @@
     width: 294px;
     background-color: #BBBBBB;
     height: 50px;
+    border-radius: 6px;
 }
 
 .vote:hover {
