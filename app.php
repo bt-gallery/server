@@ -73,7 +73,7 @@ $app->get(
             echo $app['view']->render('404');
             return false;
         }
-        $sql = "SELECT * FROM moderation_stack_grouped WHERE age BETWEEN '{$minAge}' AND '{$maxAge}' LIMIT {$limit} OFFSET {$offset}";
+        $sql = "SELECT * FROM moderation_stack_grouped WHERE age BETWEEN '{$minAge}' AND '{$maxAge}' AND result='одобрено' LIMIT {$limit} OFFSET {$offset}";
         try {
             $resultSet = $db->query($sql);
             $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
@@ -125,7 +125,7 @@ $app->post(
         $query = $app->request->getPost("query");
         $query = $filter->sanitize($query, "string");
 
-        $sql = "SELECT * FROM `moderation_stack_grouped` where concat(name,' ',surname) rlike '{$query}' AND status='одобрено'";
+        $sql = "SELECT * FROM `moderation_stack_grouped` where concat(name,' ',surname) rlike '{$query}' AND result='одобрено'";
         $resultSet = $db->query($sql);
         $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
         $targetWorks = $resultSet->fetchAll();
@@ -376,7 +376,7 @@ $app->post(
             return;
         }
 
-        $sql = "SELECT Participant.age FROM moderation_stack_grouped WHERE id_competitive_work='{$vote->competitiveWorkIdCompetitiveWork}'";
+        $sql = "SELECT age FROM moderation_stack_grouped WHERE id_competitive_work='{$vote->competitiveWorkIdCompetitiveWork}'";
         $resultSet = $db->query($sql);
         $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
         $targetAge = $resultSet->fetchAll();
