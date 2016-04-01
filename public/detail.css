@@ -67,6 +67,7 @@
     width: 200px;
     background-color: #0072FF;
     height: 49px;
+    border-radius: 6px;
 }
 
 .pagination {
@@ -89,6 +90,7 @@
     padding-top: 19px;
     padding-bottom: 9px;
     text-align: center;
+    border-radius: 6px;
 }
 .navigation:hover{
     background-color: #338dff;
@@ -100,11 +102,12 @@
 .no-vote {
     padding: 13px 28px 0 30px;
     color: white;
-    font-size: 1.2em;
+    font-size: 1.1em;
     margin-top: 40px;
-    width: 294px;
+    width: 293px;
     background-color: #BBBBBB;
-    height: 50px;
+    height: 85px;
+    border-radius: 6px;
 }
 
 .vote:hover {

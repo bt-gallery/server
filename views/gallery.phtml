@@ -42,12 +42,28 @@
             </form>
         </div>
         <div class="header-clearfix"></div>
-        <div class="age-panel">
+	<div class="age-panel">
+        <?if ($min_age == 4 and $max_age == 18) {?>
+            <a href="/gallery/list/<?= $limit ?>/0/ages/4/18"><div class="age-range activated">Все</div></a>
+        <?}else{?>
             <a href="/gallery/list/<?= $limit ?>/0/ages/4/18"><div class="age-range">Все</div></a>
+        <?}?>
+        <?if ($min_age == 4 and $max_age == 6) {?>
+            <a href="/gallery/list/<?= $limit ?>/0/ages/4/6"><div class="age-range activated">4-6 лет</div></a>
+        <?}else{?>
             <a href="/gallery/list/<?= $limit ?>/0/ages/4/6"><div class="age-range">4-6 лет</div></a>
+        <?}?>
+        <?if ($min_age == 7 and $max_age == 12) {?>
+            <a href="/gallery/list/<?= $limit ?>/0/ages/7/12"><div class="age-range activated">7-12 лет</div></a>
+        <?}else{?>
             <a href="/gallery/list/<?= $limit ?>/0/ages/7/12"><div class="age-range">7-12 лет</div></a>
+        <?}?>
+	    <?if ($min_age == 13 and $max_age == 18) {?>
+            <a href="/gallery/list/<?= $limit ?>/0/ages/13/18"><div class="age-range activated">13-18 лет</div></a>
+        <?}else{?>
             <a href="/gallery/list/<?= $limit ?>/0/ages/13/18"><div class="age-range">13-18 лет</div></a>
-        </div>
+        <?}?>
+	</div>
     </div>
 </header>
 <div class="clearfix"></div>
