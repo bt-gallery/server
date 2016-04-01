@@ -388,7 +388,7 @@ $app->post(
             return $crypt;
         });
         $vote = new Vote;
-        $vote->voteIp = $app->request->getClientAddress();
+        $vote->voteIp = $_SERVER['HTTP_X_FORWARDED_FOR'];
         $vote->voteAgent = $app->request->getUserAgent();
         //$vote->votedAt = new DateTime("now");
         $tomorrowDateTime = new DateTime("tomorrow");
