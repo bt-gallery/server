@@ -1,0 +1,354 @@
+.tooltip {
+    word-wrap: break-word;
+    position: relative;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.tooltip .tooltiptext {
+    display: block;
+    font-size: 1.1em;
+    width: 100%;
+    color: #fff;
+    text-align: center;
+    padding-top: 12px;
+    left: 0;
+    z-index: 1;
+}
+
+.tooltiptext.name{
+    margin-bottom:10px;
+}
+
+.tooltip:hover .tooltips-wrapper {
+    visibility:visible;
+    opacity: 1;
+
+}
+.tooltips-wrapper {
+    background-color: rgba(0, 0, 0, 0.59);
+    position: absolute;
+    visibility:hidden;
+    opacity:0;
+    width: 100%;
+    padding-top:5px;
+    height:50px;
+    left: 0;
+    transition: opacity 0.5s;
+    bottom:0;
+    border-bottom-left-radius:10px;
+    border-bottom-right-radius:10px;
+}
+
+#photos {
+    /* Prevent vertical gaps */
+    line-height: 0;
+    margin-left: 10px;
+
+    -webkit-column-count: 5;
+    -webkit-column-gap: 0px;
+    -moz-column-count: 5;
+    -moz-column-gap: 0px;
+    column-count: 5;
+    column-gap: 0px;
+}
+
+#photos img {
+    width: 100% !important;
+    height: auto !important;
+}
+
+.pagination {
+    height: 125px;
+    width: 500px;
+    margin: auto;
+    padding-left: 20px;
+}
+
+.navigation {
+    float: left;
+    margin: auto;
+    margin-right: 20px;
+    margin-top: 30px;
+    font-size: 2.2em;
+    color: white;
+    width: 230px;
+    background-color: #0072FF;
+    height: 34px;
+    padding-top: 19px;
+    padding-bottom: 9px;
+    text-align: center;
+    border-radius: 6px;
+}
+.navigation.active:hover{
+    background-color: #338dff;
+}
+.inactive {
+    background: #B6BCBF;
+}
+
+.clearfix {
+    clear: both;
+}
+.search {
+    margin-bottom: 39px;
+    height: 40px;
+    width:450px;
+    position:relative;
+    float: right;
+    margin-top: 47px;
+    margin-right: 120px;
+}
+#searchbox {
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
+    background: rgba(255, 255, 255, 0.93);;
+    outline:none;
+    box-sizing: border-box;
+    border:none;
+    height:100%;
+    position:absolute;
+    top:0;
+    left:0;
+    padding-left: 7px;
+    width: 310px;
+    font-size: 17px;
+}
+#searchbox:focus {
+    border:1px solid #0072ff;
+
+}
+#search-btn {
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
+    height:100%;
+    position:absolute;
+    top:0;
+    right:0;
+    outline: none;
+    text-transform: uppercase;
+    border:none;
+    margin-left: -4px;
+    background-color: rgba(0, 114, 255, 0.82);
+    color: #ffffff;
+}
+#search-btn:hover{
+    cursor:pointer;
+    background-color: #338dff;
+}
+.age-panel{
+    margin-top:40px;
+    height:60px;
+    width:600px;
+    float:left;
+}
+.single {
+    padding-top: 22px !important;
+}
+.activated {
+    background: #ffa533;
+}
+.age-range{
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    cursor:pointer;
+    padding-top: 20px;
+    font-size: 25px;
+    text-align: center;
+    color: white;
+    width: 25%;
+    height: 60px;
+    float: left;
+    border-radius: 6px;
+}
+.age-range:hover {
+    background-color: #338dff;
+}
+@media (max-width: 1700px) {
+    .age-panel{
+        float:none;
+        margin:auto;
+    }
+    #photos{
+        margin-top:40px;
+    }
+    .header-clearfix{
+        clear:both;
+    }
+}
+@media (max-width: 1300px) {
+    #photos {
+        font-size: 1em;
+    }
+}
+@media (max-width: 1250px) {
+    #photos {
+        font-size: 0.9em;
+    }
+    .age-panel{
+        margin: auto;
+    }
+}
+@media (max-width: 1200px) {
+    #photos {
+        margin-top:40px;
+        font-size: 1em;
+        -moz-column-count: 4;
+        -webkit-column-count: 4;
+        column-count: 4;
+    }
+    .search {
+        float:none;
+        clear:both;
+        margin:auto;
+    }
+    .age-panel{
+        margin-top: 23px;
+        margin-left: auto;
+    }
+
+
+}
+
+@media (max-width: 1000px) {
+    #photos {
+	margin-top: 20px;
+        font-size: 1em;
+        -moz-column-count: 3;
+        -webkit-column-count: 3;
+        column-count: 3;
+    }
+}
+
+@media (max-width: 800px) {
+    #photos {
+	margin-top: 20px;
+        font-size: 1.1em;
+        -moz-column-count: 2;
+        -webkit-column-count: 2;
+        column-count: 2;
+    }
+    .age-panel{
+        width:100%;
+    }
+}
+
+@media (max-width: 600px) {
+    .tooltip .tooltiptext {
+        font-size: 0.9em;
+    }
+}
+
+@media (max-width: 560px) {
+    .tooltip .tooltiptext {
+        font-size: 0.8em;
+    }
+    #search-btn {
+        top: 39px;
+        left: 4px;
+        width: 310px;
+    }
+    .search {
+        width:310px;
+    }
+    .search, #search-btn, #searchbox, .age-panel {
+        width:100%;
+    }
+    .age-panel {
+        margin-top: 53px;
+        margin-bottom: 125px;
+    }
+
+    .age-range {
+        float:none;
+        width:100%;
+        height:40px;
+        padding-top: 9px;
+        font-size: 22px;
+    }
+    .age-range:first-child{
+        border-right:none;
+    }
+    .age-range:last-child{
+        border-left: none;
+    }
+}
+@media (max-width: 500px) {
+    .tooltip .tooltiptext {
+        font-size: 0.8em;
+    }
+}
+
+@media (max-width: 430px) {
+    .tooltip .tooltiptext {
+        font-size: 0.7em;
+    }
+    .tooltips-wrapper {
+        padding-top: 2px;
+        height: 43px;
+    }
+    .tooltiptext.name {
+        margin-bottom: 6px;
+    }
+}
+
+@media (max-width: 450px) {
+
+}
+
+@media (max-width: 400px) {
+    .tooltip .tooltiptext {
+        font-size: 1em;
+    }
+
+    #photos {
+        -moz-column-count: 1;
+        -webkit-column-count: 1;
+        column-count: 1;
+    }
+}
+
+@media (max-width: 300px) {
+    .tooltip .tooltiptext {
+        font-size: 0.7em;
+    }
+}
+
+@media (max-width: 250px) {
+    .tooltip .tooltiptext {
+        font-size: 0.7em;
+    }
+}
+
+@media (max-width: 240px) {
+    .tooltip .tooltiptext {
+        font-size: 0.7em;
+    }
+}
+
+@media (max-width: 200px) {
+    .tooltip .tooltiptext {
+        font-size: 0.6em;
+    }
+}
+
+@media (max-width: 180px) {
+    .tooltip .tooltiptext {
+        font-size: 0.5em;
+    }
+}
+@media (max-width: 150px) {
+    .tooltip .tooltiptext {
+        font-size: 0.4em;
+    }
+}
+
+#photos img {
+    /*padding-bottom: 2% !important;*/
+    width: 100% !important;
+    border-radius:10px;
+}
