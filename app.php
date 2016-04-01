@@ -32,7 +32,7 @@ $servant = function ($serviceName) use ($app) {
 /* GET routes */
 $app->get(
     '/', function () use ($app) {
-        echo $app['view']->render('index');
+        $app->response->redirect("gallery/list/30/0/ages/4/18")->sendHeaders();
     }
 );
 
