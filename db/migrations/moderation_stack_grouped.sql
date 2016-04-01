@@ -7,6 +7,4 @@ GROUP BY `priority`,
          `name`,
          `surname`,
          `age`
-ORDER BY `email`,
-         `surname`,
-         `name`
+ORDER BY `priority` DESC

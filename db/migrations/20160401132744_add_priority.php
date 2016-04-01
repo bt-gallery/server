@@ -28,7 +28,7 @@ class AddPriority extends AbstractMigration
     public function up()
     {
         $table = $this->table('competitive_work');
-        $table->addColumn('priority', 'integer', array('null' => true, ))
+        $table->addColumn('priority', 'integer', array('null' => true))
               ->update();
               
         $queryPath = __DIR__ . "/moderation_stack_filtered_with_priority.sql";
@@ -43,12 +43,12 @@ class AddPriority extends AbstractMigration
 
     public function down()
     {
-        $queryPath = __DIR__ . "/moderation_stack_filtered.sql";
+        // Update dependent
+        $queryPath = __DIR__ . "/moderation_stack_grouped.sql";
         $query = file_get_contents($queryPath);
         $this->query($query);
 
-        // Update dependent
-        $queryPath = __DIR__ . "/moderation_stack_grouped.sql";
+        $queryPath = __DIR__ . "/moderation_stack_filtered.sql";
         $query = file_get_contents($queryPath);
         $this->query($query);
 
