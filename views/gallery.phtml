@@ -4,40 +4,44 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" type="text/css" href="/main.css?2202">
     <link rel='stylesheet' type="text/css" href='/gallery.css'>
+    <link rel='stylesheet' type="text/css" href='/stars.css'>
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico"/>
+    <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
     <title>Галерея рисунков</title>
 </head>
 <body>
+<div id='stars2'></div>
+<div id='stars3'></div>
 <header class="header">
     <div id="logo" style="float:left;">
         <a href="http://mir24.tv">
-            <img src="http://mir24.tv/media/images/mir2/mir_logo_80.png" alt="24 МИР" title="24 МИР">
+            <img src="http://stream.mirtv.ru/resources/files/uploads/images/mir_logo_80.png" alt="24 МИР" title="24 МИР">
         </a>
     </div>
     <div style="margin: auto;">
-        <h1 style="margin: 47px;float: left;">
+        <h1 style="margin: 60px;float: left;color:#2F508E;">
             Конкурс рисунка
         </h1>
     </div>
+	<div class="age-panel">
+	    <a href="/gallery/list/<?= $limit ?>/0/ages/4/18"><div class="age-range">Все</div></a>
+	    <a href="/gallery/list/<?= $limit ?>/0/ages/4/6"><div class="age-range">4-6 лет</div></a>
+	    <a href="/gallery/list/<?= $limit ?>/0/ages/7/12"><div class="age-range">7-12 лет</div></a>
+	    <a href="/gallery/list/<?= $limit ?>/0/ages/13/18"><div class="age-range">13-18 лет</div></a>
+	</div>
     <div class="search">
         <form name="participant-search" method="POST" action="/gallery/search/byname">
-            <input id="searchbox" name="query" type="text" value="<?=!isset($query)?:$query?>"/>
+            <input id="searchbox" name="query" type="text" value="<?=!isset($query)?"":$query?>"/>
             <input id="search-btn" type="submit" value="Найти участника"/>
         </form>
     </div>
 </header>
 <div class="clearfix"></div>
-<div class="age-panel">
-    <a href="/gallery/list/<?= $limit ?>/0/ages/4/18"><div class="age-range">Все</div></a>
-    <a href="/gallery/list/<?= $limit ?>/0/ages/4/6"><div class="age-range">4-6 лет</div></a>
-    <a href="/gallery/list/<?= $limit ?>/0/ages/7/12"><div class="age-range">7-12 лет</div></a>
-    <a href="/gallery/list/<?= $limit ?>/0/ages/13/18"><div class="age-range">13-18 лет</div></a>
-</div>
 <div class="clearfix"></div>
 <section id="photos">
     <? foreach ($targetWorks as $key => $value) { ?>
         <a href="/gallery/drawing/<?= $value['idCompetitiveWork'] ?>" target="_blank">
-            <div class="tooltip"><img src="<?= $value['webPath'] ?>.resized.jpg"/>
+            <div class="tooltip"><img src="<?= $value['webPath'] ?>.resized.<?=pathinfo($value['webPath'], PATHINFO_EXTENSION)?>"/>
                 <div class="tooltips-wrapper">
                     <div class="tooltiptext name"><?= $value['participant'] ?></div>
                     <div class="tooltiptext age"><?= $value['age'] ?> <?= $value['age_string'] ?></div>
