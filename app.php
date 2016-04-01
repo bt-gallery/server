@@ -91,6 +91,7 @@ $app->get(
             $work['participant'] = $work['name'] . " " .$work["surname"];
             $work['webPath'] = $work['web_url'];
             $work['idCompetitiveWork'] = $work['id_competitive_work'];
+            $work['votes'] = Vote::count("competitiveWorkIdCompetitiveWork = '$id'");
         }
         $result['targetWorks'] = $targetWorks;
         if ($offset!=0) {
@@ -178,8 +179,17 @@ $app->get(
         if (CompetitiveWork::findFirst($id+1)) { //нужно пересмотреть логику
             $nextWork = $id+1;
         }
+        $targetVotes = Vote::count("competitiveWorkIdCompetitiveWork = '$id'");
 
-        echo $app['view']->render('detail', array('targetWork'=>$targetWork, 'canVote'=>$canVote, 'nextWork'=>$nextWork, 'prevWork'=>$prevWork));
+        $result = array(
+            'targetWork' => $targetWork,
+            'canVote'=>$canVote,
+            'nextWork'=>$nextWork,
+            'prevWork'=>$prevWork,
+            'votes'=>$targetVotes
+        );
+
+        echo $app['view']->render('detail', $result);
     }
 );
 

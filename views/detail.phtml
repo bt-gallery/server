@@ -46,6 +46,9 @@
         <div class="image_info">
             <p>Конкурсант: <?= $targetWork['participant_name'] . ' ' . $targetWork['participant_surname'] ?><br/>
                 Возраст: <?= $targetWork['age'] ?> <?= $targetWork['age_string'] ?></p>
+            <div>
+                Голосов: <?= $votes ?>
+            </div>
             <div id="buttons">
                 <? if ($canVote) { ?>
                     <div id="vote-btn" class="vote" data-id="<?= $targetWork['idCompetitiveWork'] ?>">Проголосовать
