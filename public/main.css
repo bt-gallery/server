@@ -84,6 +84,7 @@ html {
 body {
   font-size: 13px;
   line-height: 20px;
+  background: #10151E;
 }
 
 #logo {
@@ -133,7 +134,7 @@ body {
 
 .info-block{
   font-size: 19px;
-  color: grey;
+  color: #00AA6C;
 }
 
 .info-block-2{
