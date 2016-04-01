@@ -365,7 +365,7 @@ $app->post(
         $vote = new Vote;
         $vote->voteIp = $app->request->getClientAddress();
         $vote->voteAgent = $app->request->getUserAgent();
-        //$vote->votedAt = time();
+        //$vote->votedAt = new DateTime("now");
         $tomorrowDateTime = new DateTime("tomorrow");
         if(isset($data["id_competitive_work"])){
             $db = $app->getDI()->getShared("db");
@@ -388,6 +388,10 @@ $app->post(
         if ($cookies->has("userIdentity")) {
             $userIdentity = $cookies->get("userIdentity");
             $userIdentity = $userIdentity->getValue();
+            if ($cookies->has("lastVoteTimeUndef")) {
+                $lastVoteTimeUndef = $cookies->get("lastVoteTimeUndef");
+                $lastVoteTimeUndef = $lastVoteTimeUndef->getValue();
+            }
             if ($cookies->has("lastVoteTimeChild")) {
                 $lastVoteTimeChild = $cookies->get("lastVoteTimeChild");
                 $lastVoteTimeChild = $lastVoteTimeChild->getValue();
@@ -402,6 +406,14 @@ $app->post(
             }
 
             switch ($vote->voteGroup) {
+                case 0:
+                    if(isset($lastVoteTimeUndef)){
+                        $voteDateTime = new DateTime($lastVoteTimeUndef);
+                        $diffDateTimeCookie = $voteDateTime->diff($tomorrowDateTime);
+                    }else{
+                        $diffDateTimeCookie = (new DateTime("now"))->diff(new DateTime("tomorrow + 1day"));
+                    }
+                    break;
                 case 1:
                     if(isset($lastVoteTimeChild)){
                         $voteDateTime = new DateTime($lastVoteTimeChild);
@@ -437,6 +449,10 @@ $app->post(
                     $cookies->get("userIdentity")->delete();
                     $cookies->set("userIdentity", $vote->voteIp.$vote->hash, time()+86400);
                     switch ($vote->voteGroup) {
+                        case 0:
+                            $cookies->get("lastVoteTimeUndef")->delete();
+                            $cookies->set("lastVoteTimeUndef", (new DateTime("now"))->format("Y-m-d H:i:s"), time()+86400);
+                            break;
                         case 1:
                             $cookies->get("lastVoteTimeChild")->delete();
                             $cookies->set("lastVoteTimeChild", (new DateTime("now"))->format("Y-m-d H:i:s"), time()+86400);
@@ -479,6 +495,9 @@ $app->post(
                             $logger->addInfo("Vote save success", ["votedAt"=>(new DateTime("now"))->format("Y-m-d H:i:s"), "competitiveWorkIdCompetitiveWork"=>$vote->competitiveWorkIdCompetitiveWork]);
                             $cookies->set("userIdentity", $vote->voteIp.$vote->voteHash, time()+86400);
                             switch ($vote->voteGroup) {
+                                case 0:
+                                    $cookies->set("lastVoteTimeUndef", (new DateTime("now"))->format("Y-m-d H:i:s"), time()+86400);
+                                    break;
                                 case 1:
                                     $cookies->set("lastVoteTimeChild", (new DateTime("now"))->format("Y-m-d H:i:s"), time()+86400);
                                     break;
@@ -504,6 +523,9 @@ $app->post(
                         $logger->addInfo("Vote save success", ["votedAt"=>(new DateTime("now"))->format("Y-m-d H:i:s"), "competitiveWorkIdCompetitiveWork"=>$vote->competitiveWorkIdCompetitiveWork]);
                         $cookies->set("userIdentity", $vote->voteIp.$vote->voteHash, time()+86400);
                         switch ($vote->voteGroup) {
+                            case 0:
+                                $cookies->set("lastVoteTimeUndef", (new DateTime("now"))->format("Y-m-d H:i:s"), time()+86400);
+                                break;
                             case 1:
                                 $cookies->set("lastVoteTimeChild", (new DateTime("now"))->format("Y-m-d H:i:s"), time()+86400);
                                 break;
@@ -529,6 +551,9 @@ $app->post(
                     $logger->addInfo("Vote save success", ["votedAt"=>(new DateTime("now"))->format("Y-m-d H:i:s"), "competitiveWorkIdCompetitiveWork"=>$vote->competitiveWorkIdCompetitiveWork]);
                     $cookies->set("userIdentity", $vote->voteIp.$vote->voteHash, time()+86400);
                     switch ($vote->voteGroup) {
+                        case 0:
+                            $cookies->set("lastVoteTimeUndef", (new DateTime("now"))->format("Y-m-d H:i:s"), time()+86400);
+                            break;
                         case 1:
                             $cookies->set("lastVoteTimeChild", (new DateTime("now"))->format("Y-m-d H:i:s"), time()+86400);
                             break;
