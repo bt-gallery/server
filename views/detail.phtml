@@ -56,8 +56,12 @@
     </a>
     <div class="info-wrap">
         <div class="image_info">
-            <p>Конкурсант: <?= $targetWork['participant_name'] . ' ' . $targetWork['participant_surname'] ?><br/>
-                Возраст: <?= $targetWork['age'] ?> <?= $targetWork['age_string'] ?></p>
+            <p>Конкурсант: <?= $targetWork['participant_name'] . ' ' . $targetWork['participant_surname'] ?>
+                <?if ($targetWork['age']) {?>
+                    <br/>
+                    Возраст: <?= $targetWork['age'] ?> <?= $targetWork['age_string'] ?>
+                <?}?>
+            </p>
             <div id="buttons">
                 <? if ($canVote) { ?>
                     <div id="vote-btn" class="vote" data-id="<?= $targetWork['idCompetitiveWork'] ?>">Проголосовать

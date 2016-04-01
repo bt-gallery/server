@@ -55,8 +55,10 @@
         <a href="/gallery/drawing/<?= $value['idCompetitiveWork'] ?>" target="_blank">
             <div class="tooltip"><img src="<?= $value['webPath'] ?>.resized.<?=pathinfo($value['webPath'], PATHINFO_EXTENSION)?>"/>
                 <div class="tooltips-wrapper">
-                    <div class="tooltiptext name"><?= $value['participant'] ?></div>
-                    <div class="tooltiptext age"><?= $value['age'] ?> <?= $value['age_string'] ?></div>
+                    <div class="tooltiptext name <?=$value['age']!=0 ?: 'single'?>"><?= $value['participant'] ?></div>
+                    <?if ($value['age']!=0){?>
+                        <div class="tooltiptext age"><?= $value['age'] ?> <?= $value['age_string'] ?></div>
+                    <?}?>
                 </div>
             </div>
         </a>
