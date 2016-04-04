@@ -1,12 +1,19 @@
 .image_detail {
-    min-width: 500px;
-    max-width: 50%;
+   /* min-width: 500px;*/
+   /* max-width: 50%;*/
+    max-height:500px;
     float: left;
-    margin-top: 12px;
+    max-width: 50%;
     margin-bottom: 39px;
-    margin-left: 80px;
+    margin-left: 50px;
 }
-
+.comments {
+    width:800px;
+    margin-left: 50px;
+}
+.clearfix{
+    clear:both;
+}
 .image_info {
     margin-left: 39px;
     margin-right: 45px;
@@ -100,13 +107,14 @@
 }
 
 .no-vote {
-    padding: 13px 28px 0 30px;
+    padding: 13px 20px 0 20px;
+    font-size: 0.87em;
+    width: 248px;
+    height: 60px;
+    line-height: 24px;
     color: white;
-    font-size: 1em;
     margin-top: 40px;
-    width: 268px;
     background-color: #BBBBBB;
-    height: 85px;
     border-radius: 6px;
 }
 
@@ -142,5 +150,25 @@
         margin-left:0;
         margin-top:0;
         min-width: 100%;
+        max-width: 50%;
+        max-height:none;
+    }
+    .no-vote{
+        padding: 13px 20px 0 20px;
+        font-size: 0.87em;
+        width: 248px;
+        height: 60px;
+        line-height: 24px;
+    }
+    .image_info {
+        margin-left: 25px;
+         margin-right: 0;
+    }
+    .comments{
+        width:100%;
+        margin-left: 0;
+        padding-left: 15px;
+        padding-right: 15px;
+        box-sizing: border-box;
     }
 }
