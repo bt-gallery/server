@@ -1,12 +1,19 @@
 .image_detail {
-    min-width: 500px;
-    max-width: 50%;
+   /* min-width: 500px;*/
+   /* max-width: 50%;*/
+    max-height:500px;
     float: left;
-    margin-top: 12px;
+    max-width: 50%;
     margin-bottom: 39px;
-    margin-left: 80px;
+    margin-left: 50px;
 }
-
+.comments {
+    width:800px;
+    margin-left: 50px;
+}
+.clearfix{
+    clear:both;
+}
 .image_info {
     margin-left: 39px;
     margin-right: 45px;
@@ -143,6 +150,8 @@
         margin-left:0;
         margin-top:0;
         min-width: 100%;
+        max-width: 50%;
+        max-height:none;
     }
     .no-vote{
         padding: 13px 20px 0 20px;
@@ -154,5 +163,12 @@
     .image_info {
         margin-left: 25px;
          margin-right: 0;
+    }
+    .comments{
+        width:100%;
+        margin-left: 0;
+        padding-left: 15px;
+        padding-right: 15px;
+        box-sizing: border-box;
     }
 }
