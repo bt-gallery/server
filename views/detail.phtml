@@ -57,10 +57,10 @@
     </a>
     <div class="info-wrap">
         <div class="image_info">
-            <p>Конкурсант: <?= $targetWork['participant_name'] . ' ' . $targetWork['participant_surname'] ?>
+            <p><?= $targetWork['participant_name'] . ' ' . $targetWork['participant_surname'] ?>
                 <?if ($targetWork['age']) {?>
                     <br/>
-                    Возраст: <?= $targetWork['age'] ?> <?= $targetWork['age_string'] ?>
+                    <?= $targetWork['age'] ?> <?= $targetWork['age_string'] ?>
                 <?}?>
             </p>
             <div>
@@ -87,6 +87,8 @@
             <span>Прямая ссылка:</span>
             <br/>
             <input id="link-input" type="text" value="http://<?=$_SERVER["SERVER_NAME"]?>/gallery/drawing/<?= $targetWork['idCompetitiveWork'] ?>"/>
+            <br/>
+            <div class="tip">Кликните на рисунке, чтобы открыть его в полном размере.</div>
         </div>
     </div>
     <div class="clearfix"></div>
