@@ -33,7 +33,8 @@ class CompetitiveWork extends \Phalcon\Mvc\Model
             'id_participant' => 'idParticipant',
             'id_declarant' => 'idDeclarant',
             'bet' => 'bet',
-            'moderation' => 'moderation'
+            'moderation' => 'moderation',
+            'priority' => 'priority'
         );
     }
 }
