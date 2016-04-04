@@ -16,7 +16,7 @@
     <meta property="og:site_name" content="Конкурс рисунка"/>
     <meta property="og:description" content='Конкурс рисунка "Дети рисуют космос". Заходи и оцени таланты подрастающего поколения!'/>
     <link rel="stylesheet" type="text/css" href="/main.css">
-    <link rel='stylesheet' type="text/css" href='/detail.css'>
+    <link rel='stylesheet' type="text/css" href='/detail.css?34534'>
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico"/>
     <script src="https://code.jquery.com/jquery-1.12.2.min.js" integrity="sha256-lZFHibXzMHo3GGeehn1hudTAP3Sc0uKXBXAzHX1sjtk=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="/detail.js"></script>
@@ -88,6 +88,22 @@
             <br/>
             <input id="link-input" type="text" value="http://<?=$_SERVER["SERVER_NAME"]?>/gallery/drawing/<?= $targetWork['idCompetitiveWork'] ?>"/>
         </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="comments">
+        <div id="mc-container"></div>
+        <script type="text/javascript">
+            cackle_widget = window.cackle_widget || [];
+            cackle_widget.push({widget: 'Comment', id: 43439});
+            (function() {
+                var mc = document.createElement('script');
+                mc.type = 'text/javascript';
+                mc.async = true;
+                mc.src = ('https:' == document.location.protocol ? 'https' : 'http') + '://cackle.me/widget.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+            })();
+        </script>
+        <a id="mc-link" href="http://cackle.me">Комментарии для сайта <b style="color:#4FA3DA">Cackl</b><b style="color:#F65077">e</b></a>
     </div>
 </div>
 </body>
