@@ -87,15 +87,22 @@
 <div class="pagination">
     <? if (isset($prev_page_offset)) { ?>
         <? if (isset($min_age) and isset($max_age)) { ?>
+            <a href="/gallery/list/<?= $limit ?>/<?= $first_page_offset ?>/ages/<?= $min_age ?>/<?= $max_age ?>">
+                <div class="navigationarrow active">&laquo;</div>
+            </a>
             <a href="/gallery/list/<?= $limit ?>/<?= $prev_page_offset ?>/ages/<?= $min_age ?>/<?= $max_age ?>">
                 <div class="navigation active">Предыдущая</div>
             </a>
         <? } else { ?>
+            <a href="/gallery/list/<?= $limit ?>/<?= $first_page_offset ?>">
+                <div class="navigationarrow active">&laquo;</div>
+            </a>
             <a href="/gallery/list/<?= $limit ?>/<?= $prev_page_offset ?>">
-            <div class="navigation active">Предыдущая</div>
+                <div class="navigation active">Предыдущая</div>
             </a>
         <? } ?>
     <? } else { ?>
+        <div class="navigationarrow inactive">&laquo;</div>
         <div class="navigation inactive">Предыдущая</div>
     <? } ?>
     <? if (isset($next_page_offset)) { ?>
@@ -103,13 +110,20 @@
             <a href="/gallery/list/<?= $limit ?>/<?= $next_page_offset ?>/ages/<?= $min_age ?>/<?= $max_age ?>">
                 <div class="navigation active">Следующая</div>
             </a>
+            <a href="/gallery/list/<?= $limit ?>/<?= $last_page_offset ?>/ages/<?= $min_age ?>/<?= $max_age ?>">
+                <div class="navigationarrow active">&raquo;</div>
+            </a>
         <? } else { ?>
             <a href="/gallery/list/<?= $limit ?>/<?= $next_page_offset ?>">
-            <div class="navigation active">Следующая</div>
+                <div class="navigation active">Следующая</div>
+            </a>
+            <a href="/gallery/list/<?= $limit ?>/<?= $last_page_offset ?>">
+                <div class="navigationarrow active">&raquo;</div>
             </a>
         <? } ?>
     <? } else { ?>
         <div class="navigation inactive">Следующая</div>
+        <div class="navigationarrow inactive">&raquo;</div>
     <? } ?>
 </div>
 </body>

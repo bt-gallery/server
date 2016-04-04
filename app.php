@@ -101,19 +101,24 @@ $app->get(
             $work['votes'] = Vote::count("competitiveWorkIdCompetitiveWork = '$tmpId'");
         }
         $result['targetWorks'] = $targetWorks;
+
         if ($offset!=0) {
             if($limit > $offset){
                 $result['prev_page_offset'] = 0;
+                $result['first_page_offset'] = 0;
             }else{
                 if($offset-$limit > $resultSetCount){
                     $result['prev_page_offset'] = $resultSetCount-$limit;
+                    $result['first_page_offset'] = 0;
                 }else{
                     $result['prev_page_offset'] = $offset-$limit;
+                    $result['first_page_offset'] = 0;
                 }
             }
         }
         if ($resultSetCount-$offset > $limit) {
             $result['next_page_offset'] = $offset+$limit;
+            $result['last_page_offset'] = $resultSetCount-$limit;
         }
         if ($minAge >= 0 and $maxAge > $minAge){
             $result['min_age'] = $minAge;
