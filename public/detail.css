@@ -6,6 +6,9 @@
     max-width: 50%;
     margin-bottom: 39px;
     margin-left: 50px;
+    cursor: zoom-in;
+    cursor: -moz-zoom-in;
+    cursor: -webkit-zoom-in;
 }
 .comments {
     width:800px;
@@ -76,7 +79,7 @@
     border: none;
     padding-top: 11px;
     color: white;
-    font-size: 1.4em;
+    font-size: 22px;
     margin-top: 40px;
     width: 200px;
     background-color: #0072FF;
@@ -115,7 +118,7 @@
 
 .no-vote {
     padding: 13px 20px 0 20px;
-    font-size: 0.87em;
+    font-size: 15px;
     width: 248px;
     height: 60px;
     line-height: 24px;
@@ -136,7 +139,7 @@
     background-position: 10px;
     background-repeat: no-repeat;
     cursor: default;
-    font-size: 1.1em;
+    font-size: 19px;
     width: 307px;
     background-color: #FF797C;
 }
@@ -148,7 +151,7 @@
     background-position: 10px;
     background-repeat: no-repeat;
     cursor: default;
-    font-size: 1.1em;
+    font-size: 18px;
     width: 183px;
     background-color: #86DA91;
 }

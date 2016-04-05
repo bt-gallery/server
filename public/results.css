@@ -1,0 +1,156 @@
+.clearfix {
+    clear: both;
+}
+
+.name {
+    color: white;
+}
+
+h1.title {
+    font-size: 40px;
+    color: white;
+    text-align: center;
+}
+
+.voting {
+    width: 400px;
+    float: left;
+}
+
+.redaction {
+    width: 400px;
+    float: right;
+
+}
+
+.results {
+    width: 900px;
+    margin: auto;
+    margin-top: 100px;
+}
+
+.place {
+    text-align: center;
+}
+
+.pl1 {
+    color: #FFF004;
+    border-bottom: 2px solid #FFF004;
+}
+
+.pl2 {
+    color: #d7dcff;
+    border-bottom: 2px solid #d7dcff;
+}
+
+.pl3 {
+    color: #FFA63C;
+    border-bottom: 2px solid #FFA63C;
+}
+
+.participant {
+    height: 100px;
+    position: relative;
+}
+
+.participant:first-child {
+    margin-top: 0;
+}
+
+.thumb, .name {
+    position: absolute;
+}
+
+.range {
+    margin-bottom: 50px;
+}
+
+.range > p, .redaction > p {
+    font-size: 30px;
+    margin-bottom: 50px;
+    color: #fff;
+    text-align: center;
+}
+
+.place {
+    padding: 10px 0;
+    margin-top: 20px;
+    font-size: 20px;
+}
+
+.thumb {
+    top: 0;
+    left: 0;
+    width: 100px;
+    height: 100px;
+}
+
+.thumb > img {
+    width: 100px;
+    height: 100px;
+}
+
+.thumb:hover {
+    cursor: zoom-in;
+    cursor: -moz-zoom-in;
+    cursor: -webkit-zoom-in;
+}
+
+.name {
+    font-size: 22px;
+    top: 40px;
+    left: 130px;
+    box-sizing: border-box;
+}
+
+.name:hover {
+    cursor: pointer;
+    color: #A6CCFF;
+}
+#logo {
+    float: none !important;
+    margin: auto;
+    width: 87px;
+}
+
+.header {
+    padding-top: 21px;
+    min-height: 100px;
+}
+
+#contest {
+    width: 217px;
+    margin: auto !important;
+    float: none !important;
+}
+
+h1.title {
+    margin-top: 50px;
+
+}
+.results{
+    margin-top:63px;
+}
+
+@media (max-width: 900px) {
+    .voting, .redaction {
+        float: none;
+        margin: auto;
+    }
+
+    .results {
+        width: auto;
+    }
+
+}
+@media (max-width: 415px) {
+    .voting, .redaction {
+        width:100%;
+    }
+    .name{
+        font-size: 18px;
+    }
+    .results {
+        width: auto;
+    }
+}
