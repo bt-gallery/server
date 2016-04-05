@@ -43,6 +43,49 @@ $app->get(
 );
 
 $app->get(
+    '/gallery/final', function () use ($app) {
+        $db = $app->getDI()->getShared("db");
+
+        $sql = "SELECT * FROM final_child LIMIT 3";
+        $resultSet = $db->query($sql);
+        $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
+        $finalChild = $resultSet->fetchAll();
+        $result['finalChild'] = $finalChild;
+
+        $sql = "SELECT * FROM final_junior LIMIT 3";
+        $resultSet = $db->query($sql);
+        $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
+        $finalJunior = $resultSet->fetchAll();
+        $result['finalJunior'] = $finalJunior;
+
+        $sql = "SELECT * FROM final_teen LIMIT 3";
+        $resultSet = $db->query($sql);
+        $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
+        $finalTeen = $resultSet->fetchAll();
+        $result['finalTeen'] = $finalTeen;
+
+        $sql = "SELECT * FROM final_child WHERE id_competitive_work=3201";
+        $resultSet = $db->query($sql);
+        $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
+        $finalBest = $resultSet->fetchAll();
+
+        $sql = "SELECT * FROM final_junior WHERE id_competitive_work=1688";
+        $resultSet = $db->query($sql);
+        $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
+        array_push($finalBest, $resultSet->fetchAll());
+
+        $sql = "SELECT * FROM final_teen WHERE id_competitive_work=4492";
+        $resultSet = $db->query($sql);
+        $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
+        array_push($finalBest, $resultSet->fetchAll());
+
+        $result['finalBest'] = $finalBest;
+
+        echo $app['view']->render('results', $result);
+    }
+);
+
+$app->get(
     '/api/v1/search/bymail', function () use ($app, $responder) {
         $filter = new Filter();
         $db = $app->getDI()->getShared("db");
@@ -101,19 +144,24 @@ $app->get(
             $work['votes'] = Vote::count("competitiveWorkIdCompetitiveWork = '$tmpId'");
         }
         $result['targetWorks'] = $targetWorks;
+
         if ($offset!=0) {
             if($limit > $offset){
                 $result['prev_page_offset'] = 0;
+                $result['first_page_offset'] = 0;
             }else{
                 if($offset-$limit > $resultSetCount){
                     $result['prev_page_offset'] = $resultSetCount-$limit;
+                    $result['first_page_offset'] = 0;
                 }else{
                     $result['prev_page_offset'] = $offset-$limit;
+                    $result['first_page_offset'] = 0;
                 }
             }
         }
         if ($resultSetCount-$offset > $limit) {
             $result['next_page_offset'] = $offset+$limit;
+            $result['last_page_offset'] = $resultSetCount-$limit;
         }
         if ($minAge >= 0 and $maxAge > $minAge){
             $result['min_age'] = $minAge;
@@ -390,7 +438,6 @@ $app->post(
         $vote = new Vote;
         $vote->voteIp = $_SERVER['HTTP_X_FORWARDED_FOR'];
         $vote->voteAgent = $app->request->getUserAgent();
-        //$vote->votedAt = new DateTime("now");
         $tomorrowDateTime = new DateTime("tomorrow");
         if(isset($data["id_competitive_work"])){
             $db = $app->getDI()->getShared("db");
@@ -410,26 +457,27 @@ $app->post(
 
         $vote->voteHash = hash("sha256", $vote->voteIp . $vote->voteAgent . $vote->voteGroup);
 
-        if ($cookies->has("userIdentity")) {
-            $userIdentity = $cookies->get("userIdentity");
-            $userIdentity = $userIdentity->getValue();
-            if ($cookies->has("lastVoteTimeUndef")) {
-                $lastVoteTimeUndef = $cookies->get("lastVoteTimeUndef");
-                $lastVoteTimeUndef = $lastVoteTimeUndef->getValue();
-            }
-            if ($cookies->has("lastVoteTimeChild")) {
-                $lastVoteTimeChild = $cookies->get("lastVoteTimeChild");
-                $lastVoteTimeChild = $lastVoteTimeChild->getValue();
-            }
-            if ($cookies->has("lastVoteTimeJunior")) {
-                $lastVoteTimeJunior = $cookies->get("lastVoteTimeJunior");
-                $lastVoteTimeJunior = $lastVoteTimeJunior->getValue();
-            }
-            if ($cookies->has("lastVoteTimeTeen")) {
-                $lastVoteTimeTeen = $cookies->get("lastVoteTimeTeen");
-                $lastVoteTimeTeen = $lastVoteTimeTeen->getValue();
-            }
+	if ($cookies->has("lastVoteTimeUndef")) {
+		$lastVoteTimeUndef = $cookies->get("lastVoteTimeUndef");
+		$lastVoteTimeUndef = $lastVoteTimeUndef->getValue();
+	}
+	if ($cookies->has("lastVoteTimeChild")) {
+		$lastVoteTimeChild = $cookies->get("lastVoteTimeChild");
+		$lastVoteTimeChild = $lastVoteTimeChild->getValue();
+	}
+	if ($cookies->has("lastVoteTimeJunior")) {
+		$lastVoteTimeJunior = $cookies->get("lastVoteTimeJunior");
+		$lastVoteTimeJunior = $lastVoteTimeJunior->getValue();
+	}
+	if ($cookies->has("lastVoteTimeTeen")) {
+		$lastVoteTimeTeen = $cookies->get("lastVoteTimeTeen");
+		$lastVoteTimeTeen = $lastVoteTimeTeen->getValue();
+	}
 
+        if (($vote->voteGroup==0 and isset($lastVoteTimeUndef))
+		or($vote->voteGroup==1 and isset($lastVoteTimeChild))
+		or($vote->voteGroup==2 and isset($lastVoteTimeJunior))
+		or($vote->voteGroup==3 and isset($lastVoteTimeTeen))) {
             switch ($vote->voteGroup) {
                 case 0:
                     if(isset($lastVoteTimeUndef)){
@@ -471,8 +519,6 @@ $app->post(
                 if($saveResult) {
                     $result["success"][] = $saveResult;
                     $logger->addInfo("Vote save success", ["votedGroup"=>"", "votedAt"=>(new DateTime("now"))->format("Y-m-d H:i:s"), "competitiveWorkIdCompetitiveWork"=>$vote->competitiveWorkIdCompetitiveWork]);
-                    $cookies->get("userIdentity")->delete();
-                    $cookies->set("userIdentity", $vote->voteIp.$vote->hash, time()+86400);
                     switch ($vote->voteGroup) {
                         case 0:
                             $cookies->get("lastVoteTimeUndef")->delete();
@@ -511,14 +557,13 @@ $app->post(
                         $diffDateTime = $voteDateTime->diff($tomorrowDateTime);
                         if($diffDateTime->d == 0) $voteCount++;
                     }
-                    if($voteCount >= 50){
+                    if($voteCount >= 5){
                         $responder(["error"=>["reason"=>"time constraint", "label"=>"Вы уже голосовали сегодня", "timestamp"=>$diffDateTimeHash->format("%h:%I")]], ["Content-Type"=>"application/json"]);
                     }else{
                         $saveResult = $saver($vote);
                         if($saveResult) {
                             $result["success"][] = $saveResult;
                             $logger->addInfo("Vote save success", ["votedAt"=>(new DateTime("now"))->format("Y-m-d H:i:s"), "competitiveWorkIdCompetitiveWork"=>$vote->competitiveWorkIdCompetitiveWork]);
-                            $cookies->set("userIdentity", $vote->voteIp.$vote->voteHash, time()+86400);
                             switch ($vote->voteGroup) {
                                 case 0:
                                     $cookies->set("lastVoteTimeUndef", (new DateTime("now"))->format("Y-m-d H:i:s"), time()+86400);
@@ -546,7 +591,6 @@ $app->post(
                     if($saveResult) {
                         $result["success"][] = $saveResult;
                         $logger->addInfo("Vote save success", ["votedAt"=>(new DateTime("now"))->format("Y-m-d H:i:s"), "competitiveWorkIdCompetitiveWork"=>$vote->competitiveWorkIdCompetitiveWork]);
-                        $cookies->set("userIdentity", $vote->voteIp.$vote->voteHash, time()+86400);
                         switch ($vote->voteGroup) {
                             case 0:
                                 $cookies->set("lastVoteTimeUndef", (new DateTime("now"))->format("Y-m-d H:i:s"), time()+86400);
@@ -574,7 +618,6 @@ $app->post(
                 if($saveResult) {
                     $result["success"][] = $saveResult;
                     $logger->addInfo("Vote save success", ["votedAt"=>(new DateTime("now"))->format("Y-m-d H:i:s"), "competitiveWorkIdCompetitiveWork"=>$vote->competitiveWorkIdCompetitiveWork]);
-                    $cookies->set("userIdentity", $vote->voteIp.$vote->voteHash, time()+86400);
                     switch ($vote->voteGroup) {
                         case 0:
                             $cookies->set("lastVoteTimeUndef", (new DateTime("now"))->format("Y-m-d H:i:s"), time()+86400);
