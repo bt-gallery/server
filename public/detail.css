@@ -26,6 +26,13 @@
 .image_info a {
     text-decoration: none;
 }
+.tip{
+    line-height: 25px;
+    width: 285px;
+    font-size: 17px;
+    margin-top: 25px;
+    color: #FFFFFF;
+}
 
 .info-wrap {
     float: left;
