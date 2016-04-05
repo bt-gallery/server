@@ -107,6 +107,30 @@ h1.title {
     cursor: pointer;
     color: #A6CCFF;
 }
+#logo {
+    float: none !important;
+    margin: auto;
+    width: 87px;
+}
+
+.header {
+    padding-top: 21px;
+    min-height: 100px;
+}
+
+#contest {
+    width: 217px;
+    margin: auto !important;
+    float: none !important;
+}
+
+h1.title {
+    margin-top: 50px;
+
+}
+.results{
+    margin-top:63px;
+}
 
 @media (max-width: 900px) {
     .voting, .redaction {
@@ -117,9 +141,9 @@ h1.title {
     .results {
         width: auto;
     }
-}
 
-@media (max-width: 400px) {
+}
+@media (max-width: 415px) {
     .voting, .redaction {
         width:100%;
     }
