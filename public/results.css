@@ -107,3 +107,26 @@ h1.title {
     cursor: pointer;
     color: #A6CCFF;
 }
+
+@media (max-width: 900px) {
+    .voting, .redaction {
+        float: none;
+        margin: auto;
+    }
+
+    .results {
+        width: auto;
+    }
+}
+
+@media (max-width: 400px) {
+    .voting, .redaction {
+        width:100%;
+    }
+    .name{
+        font-size: 18px;
+    }
+    .results {
+        width: auto;
+    }
+}
