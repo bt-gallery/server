@@ -43,6 +43,49 @@ $app->get(
 );
 
 $app->get(
+    '/gallery/final', function () use ($app) {
+        $db = $app->getDI()->getShared("db");
+
+        $sql = "SELECT * FROM final_child LIMIT 3";
+        $resultSet = $db->query($sql);
+        $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
+        $finalChild = $resultSet->fetchAll();
+        $result['finalChild'] = $finalChild;
+
+        $sql = "SELECT * FROM final_junior LIMIT 3";
+        $resultSet = $db->query($sql);
+        $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
+        $finalJunior = $resultSet->fetchAll();
+        $result['finalJunior'] = $finalJunior;
+
+        $sql = "SELECT * FROM final_teen LIMIT 3";
+        $resultSet = $db->query($sql);
+        $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
+        $finalTeen = $resultSet->fetchAll();
+        $result['finalTeen'] = $finalTeen;
+
+        $sql = "SELECT * FROM final_child WHERE id_competitive_work=3201";
+        $resultSet = $db->query($sql);
+        $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
+        $finalBest = $resultSet->fetchAll();
+
+        $sql = "SELECT * FROM final_junior WHERE id_competitive_work=1688";
+        $resultSet = $db->query($sql);
+        $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
+        array_push($finalBest, $resultSet->fetchAll());
+
+        $sql = "SELECT * FROM final_teen WHERE id_competitive_work=4492";
+        $resultSet = $db->query($sql);
+        $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
+        array_push($finalBest, $resultSet->fetchAll());
+
+        $result['finalBest'] = $finalBest;
+
+        echo $app['view']->render('results', $result);
+    }
+);
+
+$app->get(
     '/api/v1/search/bymail', function () use ($app, $responder) {
         $filter = new Filter();
         $db = $app->getDI()->getShared("db");
