@@ -33,17 +33,17 @@ h1.title {
     text-align: center;
 }
 
-.first {
+.pl1 {
     color: #FFF004;
     border-bottom: 2px solid #FFF004;
 }
 
-.second {
+.pl2 {
     color: #d7dcff;
     border-bottom: 2px solid #d7dcff;
 }
 
-.third {
+.pl3 {
     color: #FFA63C;
     border-bottom: 2px solid #FFA63C;
 }
@@ -90,9 +90,20 @@ h1.title {
     height: 100px;
 }
 
+.thumb:hover {
+    cursor: zoom-in;
+    cursor: -moz-zoom-in;
+    cursor: -webkit-zoom-in;
+}
+
 .name {
     font-size: 22px;
     top: 40px;
     left: 130px;
     box-sizing: border-box;
+}
+
+.name:hover {
+    cursor: pointer;
+    color: #A6CCFF;
 }

@@ -20,11 +20,6 @@
     <link rel="stylesheet" type="text/css" href="/main.css">
     <link rel='stylesheet' type="text/css" href='/results.css'>
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico"/>
-    integrity="sha256-lZFHibXzMHo3GGeehn1hudTAP3Sc0uKXBXAzHX1sjtk=" crossorigin="anonymous"></script>
-    <
-    script
-    type = "text/javascript"
-    src = "/detail.js" ></script>
     <script type="text/javascript" src="//yastatic.net/es5-shims/0.0.2/es5-shims.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="//yastatic.net/share2/share.js" charset="utf-8"></script>
     <script>
@@ -93,77 +88,64 @@
     <div class="voting">
         <div class="range">
             <p>4-6 лет</p>
-            <div class="place first">1 место</div>
-            <div class="participant">
-                <div class="thumb"><img src="http://konkurs.mir24.tv/files/works/1248/1458897101_0.jpg"/></div>
-                <div class="name">Саша Коншин</div>
-            </div>
-            <div class="place second">2 место</div>
-            <div class="participant">
-                <div class="thumb"><img src="http://konkurs.mir24.tv/files/works/103/1458374482_0.JPG.resized.JPG"/>
+            <? foreach ($finalChild as $key => $participant) { ?>
+                <div class="place pl<?= ++$key ?>"><?= $key ?> место</div>
+                <div class="participant">
+                    <a href="<?= $participant['web_url'] ?>" title="Посмотреть в полном размере" target="_blank">
+                        <div class="thumb"><img src="<?= $participant['web_url'] ?>"/></div>
+                    </a>
+                    <a href="http://<?= $_SERVER["SERVER_NAME"] ?>/gallery/drawing/<?= $participant['id_competitive_work'] ?>"
+                       target="_blank">
+                        <div class="name"><?= $participant['name'] ?> <?= $participant['surname'] ?></div>
+                    </a>
                 </div>
-                <div class="name">Саша Коншин</div>
-            </div>
-            <div class="place third">3 место</div>
-            <div class="participant">
-                <div class="thumb"><img src="http://konkurs.mir24.tv/files/works/5362/1459415511_0.jpg"/></div>
-                <div class="name">Саша Коншин</div>
-            </div>
+            <? } ?>
         </div>
         <div class="range">
             <p>7-12 лет</p>
-            <div class="place first">1 место</div>
-            <div class="participant">
-                <div class="thumb"></div>
-                <div class="name">Саша Коншин</div>
-            </div>
-            <div class="place second">2 место</div>
-            <div class="participant">
-                <div class="thumb"></div>
-                <div class="name">Саша Коншин</div>
-            </div>
-            <div class="place third">3 место</div>
-            <div class="participant">
-                <div class="thumb"></div>
-                <div class="name">Саша Коншин</div>
-            </div>
+            <? foreach ($finalJunior as $key => $participant) { ?>
+                <div class="place pl<?= ++$key ?>"><?= $key ?> место</div>
+                <div class="participant">
+                    <a href="<?= $participant['web_url'] ?>" title="Посмотреть в полном размере" target="_blank">
+                        <div class="thumb"><img src="<?= $participant['web_url'] ?>"/></div>
+                    </a>
+                    <a href="http://<?= $_SERVER["SERVER_NAME"] ?>/gallery/drawing/<?= $participant['id_competitive_work'] ?>"
+                       target="_blank">
+                        <div class="name"><?= $participant['name'] ?> <?= $participant['surname'] ?></div>
+                    </a>
+                </div>
+            <? } ?>
         </div>
         <div class="range">
             <p>13-18 лет</p>
-            <div class="place first">1 место</div>
-            <div class="participant">
-                <div class="thumb"></div>
-                <div class="name">Саша Коншин</div>
-            </div>
-            <div class="place second">2 место</div>
-            <div class="participant">
-                <div class="thumb"></div>
-                <div class="name">Саша Коншин</div>
-            </div>
-            <div class="place third">3 место</div>
-            <div class="participant">
-                <div class="thumb"></div>
-                <div class="name">Саша Коншин</div>
-            </div>
+            <? foreach ($finalTeen as $key => $participant) { ?>
+                <div class="place pl<?= ++$key ?>"><?= $key ?> место</div>
+                <div class="participant">
+                    <a href="<?= $participant['web_url'] ?>" title="Посмотреть в полном размере" target="_blank">
+                        <div class="thumb"><img src="<?= $participant['web_url'] ?>"/></div>
+                    </a>
+                    <a href="http://<?= $_SERVER["SERVER_NAME"] ?>/gallery/drawing/<?= $participant['id_competitive_work'] ?>"
+                       target="_blank">
+                        <div class="name"><?= $participant['name'] ?> <?= $participant['surname'] ?></div>
+                    </a>
+                </div>
+            <? } ?>
         </div>
     </div>
     <div class="redaction">
         <p>Выбор редакции</p>
-        <div class="place first">1 место</div>
-        <div class="participant">
-            <div class="thumb"></div>
-            <div class="name">Саша Коншин</div>
-        </div>
-        <div class="place second">2 место</div>
-        <div class="participant">
-            <div class="thumb"></div>
-            <div class="name">Саша Коншин</div>
-        </div>
-        <div class="place third">3 место</div>
-        <div class="participant">
-            <div class="thumb"></div>
-            <div class="name">Саша Коншин</div>
-        </div>
+        <? foreach ($finalBest as $key => $participant) { ?>
+            <div class="place pl<?= ++$key ?>"><?= $key ?> место</div>
+            <div class="participant">
+                <a href="<?= $participant['web_url'] ?>" title="Посмотреть в полном размере" target="_blank">
+                    <div class="thumb"><img src="<?= $participant['web_url'] ?>"/></div>
+                </a>
+                <a href="http://<?= $_SERVER["SERVER_NAME"] ?>/gallery/drawing/<?= $participant['id_competitive_work'] ?>"
+                   target="_blank">
+                    <div class="name"><?= $participant['name'] ?> <?= $participant['surname'] ?></div>
+                </a>
+            </div>
+        <? } ?>
     </div>
 </div>
 </body>

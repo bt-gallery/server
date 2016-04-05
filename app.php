@@ -67,17 +67,17 @@ $app->get(
         $sql = "SELECT * FROM final_child WHERE id_competitive_work=3201";
         $resultSet = $db->query($sql);
         $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
-        $finalBest = $resultSet->fetchAll();
+        $finalBest[] = $resultSet->fetchAll()[0];
 
         $sql = "SELECT * FROM final_junior WHERE id_competitive_work=1688";
         $resultSet = $db->query($sql);
         $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
-        array_push($finalBest, $resultSet->fetchAll());
+        array_push($finalBest, $resultSet->fetchAll()[0]);
 
         $sql = "SELECT * FROM final_teen WHERE id_competitive_work=4492";
         $resultSet = $db->query($sql);
         $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
-        array_push($finalBest, $resultSet->fetchAll());
+        array_push($finalBest, $resultSet->fetchAll()[0]);
 
         $result['finalBest'] = $finalBest;
 
