@@ -52,11 +52,23 @@ $app->get(
         $finalChild = $resultSet->fetchAll();
         $result['finalChild'] = $finalChild;
 
+        $sql = "SELECT * FROM final_child WHERE id_competitive_work IN (4117, 4300, 4314)";
+        $resultSet = $db->query($sql);
+        $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
+        $finalBestChild = $resultSet->fetchAll();
+        $result['finalBestChild'] = $finalBestChild;
+
         $sql = "SELECT * FROM final_junior LIMIT 3";
         $resultSet = $db->query($sql);
         $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
         $finalJunior = $resultSet->fetchAll();
         $result['finalJunior'] = $finalJunior;
+
+        $sql = "SELECT * FROM final_junior WHERE id_competitive_work IN (819, 312, 2969)";
+        $resultSet = $db->query($sql);
+        $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
+        $finalBestJunior= $resultSet->fetchAll();
+        $result['finalBestJunior'] = $finalBestJunior;
 
         $sql = "SELECT * FROM final_teen LIMIT 3";
         $resultSet = $db->query($sql);
@@ -64,22 +76,11 @@ $app->get(
         $finalTeen = $resultSet->fetchAll();
         $result['finalTeen'] = $finalTeen;
 
-        $sql = "SELECT * FROM final_child WHERE id_competitive_work=3201";
+        $sql = "SELECT * FROM final_teen WHERE id_competitive_work IN (357, 5309, 1548)";
         $resultSet = $db->query($sql);
         $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
-        $finalBest = $resultSet->fetchAll();
-
-        $sql = "SELECT * FROM final_junior WHERE id_competitive_work=1688";
-        $resultSet = $db->query($sql);
-        $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
-        array_push($finalBest, $resultSet->fetchAll());
-
-        $sql = "SELECT * FROM final_teen WHERE id_competitive_work=4492";
-        $resultSet = $db->query($sql);
-        $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
-        array_push($finalBest, $resultSet->fetchAll());
-
-        $result['finalBest'] = $finalBest;
+        $finalBestTeen= $resultSet->fetchAll();
+        $result['finalBestTeen'] = $finalBestTeen;
 
         echo $app['view']->render('results', $result);
     }

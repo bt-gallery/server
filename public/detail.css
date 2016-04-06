@@ -6,6 +6,9 @@
     max-width: 50%;
     margin-bottom: 39px;
     margin-left: 50px;
+    cursor: zoom-in;
+    cursor: -moz-zoom-in;
+    cursor: -webkit-zoom-in;
 }
 .comments {
     width:800px;
