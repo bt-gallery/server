@@ -11,7 +11,7 @@ return new \Phalcon\Config(
         'host'       => 'localhost',
         'username'   => 'contest_user',
         'password'   => 'userpass',
-        'dbname'     => 'contest',
+        'dbname'     => 'photo1945',
         'charset'    => 'utf8'
     ),
 

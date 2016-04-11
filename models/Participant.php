@@ -7,7 +7,19 @@ class Participant extends \Phalcon\Mvc\Model
      *
      * @var integer
      */
-    public $id_participant;
+    public $id;
+
+    /**
+     *
+     * @var string
+     */
+    public $time;
+
+    /**
+     *
+     * @var integer
+     */
+    public $id_declarant;
 
     /**
      *
@@ -29,54 +41,99 @@ class Participant extends \Phalcon\Mvc\Model
 
     /**
      *
+     * @var string
+     */
+    public $description;
+
+    /**
+     *
      * @var integer
      */
-    public $id_declarant;
+    public $specification;
 
+    /**
+     *
+     * @var integer
+     */
+    public $moderation;
+
+    /**
+     *
+     * @var integer
+     */
+    public $rejection;
+
+    /**
+     *
+     * @var integer
+     */
+    public $team;
+
+    /**
+     * Initialize method for model.
+     */
     public function initialize()
     {
-        $this->hasMany('idParticipant', 'CompetitiveWork', 'idParticipant');
-        $this->belongsTo('idDeclarant', 'Declarant', 'idDeclarant');
+        $this->hasMany('id', 'Contribution', 'id_participant', array('alias' => 'Contribution'));
+        $this->belongsTo('rejection', 'Rejection', 'id', array('alias' => 'Rejection'));
+        $this->belongsTo('id_declarant', 'Declarant', 'id', array('alias' => 'Declarant'));
+        $this->belongsTo('specification', 'Specification', 'id', array('alias' => 'Specification'));
+        $this->belongsTo('moderation', 'ModerationStatus', 'id', array('alias' => 'ModerationStatus'));
     }
+
+    /**
+     * Allows to query a set of records that match the specified conditions
+     *
+     * @param mixed $parameters
+     * @return Participant[]
+     */
+    public static function find($parameters = null)
+    {
+        return parent::find($parameters);
+    }
+
+    /**
+     * Allows to query the first record that match the specified conditions
+     *
+     * @param mixed $parameters
+     * @return Participant
+     */
+    public static function findFirst($parameters = null)
+    {
+        return parent::findFirst($parameters);
+    }
+
+    /**
+     * Returns table name mapped in the model.
+     *
+     * @return string
+     */
+    public function getSource()
+    {
+        return 'participant';
+    }
+
     /**
      * Independent Column Mapping.
+     * Keys are the real names in the table and the values their names in the application
+     *
+     * @return array
      */
-
     public function columnMap()
     {
         return array(
-            'id_participant' => 'idParticipant', 
-            'name' => 'name', 
-            'surname' => 'surname', 
-            'patronymic' => 'patronymic', 
+            'id' => 'id',
+            'time' => 'time',
             'id_declarant' => 'idDeclarant',
-            'age' => 'age'
+            'name' => 'name',
+            'surname' => 'surname',
+            'patronymic' => 'patronymic',
+            'description' => 'description',
+            'specification' => 'specification',
+            'moderation' => 'moderation',
+            'rejection' => 'rejection',
+            'team' => 'team'
         );
     }
 
-    public function getGroup()
-    {
-        if ($this->age >= 4 and $this->age <= 6) {
-            return 1;
-        } else if($this->age >= 7 and $this->age <= 12) {
-            return 2;
-        } else if($this->age >= 13 and $this->age <= 18) {
-            return 3;
-        }else{
-            return 0;
-        }
-    }
-
-    public static function getGroupS($age)
-    {
-        if ($age >= 4 and $age <= 6) {
-            return 1;
-        } else if($age >= 7 and $age <= 12) {
-            return 2;
-        } else if($age >= 13 and $age <= 18) {
-            return 3;
-        }else{
-            return 0;
-        }
-    }
 }

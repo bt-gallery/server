@@ -1,147 +1,135 @@
-SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
 
-CREATE SCHEMA IF NOT EXISTS `contest` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
-USE `contest` ;
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
 
--- -----------------------------------------------------
--- Table `contest`.`declarant`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `contest`.`declarant` (
-  `id_declarant` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(255) NULL,
-  `surname` VARCHAR(255) NULL,
-  `patronymic` VARCHAR(255) NULL,
-  `email` VARCHAR(320) NULL,
-  `phone` VARCHAR(45) NULL,
-  PRIMARY KEY (`id_declarant`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
+CREATE DATABASE IF NOT EXISTS `photo1945` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `photo1945`;
 
+DROP TABLE IF EXISTS `category`;
+CREATE TABLE IF NOT EXISTS `category` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `label` varchar(255) DEFAULT NULL,
+  `description` text,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
--- -----------------------------------------------------
--- Table `contest`.`participant`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `contest`.`participant` (
-  `id_participant` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(255) NULL,
-  `surname` VARCHAR(255) NULL,
-  `patronymic` VARCHAR(255) NULL,
-  `id_declarant` INT NOT NULL,
-  PRIMARY KEY (`id_participant`, `id_declarant`),
-  INDEX `fk_participant_declarant1_idx` (`id_declarant` ASC),
-  CONSTRAINT `fk_participant_declarant1`
-    FOREIGN KEY (`id_declarant`)
-    REFERENCES `contest`.`declarant` (`id_declarant`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
+DROP TABLE IF EXISTS `contribution`;
+CREATE TABLE IF NOT EXISTS `contribution` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `id_participant` int(11) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `description` text,
+  `store_path` varchar(255) DEFAULT NULL,
+  `web_path` varchar(255) DEFAULT NULL,
+  `file_name` varchar(255) DEFAULT NULL,
+  `moderation` int(11) DEFAULT NULL,
+  `rejection` int(11) DEFAULT NULL,
+  `category` int(11) DEFAULT NULL,
+  `priority` int(11) DEFAULT NULL,
+  `type` varchar(5) DEFAULT NULL,
+  `file_size` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_participant` (`id_participant`),
+  KEY `moderation` (`moderation`),
+  KEY `rejection` (`rejection`),
+  KEY `category` (`category`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+DROP TABLE IF EXISTS `declarant`;
+CREATE TABLE IF NOT EXISTS `declarant` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `name` varchar(255) DEFAULT NULL,
+  `surname` varchar(255) DEFAULT NULL,
+  `patronymic` varchar(255) DEFAULT NULL,
+  `email` varchar(320) DEFAULT NULL,
+  `phone` varchar(50) DEFAULT NULL,
+  `moderation` int(11) DEFAULT NULL,
+  `rejection` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `rejection` (`rejection`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
--- -----------------------------------------------------
--- Table `contest`.`competitive_work`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `contest`.`competitive_work` (
-  `id_competitive_work` INT NOT NULL AUTO_INCREMENT,
-  `store_path` VARCHAR(255) NULL,
-  `web_path` VARCHAR(255) NULL,
-  `file_name` VARCHAR(255) NULL,
-  `id_participant` INT NULL,
-  `id_declarant` INT NULL,
-  `bet` TINYINT(1) NULL DEFAULT 0,
-  `moderation` TINYINT(1) NULL DEFAULT 0,
-  PRIMARY KEY (`id_competitive_work`),
-  INDEX `fk_competitive_work_participant1_idx` (`id_participant` ASC, `id_declarant` ASC),
-  CONSTRAINT `fk_competitive_work_participant1`
-    FOREIGN KEY (`id_participant` , `id_declarant`)
-    REFERENCES `contest`.`participant` (`id_participant` , `id_declarant`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
+DROP TABLE IF EXISTS `moderation_status`;
+CREATE TABLE IF NOT EXISTS `moderation_status` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `status` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+DROP TABLE IF EXISTS `participant`;
+CREATE TABLE IF NOT EXISTS `participant` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `id_declarant` int(11) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `surname` varchar(255) DEFAULT NULL,
+  `patronymic` varchar(255) DEFAULT NULL,
+  `description` text,
+  `specification` int(11) DEFAULT NULL,
+  `moderation` int(11) DEFAULT NULL,
+  `rejection` int(11) DEFAULT NULL,
+  `team` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_declarant` (`id_declarant`),
+  KEY `rejection` (`rejection`),
+  KEY `moderation` (`moderation`),
+  KEY `specification` (`specification`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
--- -----------------------------------------------------
--- Table `contest`.`vote`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `contest`.`vote` (
-  `id_vote` INT NOT NULL AUTO_INCREMENT COMMENT '	',
-  `vote_ip` VARCHAR(45) NULL,
-  `vote_agent` VARCHAR(45) NULL,
-  `voted_at` VARCHAR(45) NULL,
-  `competitive_work_id_competitive_work` INT NOT NULL,
-  PRIMARY KEY (`id_vote`),
-  INDEX `fk_vote_competitive_work1_idx` (`competitive_work_id_competitive_work` ASC),
-  CONSTRAINT `fk_vote_competitive_work1`
-    FOREIGN KEY (`competitive_work_id_competitive_work`)
-    REFERENCES `contest`.`competitive_work` (`id_competitive_work`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
+DROP TABLE IF EXISTS `rejection`;
+CREATE TABLE IF NOT EXISTS `rejection` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `label` varchar(255) DEFAULT NULL,
+  `description` text,
+  `correction_message` text,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+DROP TABLE IF EXISTS `specification`;
+CREATE TABLE IF NOT EXISTS `specification` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `age` int(3) DEFAULT NULL,
+  `year` int(4) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
--- -----------------------------------------------------
--- Table `contest`.`address`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `contest`.`address` (
-  `address` INT NOT NULL AUTO_INCREMENT,
-  `country` VARCHAR(255) NULL,
-  `subject` VARCHAR(255) NULL,
-  `area` VARCHAR(255) NULL,
-  `city` VARCHAR(255) NULL,
-  `street` VARCHAR(255) NULL,
-  `building` VARCHAR(10) NULL,
-  `appartment` VARCHAR(10) NULL,
-  `zip_code` VARCHAR(10) NULL,
-  `declarant_id_declarant` INT NOT NULL,
-  PRIMARY KEY (`address`, `declarant_id_declarant`),
-  INDEX `fk_table1_declarant1_idx` (`declarant_id_declarant` ASC),
-  CONSTRAINT `fk_table1_declarant1`
-    FOREIGN KEY (`declarant_id_declarant`)
-    REFERENCES `contest`.`declarant` (`id_declarant`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `contest`.`queue`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `contest`.`queue` (
-  `id_queue` INT NOT NULL AUTO_INCREMENT,
-  `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
-  `data` TEXT NULL,
-  `job` INT NULL,
-  `status` VARCHAR(45) NULL,
-  PRIMARY KEY (`id_queue`))
-ENGINE = InnoDB;
+DROP TABLE IF EXISTS `vote`;
+CREATE TABLE IF NOT EXISTS `vote` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `ip` varchar(45) DEFAULT NULL,
+  `agent` varchar(45) DEFAULT NULL,
+  `id_contribution` int(11) DEFAULT NULL,
+  `hash` varchar(64) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `hash` (`hash`),
+  KEY `id_contribution` (`id_contribution`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 
--- -----------------------------------------------------
--- Table `contest`.`moderation_stack`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `contest`.`moderation_stack` (
-  `id_moderation_stack` INT NOT NULL AUTO_INCREMENT,
-  `id_competitive_work` INT NOT NULL,
-  `queue_num` INT(11) NULL,
-  `status` TINYINT(1) NULL DEFAULT 0,
-  PRIMARY KEY (`id_moderation_stack`),
-  INDEX `fk_moderation_stack_competitive_work1_idx` (`id_competitive_work` ASC),
-  CONSTRAINT `fk_moderation_stack_competitive_work1`
-    FOREIGN KEY (`id_competitive_work`)
-    REFERENCES `contest`.`competitive_work` (`id_competitive_work`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+ALTER TABLE `contribution`
+  ADD CONSTRAINT `contribution_ibfk_1` FOREIGN KEY (`id_participant`) REFERENCES `participant` (`id`),
+  ADD CONSTRAINT `contribution_ibfk_2` FOREIGN KEY (`moderation`) REFERENCES `moderation_status` (`id`),
+  ADD CONSTRAINT `contribution_ibfk_3` FOREIGN KEY (`rejection`) REFERENCES `rejection` (`id`);
 
+ALTER TABLE `declarant`
+  ADD CONSTRAINT `declarant_ibfk_1` FOREIGN KEY (`rejection`) REFERENCES `rejection` (`id`);
 
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+ALTER TABLE `participant`
+  ADD CONSTRAINT `participant_ibfk_4` FOREIGN KEY (`rejection`) REFERENCES `rejection` (`id`),
+  ADD CONSTRAINT `participant_ibfk_1` FOREIGN KEY (`id_declarant`) REFERENCES `declarant` (`id`),
+  ADD CONSTRAINT `participant_ibfk_2` FOREIGN KEY (`specification`) REFERENCES `specification` (`id`),
+  ADD CONSTRAINT `participant_ibfk_3` FOREIGN KEY (`moderation`) REFERENCES `moderation_status` (`id`);
+
+ALTER TABLE `vote`
+  ADD CONSTRAINT `vote_ibfk_1` FOREIGN KEY (`id_contribution`) REFERENCES `contribution` (`id`);
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

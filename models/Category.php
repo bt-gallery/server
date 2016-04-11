@@ -1,6 +1,6 @@
 <?php
 
-class Vote extends \Phalcon\Mvc\Model
+class Category extends \Phalcon\Mvc\Model
 {
 
     /**
@@ -13,45 +13,19 @@ class Vote extends \Phalcon\Mvc\Model
      *
      * @var string
      */
-    public $time;
+    public $label;
 
     /**
      *
      * @var string
      */
-    public $ip;
-
-    /**
-     *
-     * @var string
-     */
-    public $agent;
-
-    /**
-     *
-     * @var integer
-     */
-    public $id_contribution;
-
-    /**
-     *
-     * @var string
-     */
-    public $hash;
-
-    /**
-     * Initialize method for model.
-     */
-    public function initialize()
-    {
-        $this->belongsTo('id_contribution', 'Contribution', 'id', array('alias' => 'Contribution'));
-    }
+    public $description;
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return Vote[]
+     * @return Category[]
      */
     public static function find($parameters = null)
     {
@@ -62,11 +36,21 @@ class Vote extends \Phalcon\Mvc\Model
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return Vote
+     * @return Category
      */
     public static function findFirst($parameters = null)
     {
         return parent::findFirst($parameters);
+    }
+
+    /**
+     * Returns table name mapped in the model.
+     *
+     * @return string
+     */
+    public function getSource()
+    {
+        return 'category';
     }
 
     /**
@@ -79,22 +63,9 @@ class Vote extends \Phalcon\Mvc\Model
     {
         return array(
             'id' => 'id',
-            'time' => 'time',
-            'ip' => 'ip',
-            'agent' => 'agent',
-            'id_contribution' => 'idContribution',
-            'hash' => 'hash'
+            'label' => 'label',
+            'description' => 'description'
         );
-    }
-
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'vote';
     }
 
 }

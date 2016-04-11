@@ -2,7 +2,7 @@
 
 use Phinx\Migration\AbstractMigration;
 
-class CreateFinalViews extends AbstractMigration
+class Init extends AbstractMigration
 {
     /**
      * Change Method.
@@ -27,28 +27,14 @@ class CreateFinalViews extends AbstractMigration
      */
     public function up()
     {
-        $queryPath = __DIR__ . "/final_child.sql";
-        $query = file_get_contents($queryPath);
-        $this->query($query);
-
-        $queryPath = __DIR__ . "/final_junior.sql";
-        $query = file_get_contents($queryPath);
-        $this->query($query);
-
-        $queryPath = __DIR__ . "/final_teen.sql";
-        $query = file_get_contents($queryPath);
-        $this->query($query);
+        $initSQL = __DIR__ . "/init.sql";
+        $sql = file_get_contents($initSQL);
+        $this->query($sql);
     }
-
     public function down()
     {
-        $query = "DROP VIEW final_child";
-        $this->query($query);
-
-        $query = "DROP VIEW final_junior";
-        $this->query($query);
-
-        $query = "DROP VIEW final_teen";
-        $this->query($query);
+        $initSQL = __DIR__ . "/init_rollback.sql";
+        $sql = file_get_contents($initSQL);
+        $this->query($sql);
     }
 }

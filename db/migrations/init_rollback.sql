@@ -1,0 +1,9 @@
+DROP TABLE IF EXISTS `category`;
+DROP TABLE IF EXISTS `contribution`;
+DROP TABLE IF EXISTS `declarant`;
+DROP TABLE IF EXISTS `moderation_status`;
+DROP TABLE IF EXISTS `participant`;
+DROP TABLE IF EXISTS `phinxlog`;
+DROP TABLE IF EXISTS `rejection`;
+DROP TABLE IF EXISTS `specification`;
+DROP TABLE IF EXISTS `vote`;

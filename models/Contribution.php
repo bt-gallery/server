@@ -1,8 +1,6 @@
 <?php
 
-use Phalcon\Mvc\Model\Validator\Email as Email;
-
-class Declarant extends \Phalcon\Mvc\Model
+class Contribution extends \Phalcon\Mvc\Model
 {
 
     /**
@@ -19,6 +17,12 @@ class Declarant extends \Phalcon\Mvc\Model
 
     /**
      *
+     * @var integer
+     */
+    public $id_participant;
+
+    /**
+     *
      * @var string
      */
     public $name;
@@ -27,25 +31,25 @@ class Declarant extends \Phalcon\Mvc\Model
      *
      * @var string
      */
-    public $surname;
+    public $description;
 
     /**
      *
      * @var string
      */
-    public $patronymic;
+    public $store_path;
 
     /**
      *
      * @var string
      */
-    public $email;
+    public $web_path;
 
     /**
      *
      * @var string
      */
-    public $phone;
+    public $file_name;
 
     /**
      *
@@ -60,34 +64,37 @@ class Declarant extends \Phalcon\Mvc\Model
     public $rejection;
 
     /**
-     * Validations and business logic
      *
-     * @return boolean
+     * @var integer
      */
-    public function validation()
-    {
-        $this->validate(
-            new Email(
-                array(
-                    'field'    => 'email',
-                    'required' => true,
-                )
-            )
-        );
+    public $category;
 
-        if ($this->validationHasFailed() == true) {
-            return false;
-        }
+    /**
+     *
+     * @var integer
+     */
+    public $priority;
 
-        return true;
-    }
+    /**
+     *
+     * @var string
+     */
+    public $type;
+
+    /**
+     *
+     * @var integer
+     */
+    public $file_size;
 
     /**
      * Initialize method for model.
      */
     public function initialize()
     {
-        $this->hasMany('id', 'Participant', 'id_declarant', array('alias' => 'Participant'));
+        $this->hasMany('id', 'Vote', 'id_contribution', array('alias' => 'Vote'));
+        $this->belongsTo('id_participant', 'Participant', 'id', array('alias' => 'Participant'));
+        $this->belongsTo('moderation', 'ModerationStatus', 'id', array('alias' => 'ModerationStatus'));
         $this->belongsTo('rejection', 'Rejection', 'id', array('alias' => 'Rejection'));
     }
 
@@ -95,7 +102,7 @@ class Declarant extends \Phalcon\Mvc\Model
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return Declarant[]
+     * @return Contribution[]
      */
     public static function find($parameters = null)
     {
@@ -106,21 +113,11 @@ class Declarant extends \Phalcon\Mvc\Model
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return Declarant
+     * @return Contribution
      */
     public static function findFirst($parameters = null)
     {
         return parent::findFirst($parameters);
-    }
-
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'declarant';
     }
 
     /**
@@ -134,14 +131,29 @@ class Declarant extends \Phalcon\Mvc\Model
         return array(
             'id' => 'id',
             'time' => 'time',
+            'id_participant' => 'idParticipant',
             'name' => 'name',
-            'surname' => 'surname',
-            'patronymic' => 'patronymic',
-            'email' => 'email',
-            'phone' => 'phone',
+            'description' => 'description',
+            'store_path' => 'storePath',
+            'web_path' => 'webPath',
+            'file_name' => 'fileName',
             'moderation' => 'moderation',
-            'rejection' => 'rejection'
+            'rejection' => 'rejection',
+            'category' => 'category',
+            'priority' => 'priority',
+            'type' => 'type',
+            'file_size' => 'fileSize'
         );
+    }
+
+    /**
+     * Returns table name mapped in the model.
+     *
+     * @return string
+     */
+    public function getSource()
+    {
+        return 'contribution';
     }
 
 }
