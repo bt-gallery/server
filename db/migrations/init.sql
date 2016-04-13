@@ -82,6 +82,15 @@ CREATE TABLE IF NOT EXISTS `participant` (
   KEY `specification` (`specification`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+DROP TABLE IF EXISTS `phinxlog`;
+CREATE TABLE IF NOT EXISTS `phinxlog` (
+  `version` bigint(20) NOT NULL,
+  `migration_name` varchar(100) DEFAULT NULL,
+  `start_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `end_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`version`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 DROP TABLE IF EXISTS `rejection`;
 CREATE TABLE IF NOT EXISTS `rejection` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -103,8 +112,8 @@ DROP TABLE IF EXISTS `vote`;
 CREATE TABLE IF NOT EXISTS `vote` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `ip` varchar(45) DEFAULT NULL,
-  `agent` varchar(45) DEFAULT NULL,
+  `ip` varchar(50) DEFAULT NULL,
+  `agent` text,
   `id_contribution` int(11) DEFAULT NULL,
   `hash` varchar(64) DEFAULT NULL,
   PRIMARY KEY (`id`),
