@@ -9,13 +9,13 @@ return $config = [
     'driver'     => 'sendmail',
     'sendmail'   => '/usr/sbin/sendmail -bs',
     'from'       => [
-        'email' => 'risunok@mirtv.ru',
+        'email' => 'foto1945@mirtv.ru',
         'name'  => 'Мир24'
     ],
     "database" => [
         'host'       => 'localhost',
         'username'   => 'contestuser',
         'password'   => 'userpass',
-        'dbname'     => 'contest'
+        'dbname'     => 'photo1945'
     ]
 ];
