@@ -2,7 +2,7 @@
 
 use Phinx\Migration\AbstractMigration;
 
-class ChangeVotedAtType extends AbstractMigration
+class StairwayToModeration extends AbstractMigration
 {
     /**
      * Change Method.
@@ -27,8 +27,13 @@ class ChangeVotedAtType extends AbstractMigration
      */
     public function change()
     {
-        $table = $this->table('vote');
-        $table->changeColumn('voted_at', 'timestamp', array('null' => true, 'default' => 'CURRENT_TIMESTAMP'))
+        $table = $this->table('stairway_to_moderation');
+        $table->addColumn('time', 'timestamp', array('default' => 'CURRENT_TIMESTAMP'))
+              ->addColumn('id_contribution', 'integer', array('limit' => 11, 'null' => true))
+              ->addColumn('ticket', 'integer', array('limit' => 11, 'null' => true))
+              ->create();
+        $table->addIndex(array('id_contribution'))
+              ->addForeignKey('id_contribution', 'contribution', 'id', array('delete'=> 'RESTRICT', 'update'=> 'RESTRICT'))
               ->save();
     }
 }

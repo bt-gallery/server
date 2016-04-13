@@ -1,6 +1,6 @@
 <?php
 
-class Vote extends \Phalcon\Mvc\Model
+class Rejection extends \Phalcon\Mvc\Model
 {
 
     /**
@@ -13,45 +13,35 @@ class Vote extends \Phalcon\Mvc\Model
      *
      * @var string
      */
-    public $time;
+    public $label;
 
     /**
      *
      * @var string
      */
-    public $ip;
+    public $description;
 
     /**
      *
      * @var string
      */
-    public $agent;
-
-    /**
-     *
-     * @var integer
-     */
-    public $id_contribution;
-
-    /**
-     *
-     * @var string
-     */
-    public $hash;
+    public $correction_message;
 
     /**
      * Initialize method for model.
      */
     public function initialize()
     {
-        $this->belongsTo('id_contribution', 'Contribution', 'id', array('alias' => 'Contribution'));
+        $this->hasMany('id', 'Contribution', 'rejection', array('alias' => 'Contribution'));
+        $this->hasMany('id', 'Declarant', 'rejection', array('alias' => 'Declarant'));
+        $this->hasMany('id', 'Participant', 'rejection', array('alias' => 'Participant'));
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return Vote[]
+     * @return Rejection[]
      */
     public static function find($parameters = null)
     {
@@ -62,11 +52,21 @@ class Vote extends \Phalcon\Mvc\Model
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return Vote
+     * @return Rejection
      */
     public static function findFirst($parameters = null)
     {
         return parent::findFirst($parameters);
+    }
+
+    /**
+     * Returns table name mapped in the model.
+     *
+     * @return string
+     */
+    public function getSource()
+    {
+        return 'rejection';
     }
 
     /**
@@ -79,22 +79,10 @@ class Vote extends \Phalcon\Mvc\Model
     {
         return array(
             'id' => 'id',
-            'time' => 'time',
-            'ip' => 'ip',
-            'agent' => 'agent',
-            'id_contribution' => 'idContribution',
-            'hash' => 'hash'
+            'label' => 'label',
+            'description' => 'description',
+            'correction_message' => 'correctionMessage'
         );
-    }
-
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'vote';
     }
 
 }
