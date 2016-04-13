@@ -15,9 +15,18 @@ use Phalcon\Mvc\Model\Query;
 /* PUT routes */
 
 $app->put(
-    '/api/v1/declarant/update',
+    '/api/v1/declarant/update/',
     function () use ($app, $responder, $servant, $logger) {
+        $model = new $Declarant;
+        $data = $app->request->getPost();
+        $mapper = $servant("mapper");
+        $saver = $servant("saver");
+        $queue = $app->di->getService("queue")->getDefinition();
+        $result = $saver(
+            $mapper($model,$data)
+        );
 
+        $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
 
