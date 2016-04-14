@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS `category` (
   `label` varchar(255) DEFAULT NULL,
   `description` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 DROP TABLE IF EXISTS `contribution`;
 CREATE TABLE IF NOT EXISTS `contribution` (
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `contribution` (
   KEY `moderation` (`moderation`),
   KEY `rejection` (`rejection`),
   KEY `category` (`category`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 DROP TABLE IF EXISTS `declarant`;
 CREATE TABLE IF NOT EXISTS `declarant` (
@@ -53,14 +53,14 @@ CREATE TABLE IF NOT EXISTS `declarant` (
   `rejection` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `rejection` (`rejection`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 DROP TABLE IF EXISTS `moderation_status`;
 CREATE TABLE IF NOT EXISTS `moderation_status` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `status` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 DROP TABLE IF EXISTS `participant`;
 CREATE TABLE IF NOT EXISTS `participant` (
@@ -71,16 +71,15 @@ CREATE TABLE IF NOT EXISTS `participant` (
   `surname` varchar(255) DEFAULT NULL,
   `patronymic` varchar(255) DEFAULT NULL,
   `description` text,
-  `specification` int(11) DEFAULT NULL,
+  `year` int(4) DEFAULT NULL,
   `moderation` int(11) DEFAULT NULL,
   `rejection` int(11) DEFAULT NULL,
   `team` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `id_declarant` (`id_declarant`),
   KEY `rejection` (`rejection`),
-  KEY `moderation` (`moderation`),
-  KEY `specification` (`specification`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  KEY `moderation` (`moderation`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 DROP TABLE IF EXISTS `phinxlog`;
 CREATE TABLE IF NOT EXISTS `phinxlog` (
@@ -97,14 +96,6 @@ CREATE TABLE IF NOT EXISTS `rejection` (
   `label` varchar(255) DEFAULT NULL,
   `description` text,
   `correction_message` text,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
-DROP TABLE IF EXISTS `specification`;
-CREATE TABLE IF NOT EXISTS `specification` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `age` int(3) DEFAULT NULL,
-  `year` int(4) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -131,10 +122,9 @@ ALTER TABLE `declarant`
   ADD CONSTRAINT `declarant_ibfk_1` FOREIGN KEY (`rejection`) REFERENCES `rejection` (`id`);
 
 ALTER TABLE `participant`
-  ADD CONSTRAINT `participant_ibfk_4` FOREIGN KEY (`rejection`) REFERENCES `rejection` (`id`),
   ADD CONSTRAINT `participant_ibfk_1` FOREIGN KEY (`id_declarant`) REFERENCES `declarant` (`id`),
-  ADD CONSTRAINT `participant_ibfk_2` FOREIGN KEY (`specification`) REFERENCES `specification` (`id`),
-  ADD CONSTRAINT `participant_ibfk_3` FOREIGN KEY (`moderation`) REFERENCES `moderation_status` (`id`);
+  ADD CONSTRAINT `participant_ibfk_2` FOREIGN KEY (`moderation`) REFERENCES `moderation_status` (`id`),
+  ADD CONSTRAINT `participant_ibfk_3` FOREIGN KEY (`rejection`) REFERENCES `rejection` (`id`);
 
 ALTER TABLE `vote`
   ADD CONSTRAINT `vote_ibfk_1` FOREIGN KEY (`id_contribution`) REFERENCES `contribution` (`id`);
