@@ -1,4 +1,5 @@
-#Contest
+#Competition gallery
+
 ### Server REST API.
 Web-application based on PhalconPHP framework.  
 The main goal is to provide robust and fast basic abstract layer for various types of online contest, polls and competitions.
