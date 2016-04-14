@@ -94,7 +94,6 @@ $app->post(
                 }
                 $result[] = $modelResult;
             }
-
             $responder($result, ["Content-Type"=>"application/json"]);
         }
     }
