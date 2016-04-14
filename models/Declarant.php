@@ -64,23 +64,6 @@ class Declarant extends \Phalcon\Mvc\Model
      *
      * @return boolean
      */
-    public function validation()
-    {
-        $this->validate(
-            new Email(
-                array(
-                    'field'    => 'email',
-                    'required' => true,
-                )
-            )
-        );
-
-        if ($this->validationHasFailed() == true) {
-            return false;
-        }
-
-        return true;
-    }
 
     /**
      * Initialize method for model.
