@@ -16,18 +16,26 @@ use Phalcon\Mvc\Model\Query;
 
 $app->put(
     '/api/v1/declarant/update',
-    function () use ($app, $responder, $servant) {
-        $model = new Declarant;
-        $data = $app->request->getPut();
-        $mapper = $servant("mapper");
-        $saver = $servant("saver");
-        $queue = $app->di->getService("queue")->getDefinition();
-        $result = $saver(
-            $mapper($model,$data)
-        );
-
-        $responder($result, ["Content-Type"=>"application/json"]);
+        
+            function () use ($app, $responder, $servant) {
+                $model = new Declarant;
+                $data = $app->request->getPut();
+                if (Declarant::findFirst($data['id']) && isset($data['id'])) {
+                   $mapper = $servant("mapper");
+                $saver = $servant("saver");
+                $queue = $app->di->getService("queue")->getDefinition();
+                $result = $saver(
+                    $mapper($model,$data)
+                );
+        
+                $responder($result, ["Content-Type"=>"application/json"]);
+            } else {
+            $result = ["error"=>["message"=>"id not found", 
+                                 "legend"=>"Запись с таким идентефикатором не найдена"]];
+            $responder($result, ["Content-Type"=>"application/json"]);
+        } 
     }
+
 );
 
 $app->put(
@@ -35,6 +43,7 @@ $app->put(
     function () use ($app, $responder, $servant) {
         $model = new Participant;
         $data = $app->request->getPut();
+        if (Participant::findFirst($data['id']) && isset($data['id'])) {
         $mapper = $servant("mapper");
         $saver = $servant("saver");
         $queue = $app->di->getService("queue")->getDefinition();
@@ -43,7 +52,12 @@ $app->put(
         );
 
         $responder($result, ["Content-Type"=>"application/json"]);
-    }
+        }else {
+            $result = ["error"=>["message"=>"id not found", 
+                                 "legend"=>"Запись с таким идентефикатором не найдена"]];
+            $responder($result, ["Content-Type"=>"application/json"]);
+        } 
+    } 
 );
 
 $app->put(
@@ -51,6 +65,7 @@ $app->put(
     function () use ($app, $responder, $servant) {
         $model = new Contribution;
         $data = $app->request->getPut();
+        if (Contribution::findFirst($data['id']) && isset($data['id']))
         $mapper = $servant("mapper");
         $saver = $servant("saver");
         $queue = $app->di->getService("queue")->getDefinition();
@@ -59,6 +74,11 @@ $app->put(
         );
 
         $responder($result, ["Content-Type"=>"application/json"]);
+        }else {
+            $result = ["error"=>["message"=>"id not found", 
+                                 "legend"=>"Запись с таким идентефикатором не найдена"]];
+            $responder($result, ["Content-Type"=>"application/json"]);
+        } 
     }
 );
 
@@ -67,16 +87,7 @@ $app->put(
 $app->put(
     '/api/v1/stairway/kick',
     function () use ($app, $responder, $servant) {
-        $model = new StairwayToModeration;
-        $data = $app->request->getPut();
-        $mapper = $servant("mapper");
-        $saver = $servant("saver");
-        $queue = $app->di->getService("queue")->getDefinition();
-        $result = $saver(
-            $mapper($model,$data)
-        );
-
-        $responder($result, ["Content-Type"=>"application/json"]);
+        
     }
 );
 
@@ -85,6 +96,7 @@ $app->put(
     function () use ($app, $responder, $servant) {
         $model = new Specification;
         $data = $app->request->getPut();
+        if (Specification::findFirst($data['id']) && isset($data['id']))
         $mapper = $servant("mapper");
         $saver = $servant("saver");
         $queue = $app->di->getService("queue")->getDefinition();
@@ -93,6 +105,11 @@ $app->put(
         );
 
         $responder($result, ["Content-Type"=>"application/json"]);
+        }else {
+            $result = ["error"=>["message"=>"id not found", 
+                                 "legend"=>"Запись с таким идентефикатором не найдена"]];
+            $responder($result, ["Content-Type"=>"application/json"]);
+        } 
     }
 );
 
@@ -101,6 +118,7 @@ $app->put(
     function () use ($app, $responder, $servant) {
         $model = new ModerationStatus;
         $data = $app->request->getPut();
+        if (ModerationStatus::findFirst($data['id']) && isset($data['id']))
         $mapper = $servant("mapper");
         $saver = $servant("saver");
         $queue = $app->di->getService("queue")->getDefinition();
@@ -109,6 +127,11 @@ $app->put(
         );
 
         $responder($result, ["Content-Type"=>"application/json"]);
+        }else {
+            $result = ["error"=>["message"=>"id not found", 
+                                 "legend"=>"Запись с таким идентефикатором не найдена"]];
+            $responder($result, ["Content-Type"=>"application/json"]);
+        } 
     }
 );
 
@@ -117,6 +140,7 @@ $app->put(
     function () use ($app, $responder, $servant) {
         $model = new Rejection;
         $data = $app->request->getPut();
+        if (Rejection::findFirst($data['id']) && isset($data['id']))
         $mapper = $servant("mapper");
         $saver = $servant("saver");
         $queue = $app->di->getService("queue")->getDefinition();
@@ -125,6 +149,11 @@ $app->put(
         );
 
         $responder($result, ["Content-Type"=>"application/json"]);
+        }else {
+            $result = ["error"=>["message"=>"id not found", 
+                                 "legend"=>"Запись с таким идентефикатором не найдена"]];
+            $responder($result, ["Content-Type"=>"application/json"]);
+        } 
     }
 );
 
@@ -133,6 +162,7 @@ $app->put(
     function () use ($app, $responder, $servant) {
         $model = new Category;
         $data = $app->request->getPut();
+        if (Category::findFirst($data['id']) && isset($data['id']))
         $mapper = $servant("mapper");
         $saver = $servant("saver");
         $queue = $app->di->getService("queue")->getDefinition();
@@ -141,5 +171,10 @@ $app->put(
         );
 
         $responder($result, ["Content-Type"=>"application/json"]);
+        }else {
+            $result = ["error"=>["message"=>"id not found", 
+                                 "legend"=>"Запись с таким идентефикатором не найдена"]];
+            $responder($result, ["Content-Type"=>"application/json"]);
+        } 
     }
 );
