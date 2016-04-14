@@ -22,24 +22,24 @@ $app->get(
 
 $app->get(
     '/hiddenСave', function () use ($app) {
+        $models = ContributionSigned::find(array())->toArray();
+        $result = $models;
+        $responder($result, ["Content-Type"=>"application/json"]);
         echo "<p>It's dangerous to go alone! Take this.</p><p>finest_sword.jpg</p>";
     }
 );
-
-$app->get(
-    '/api/v1/declarant/get', 
-    function () use ($app, $responder) {
-
-
+ $app->get(
+    '/api/v1/declarant/get/{id:[0-9]+}', 
+    function ($id) use ($app, $responder) {
+        $result = Declarant::findfirst($id)->toArray();
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
 
 $app->get(
-    '/api/v1/declarant/getList', 
-    function () use ($app, $responder) {
-
-
+    '/api/v1/declarant/getList/{limit:[0-9]+}/{offset:[0-9]+}', 
+    function ($limit, $offset) use ($app, $responder) {
+        $result = Declarant::find(array("limit" => $limit, "offset" => $offset))->toArray();
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
@@ -54,19 +54,17 @@ $app->get(
 );
 
 $app->get(
-    '/api/v1/participant/get', 
-    function () use ($app, $responder) {
-
-
+    '/api/v1/participant/get/{id:[0-9]+}', 
+    function ($id) use ($app, $responder) {
+        $result = Participant::findfirst($id)->toArray();
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
 
 $app->get(
-    '/api/v1/participant/getList', 
-    function () use ($app, $responder) {
-
-
+    '/api/v1/participant/getList/{limit:[0-9]+}/{offset:[0-9]+}', 
+    function ($limit, $offset) use ($app, $responder) {
+        $result = Participant::find(array("limit" => $limit, "offset" => $offset))->toArray();
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
@@ -81,19 +79,17 @@ $app->get(
 );
 
 $app->get(
-    '/api/v1/contribution/get', 
-    function () use ($app, $responder) {
-
-
+    '/api/v1/contribution/get/{id:[0-9]+}', 
+    function ($id) use ($app, $responder) {
+        $result = Contribution::findfirst($id)->toArray();
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
 
 $app->get(
-    '/api/v1/contribution/getList', 
-    function () use ($app, $responder) {
-
-
+    '/api/v1/contribution/getList/{limit:[0-9]+}/{offset:[0-9]+}', 
+    function ($limit, $offset) use ($app, $responder) {
+        $result = Contribution::find(array("limit" => $limit, "offset" => $offset))->toArray();
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
@@ -108,19 +104,17 @@ $app->get(
 );
 
 $app->get(
-    '/api/v1/stairway/get', 
-    function () use ($app, $responder) {
-
-
+    '/api/v1/stairway/get/{id:[0-9]+}', 
+    function ($id) use ($app, $responder) {
+        $result = Stairway::findfirst($id)->toArray();
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
 
 $app->get(
-    '/api/v1/stairway/getList', 
-    function () use ($app, $responder) {
-
-
+    '/api/v1/stairway/getList/{limit:[0-9]+}/{offset:[0-9]+}', 
+    function ($limit, $offset) use ($app, $responder) {
+        $result = Stairway::find(array("limit" => $limit, "offset" => $offset))->toArray();
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
@@ -134,91 +128,97 @@ $app->get(
 );
 
 $app->get(
-    '/api/v1/vote/get', 
-    function () use ($app, $responder) {
-
-
+    '/api/v1/vote/get/{id:[0-9]+}', 
+    function ($id) use ($app, $responder) {
+        $result = Vote::findfirst($id)->toArray();
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
 
 $app->get(
-    '/api/v1/vote/getList', 
-    function () use ($app, $responder) {
-
-
+    '/api/v1/vote/getList/{limit:[0-9]+}/{offset:[0-9]+}', 
+    function ($limit, $offset) use ($app, $responder) {
+        $result = Vote::find(array("limit" => $limit, "offset" => $offset))->toArray();
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
 
 $app->get(
-    '/api/v1/specification/get', 
-    function () use ($app, $responder) {
-
-
+    '/api/v1/specification/get/{id:[0-9]+}', 
+    function ($id) use ($app, $responder) {
+        $result = Specification::findfirst($id)->toArray();
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
 
 $app->get(
-    '/api/v1/specification/getList', 
-    function () use ($app, $responder) {
-
-
+    '/api/v1/specification/getList/{limit:[0-9]+}/{offset:[0-9]+}', 
+    function ($limit, $offset) use ($app, $responder) {
+        $result = Specification::find(array("limit" => $limit, "offset" => $offset))->toArray();
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
 
 $app->get(
-    '/api/v1/moderation/get', 
-    function () use ($app, $responder) {
-
-
+    '/api/v1/moderation/get/{id:[0-9]+}', 
+    function ($id) use ($app, $responder) {
+        $result = Moderation::findfirst($id)->toArray();
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
 
 $app->get(
-    '/api/v1/moderation/getList', 
-    function () use ($app, $responder) {
-
-
+    '/api/v1/moderation/getList/{limit:[0-9]+}/{offset:[0-9]+}', 
+    function ($limit, $offset) use ($app, $responder) {
+        $result = Moderation::find(array("limit" => $limit, "offset" => $offset))->toArray();
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
 
 $app->get(
-    '/api/v1/rejection/get', 
-    function () use ($app, $responder) {
-
-
+    '/api/v1/rejection/get/{id:[0-9]+}', 
+    function ($id) use ($app, $responder) {
+        $result = Rejection::findfirst($id)->toArray();
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
 
 $app->get(
-    '/api/v1/rejection/getList', 
-    function () use ($app, $responder) {
-
-
+    '/api/v1/rejection/getList/{limit:[0-9]+}/{offset:[0-9]+}', 
+    function ($limit, $offset) use ($app, $responder) {
+        $result = Rejection::find(array("limit" => $limit, "offset" => $offset))->toArray();
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
 
 $app->get(
-    '/api/v1/category/get', 
-    function () use ($app, $responder) {
-
-
+    '/api/v1/category/get/{id:[0-9]+}', 
+    function ($id) use ($app, $responder) {
+        $result = Category::findfirst($id)->toArray();
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
 
 $app->get(
-    '/api/v1/category/getList', 
-    function () use ($app, $responder) {
+    '/api/v1/category/getList/{limit:[0-9]+}/{offset:[0-9]+}', 
+    function ($limit, $offset) use ($app, $responder) {
+        $result = Category::find(array("limit" => $limit, "offset" => $offset))->toArray();
+        $responder($result, ["Content-Type"=>"application/json"]);
+    }
+);
 
+$app->get(
+    '/api/v1/contributionSigned/get/{id:[0-9]+}', 
+    function ($id) use ($app, $responder) {
+        $result = ContributionSigned::findfirst($id)->toArray();
+        $responder($result, ["Content-Type"=>"application/json"]);
+    }
+);
 
+$app->get(
+    '/api/v1/contributionSigned/getList/{limit:[0-9]+}/{offset:[0-9]+}', 
+    function ($limit, $offset) use ($app, $responder) {
+        $result = ContributionSigned::find(array("limit" => $limit, "offset" => $offset))->toArray();
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
