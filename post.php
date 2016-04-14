@@ -134,23 +134,6 @@ $app->post(
 );
 
 $app->post(
-    '/api/v1/specification/add',
-    function () use ($app, $responder, $servant) {
-        $model = new Specification;
-        $data = $app->request->getPost();
-        if(isset($data['id']))unset($data['id']);
-        if(isset($data['time']))unset($data['time']);
-        $mapper = $servant("mapper");
-        $saver = $servant("saver");
-        $result = $saver(
-            $mapper($model,$data)
-        );
-
-        $responder($result, ["Content-Type"=>"application/json"]);
-    }
-);
-
-$app->post(
     '/api/v1/moderation/add',
     function () use ($app, $responder, $servant) {
         $model = new Moderation;

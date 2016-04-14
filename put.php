@@ -77,24 +77,6 @@ $app->put(
 );
 
 $app->put(
-    '/api/v1/specification/update',
-    function () use ($app, $responder, $servant) {
-        $data = $app->request->getPut();
-        if ($model = Specification::findFirst($data['id']) && isset($data['id'])) {
-            $mapper = $servant("mapper");
-            $saver = $servant("saver");
-            $queue = $app->di->getService("queue")->getDefinition();
-            $result = $saver(
-                $mapper($model,$data)
-            );
-        }else {
-            $result = ["error"=>["message"=>"id not found", "legend"=>"Запись с таким идентефикатором не найдена"]];
-        }
-        $responder($result, ["Content-Type"=>"application/json"]);
-    }
-);
-
-$app->put(
     '/api/v1/moderation/update',
     function () use ($app, $responder, $servant) {
         $data = $app->request->getPut();

@@ -28,7 +28,11 @@ $app->get(
  $app->get(
     '/api/v1/declarant/get/{id:[0-9]+}',
     function ($id) use ($app, $responder) {
-        $result = Declarant::findFirst($id)->toArray();
+        if($model = Declarant::findFirst($id)){
+            $result = $model->toArray();
+        }else{
+            $result = ["error"=>["message"=>"id not found", "legend"=>"Запись с таким идентефикатором не найдена"]];
+        }
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
@@ -52,7 +56,11 @@ $app->get(
 $app->get(
     '/api/v1/participant/get/{id:[0-9]+}',
     function ($id) use ($app, $responder) {
-        $result = Participant::findFirst($id)->toArray();
+        if($model = Participant::findFirst($id)){
+            $result = $model->toArray();
+        }else{
+            $result = ["error"=>["message"=>"id not found", "legend"=>"Запись с таким идентефикатором не найдена"]];
+        }
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
@@ -76,7 +84,11 @@ $app->get(
 $app->get(
     '/api/v1/contribution/get/{id:[0-9]+}',
     function ($id) use ($app, $responder) {
-        $result = Contribution::findFirst($id)->toArray();
+        if($model = Contribution::findFirst($id)){
+            $result = $model->toArray();
+        }else{
+            $result = ["error"=>["message"=>"id not found", "legend"=>"Запись с таким идентефикатором не найдена"]];
+        }
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
@@ -100,7 +112,11 @@ $app->get(
 $app->get(
     '/api/v1/stairway/get/{id:[0-9]+}',
     function ($id) use ($app, $responder) {
-        $result = StairwayToModeration::findFirst($id)->toArray();
+        if($model = StairwayToModeration::findFirst($id)){
+            $result = $model->toArray();
+        }else{
+            $result = ["error"=>["message"=>"id not found", "legend"=>"Запись с таким идентефикатором не найдена"]];
+        }
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
@@ -123,7 +139,11 @@ $app->get(
 $app->get(
     '/api/v1/vote/get/{id:[0-9]+}',
     function ($id) use ($app, $responder) {
-        $result = Vote::findFirst($id)->toArray();
+        if($model = Vote::findFirst($id)){
+            $result = $model->toArray();
+        }else{
+            $result = ["error"=>["message"=>"id not found", "legend"=>"Запись с таким идентефикатором не найдена"]];
+        }
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
@@ -137,25 +157,13 @@ $app->get(
 );
 
 $app->get(
-    '/api/v1/specification/get/{id:[0-9]+}',
-    function ($id) use ($app, $responder) {
-        $result = Specification::findFirst($id)->toArray();
-        $responder($result, ["Content-Type"=>"application/json"]);
-    }
-);
-
-$app->get(
-    '/api/v1/specification/getList/{limit:[0-9]+}/{offset:[0-9]+}',
-    function ($limit, $offset) use ($app, $responder) {
-        $result = Specification::find(array("limit" => $limit, "offset" => $offset))->toArray();
-        $responder($result, ["Content-Type"=>"application/json"]);
-    }
-);
-
-$app->get(
     '/api/v1/moderation/get/{id:[0-9]+}',
     function ($id) use ($app, $responder) {
-        $result = ModerationStatus::findFirst($id)->toArray();
+        if($model = ModerationStatus::findFirst($id)){
+            $result = $model->toArray();
+        }else{
+            $result = ["error"=>["message"=>"id not found", "legend"=>"Запись с таким идентефикатором не найдена"]];
+        }
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
@@ -171,7 +179,11 @@ $app->get(
 $app->get(
     '/api/v1/rejection/get/{id:[0-9]+}',
     function ($id) use ($app, $responder) {
-        $result = Rejection::findFirst($id)->toArray();
+        if($model = Rejection::findFirst($id)){
+            $result = $model->toArray();
+        }else{
+            $result = ["error"=>["message"=>"id not found", "legend"=>"Запись с таким идентефикатором не найдена"]];
+        }
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
@@ -187,7 +199,11 @@ $app->get(
 $app->get(
     '/api/v1/category/get/{id:[0-9]+}',
     function ($id) use ($app, $responder) {
-        $result = Category::findFirst($id)->toArray();
+        if($model = Category::findFirst($id)){
+            $result = $model->toArray();
+        }else{
+            $result = ["error"=>["message"=>"id not found", "legend"=>"Запись с таким идентефикатором не найдена"]];
+        }
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
@@ -203,7 +219,11 @@ $app->get(
 $app->get(
     '/api/v1/contributionSigned/get/{id:[0-9]+}',
     function ($id) use ($app, $responder) {
-        $result = ContributionSigned::findFirst($id)->toArray();
+        if($model = ContributionSigned::findFirst($id)){
+            $result = $model->toArray();
+        }else{
+            $result = ["error"=>["message"=>"id not found", "legend"=>"Запись с таким идентефикатором не найдена"]];
+        }
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
