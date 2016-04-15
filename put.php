@@ -131,7 +131,7 @@ $app->put(
     "/api/v1/register",
     function () use ($app, $logger, $responder, $servant) {
         $saver = $servant("saver");
-        $taskQueue = $servant("taskQueue");
+        $jobQueue = $servant("jobQueue");
         $stairway = new StairwayToModeration;
         $data = $app->request->getPut();
         $declarant = Declarant::findFirst($data["idDeclarant"]);
@@ -203,7 +203,7 @@ $app->put(
             $jobData["queueNum"][$participant->id] = $stairway->id;
         }
 
-        $taskQueue($jobData, Job::MAIL_DECLARANT_REGISTRATION,Status::NEW_ONE);
+        $jobQueue($jobData, Job::MAIL_DECLARANT_REGISTRATION,Status::NEW_ONE);
         $responder($result, ["Content-Type"=>"application/json"]);
 
     }
