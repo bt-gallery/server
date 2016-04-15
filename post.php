@@ -122,7 +122,6 @@ $app->post(
         $model = new StairwayToModeration;
         $data = $app->request->getPost();
         if(isset($data['id']))unset($data['id']);
-        if(isset($data['time']))unset($data['time']);
         $mapper = $servant("mapper");
         $saver = $servant("saver");
         $result = $saver(
@@ -136,7 +135,7 @@ $app->post(
 $app->post(
     '/api/v1/moderation/add',
     function () use ($app, $responder, $servant) {
-        $model = new Moderation;
+        $model = new ModerationStatus;
         $data = $app->request->getPost();
         if(Category::findFirst($data['id']) and isset($data['id'])){
             $result = ["error"=>["message"=>"id already exists", "legend"=>"Запись с таким идентефикатором уже существует"]];
@@ -161,7 +160,6 @@ $app->post(
         if(Category::findFirst($data['id']) and isset($data['id'])){
             $result = ["error"=>["message"=>"id already exists", "legend"=>"Запись с таким идентефикатором уже существует"]];
         }else{
-            if(isset($data['time']))unset($data['time']);
             $mapper = $servant("mapper");
             $saver = $servant("saver");
             $result = $saver(
@@ -181,7 +179,6 @@ $app->post(
         if(Category::findFirst($data['id']) and isset($data['id'])){
             $result = ["error"=>["message"=>"id already exists", "legend"=>"Запись с таким идентефикатором уже существует"]];
         }else{
-            if(isset($data['time']))unset($data['time']);
             $mapper = $servant("mapper");
             $saver = $servant("saver");
             $result = $saver(

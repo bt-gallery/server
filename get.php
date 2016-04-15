@@ -94,6 +94,18 @@ $app->get(
 );
 
 $app->get(
+    '/api/v1/contribution/get/{id:[0-9]+}/votes',
+    function ($id) use ($app, $responder) {
+        if($model = Contribution::findFirst($id)){
+            $result = $model->getVotes();
+        }else{
+            $result = ["error"=>["message"=>"id not found", "legend"=>"Запись с таким идентефикатором не найдена"]];
+        }
+        $responder($result, ["Content-Type"=>"application/json"]);
+    }
+);
+
+$app->get(
     '/api/v1/contribution/getList/{limit:[0-9]+}/{offset:[0-9]+}',
     function ($limit, $offset) use ($app, $responder) {
         $result = Contribution::find(array("limit" => $limit, "offset" => $offset))->toArray();
@@ -221,6 +233,18 @@ $app->get(
     function ($id) use ($app, $responder) {
         if($model = ContributionSigned::findFirst($id)){
             $result = $model->toArray();
+        }else{
+            $result = ["error"=>["message"=>"id not found", "legend"=>"Запись с таким идентефикатором не найдена"]];
+        }
+        $responder($result, ["Content-Type"=>"application/json"]);
+    }
+);
+
+$app->get(
+    '/api/v1/contributionSigned/get/{id:[0-9]+}/votes',
+    function ($id) use ($app, $responder) {
+        if($model = ContributionSigned::findFirst($id)){
+            $result = $model->getVotes();
         }else{
             $result = ["error"=>["message"=>"id not found", "legend"=>"Запись с таким идентефикатором не найдена"]];
         }

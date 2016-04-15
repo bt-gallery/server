@@ -13,49 +13,49 @@ class ContributionSigned extends \Phalcon\Mvc\Model
      *
      * @var string
      */
-    public $contribution_time;
+    public $contributionTime;
 
     /**
      *
      * @var string
      */
-    public $contribution_name;
+    public $contributionName;
 
     /**
      *
      * @var string
      */
-    public $contribution_description;
+    public $contributionDescription;
 
     /**
      *
      * @var string
      */
-    public $store_path;
+    public $storePath;
 
     /**
      *
      * @var string
      */
-    public $web_path;
+    public $webPath;
 
     /**
      *
      * @var string
      */
-    public $file_name;
+    public $fileName;
 
     /**
      *
      * @var integer
      */
-    public $contribution_moderation;
+    public $contributionModeration;
 
     /**
      *
      * @var integer
      */
-    public $contribution_rejection;
+    public $contributionRejection;
 
     /**
      *
@@ -79,13 +79,13 @@ class ContributionSigned extends \Phalcon\Mvc\Model
      *
      * @var integer
      */
-    public $file_size;
+    public $fileSize;
 
     /**
      *
      * @var integer
      */
-    public $id_participant;
+    public $idParticipant;
 
     /**
      *
@@ -103,19 +103,19 @@ class ContributionSigned extends \Phalcon\Mvc\Model
      *
      * @var string
      */
-    public $participant_time;
+    public $participantTime;
 
     /**
      *
      * @var integer
      */
-    public $id_declarant;
+    public $idDeclarant;
 
     /**
      *
      * @var string
      */
-    public $participant_name;
+    public $participantName;
 
     /**
      *
@@ -133,7 +133,7 @@ class ContributionSigned extends \Phalcon\Mvc\Model
      *
      * @var string
      */
-    public $participant_description;
+    public $participantDescription;
 
     /**
      *
@@ -145,13 +145,13 @@ class ContributionSigned extends \Phalcon\Mvc\Model
      *
      * @var integer
      */
-    public $participant_moderation;
+    public $participantModeration;
 
     /**
      *
      * @var integer
      */
-    public $participant_rejection;
+    public $participantRejection;
 
     /**
      *
@@ -227,6 +227,24 @@ class ContributionSigned extends \Phalcon\Mvc\Model
             'participant_rejection' => 'participantRejection',
             'team' => 'team'
         );
+    }
+    public function getVotes()
+    {
+        //return Resultset\Simple
+        if ($this->id) {
+            return Vote::find("idContribution={$this->id}");
+        }else{
+            return false;
+        }
+    }
+    public function getDeclarant()
+    {
+        //return Resultset\Simple
+        if($this->idDeclarant){
+            return Declarant::find("id={$this->idDeclarant}");
+        }else {
+            return false;
+        }
     }
 
 }

@@ -19,7 +19,7 @@ class StairwayToModeration extends \Phalcon\Mvc\Model
      *
      * @var integer
      */
-    public $id_contribution;
+    public $idContribution;
 
     /**
      *
