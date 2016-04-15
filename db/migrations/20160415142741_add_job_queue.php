@@ -2,7 +2,7 @@
 
 use Phinx\Migration\AbstractMigration;
 
-class AddToDoList extends AbstractMigration
+class AddJobQueue extends AbstractMigration
 {
     /**
      * Change Method.
@@ -27,7 +27,7 @@ class AddToDoList extends AbstractMigration
      */
     public function change()
     {
-        $table = $this->table('to-do_list');
+        $table = $this->table('job_queue');
         $table->addColumn('time', 'timestamp', array('null' => true, 'default' => 'CURRENT_TIMESTAMP'))
               ->addColumn('data', 'text', array('null' => true))
               ->addColumn('job', 'integer', array('limit' => 11, 'null' => true))

@@ -106,8 +106,8 @@ $di['saver'] = function (&$model) use ($logger) {
     return $result;
 };
 
-$di['toDoList'] = function ($data, $job, $status) use ($logger) {
-    $model = new ToDoList;
+$di['jobQueue'] = function ($data, $job, $status) use ($logger) {
+    $model = new JobQueue;
     $model->data = serialize($data);
     $model->job = $job;
     $model->status = $status;

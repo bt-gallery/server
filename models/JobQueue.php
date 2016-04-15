@@ -1,6 +1,6 @@
 <?php
 
-class ToDoList extends \Phalcon\Mvc\Model
+class JobQueue extends \Phalcon\Mvc\Model
 {
 
     /**
@@ -34,28 +34,20 @@ class ToDoList extends \Phalcon\Mvc\Model
     public $status;
 
     /**
-     * Initialize method for model.
-     */
-    public function initialize()
-    {
-        $this->setSource("to-do_list");
-    }
-
-    /**
      * Returns table name mapped in the model.
      *
      * @return string
      */
     public function getSource()
     {
-        return 'to-do_list';
+        return 'job_queue';
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return ToDoList[]
+     * @return JobQueue[]
      */
     public static function find($parameters = null)
     {
@@ -66,7 +58,7 @@ class ToDoList extends \Phalcon\Mvc\Model
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return ToDoList
+     * @return JobQueue
      */
     public static function findFirst($parameters = null)
     {

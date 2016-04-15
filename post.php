@@ -137,7 +137,7 @@ $app->post(
     function () use ($app, $responder, $servant) {
         $model = new ModerationStatus;
         $data = $app->request->getPost();
-        if(Category::findFirst($data['id']) and isset($data['id'])){
+        if(Category::findFirst($data['id']) && isset($data['id'])){
             $result = ["error"=>["message"=>"id already exists", "legend"=>"Запись с таким идентефикатором уже существует"]];
         }else{
             if(isset($data['time']))unset($data['time']);
@@ -157,7 +157,7 @@ $app->post(
     function () use ($app, $responder, $servant) {
         $model = new Rejection;
         $data = $app->request->getPost();
-        if(Category::findFirst($data['id']) and isset($data['id'])){
+        if(Category::findFirst($data['id']) && isset($data['id'])){
             $result = ["error"=>["message"=>"id already exists", "legend"=>"Запись с таким идентефикатором уже существует"]];
         }else{
             $mapper = $servant("mapper");
@@ -176,7 +176,7 @@ $app->post(
     function () use ($app, $responder, $servant) {
         $model = new Category;
         $data = $app->request->getPost();
-        if(Category::findFirst($data['id']) and isset($data['id'])){
+        if(Category::findFirst($data['id']) && isset($data['id'])){
             $result = ["error"=>["message"=>"id already exists", "legend"=>"Запись с таким идентефикатором уже существует"]];
         }else{
             $mapper = $servant("mapper");

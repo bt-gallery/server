@@ -18,7 +18,7 @@ $app->put(
     '/api/v1/declarant/update',
     function () use ($app, $responder, $servant) {
         $data = $app->request->getPut();
-        if ($model = Declarant::findFirst($data['id']) and isset($data['id'])) {
+        if ($model = Declarant::findFirst($data['id']) && isset($data['id'])) {
             if(isset($data['time']))unset($data['time']);
             $mapper = $servant("mapper");
             $saver = $servant("saver");
@@ -37,7 +37,7 @@ $app->put(
     '/api/v1/participant/update',
     function () use ($app, $responder, $servant) {
         $data = $app->request->getPut();
-        if ($model = Participant::findFirst($data['id']) and isset($data['id'])) {
+        if ($model = Participant::findFirst($data['id']) && isset($data['id'])) {
             if(isset($data['time']))unset($data['time']);
             $mapper = $servant("mapper");
             $saver = $servant("saver");
@@ -55,7 +55,7 @@ $app->put(
     '/api/v1/contribution/update',
     function () use ($app, $responder, $servant) {
         $data = $app->request->getPut();
-        if ($model = Contribution::findFirst($data['id']) and isset($data['id'])) {
+        if ($model = Contribution::findFirst($data['id']) && isset($data['id'])) {
             if(isset($data['time']))unset($data['time']);
             $mapper = $servant("mapper");
             $saver = $servant("saver");
@@ -80,7 +80,7 @@ $app->put(
     '/api/v1/moderation/update',
     function () use ($app, $responder, $servant) {
         $data = $app->request->getPut();
-        if ($model = ModerationStatus::findFirst($data['id']) and isset($data['id'])) {
+        if ($model = ModerationStatus::findFirst($data['id']) && isset($data['id'])) {
             $mapper = $servant("mapper");
             $saver = $servant("saver");
             $result = $saver(
@@ -97,7 +97,7 @@ $app->put(
     '/api/v1/rejection/update',
     function () use ($app, $responder, $servant) {
         $data = $app->request->getPut();
-        if ($model = Rejection::findFirst($data['id']) and isset($data['id'])) {
+        if ($model = Rejection::findFirst($data['id']) && isset($data['id'])) {
             $mapper = $servant("mapper");
             $saver = $servant("saver");
             $result = $saver(
@@ -114,7 +114,7 @@ $app->put(
     '/api/v1/category/update',
     function () use ($app, $responder, $servant) {
         $data = $app->request->getPut();
-        if ($model = Category::findFirst($data['id']) and isset($data['id'])) {
+        if ($model = Category::findFirst($data['id']) && isset($data['id'])) {
             $mapper = $servant("mapper");
             $saver = $servant("saver");
             $result = $saver(
@@ -131,7 +131,7 @@ $app->put(
     "/api/v1/register",
     function () use ($app, $logger, $responder, $servant) {
         $saver = $servant("saver");
-        $toDoList = $servant("toDoList");
+        $taskQueue = $servant("taskQueue");
         $stairway = new StairwayToModeration;
         $data = $app->request->getPut();
         $declarant = Declarant::findFirst($data["idDeclarant"]);
@@ -203,7 +203,7 @@ $app->put(
             $jobData["queueNum"][$participant->id] = $stairway->id;
         }
 
-        $toDoList($jobData, Job::MAIL_DECLARANT_REGISTRATION,Status::NEW_ONE);
+        $taskQueue($jobData, Job::MAIL_DECLARANT_REGISTRATION,Status::NEW_ONE);
         $responder($result, ["Content-Type"=>"application/json"]);
 
     }
