@@ -19,7 +19,7 @@ class Contribution extends \Phalcon\Mvc\Model
      *
      * @var integer
      */
-    public $id_participant;
+    public $idParticipant;
 
     /**
      *
@@ -37,19 +37,19 @@ class Contribution extends \Phalcon\Mvc\Model
      *
      * @var string
      */
-    public $store_path;
+    public $storePath;
 
     /**
      *
      * @var string
      */
-    public $web_path;
+    public $webPath;
 
     /**
      *
      * @var string
      */
-    public $file_name;
+    public $fileName;
 
     /**
      *
@@ -85,7 +85,7 @@ class Contribution extends \Phalcon\Mvc\Model
      *
      * @var integer
      */
-    public $file_size;
+    public $fileSize;
 
     /**
      * Initialize method for model.
@@ -154,6 +154,24 @@ class Contribution extends \Phalcon\Mvc\Model
     public function getSource()
     {
         return 'contribution';
+    }
+    public function getParticipant()
+    {
+        //return Resultset\Simple
+        if ($this->idParticipant) {
+            return Participant::find("id={$this->idParticipant}");
+        }else{
+            return false;
+        }
+    }
+    public function getVotes()
+    {
+        //return Resultset\Simple
+        if ($this->id) {
+            return Vote::find("idContribution={$this->id}");
+        }else{
+            return false;
+        }
     }
 
 }

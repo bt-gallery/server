@@ -17,16 +17,16 @@ class MailTask extends \Phalcon\Cli\Task
 
         $mailer = new \Phalcon\Ext\Mailer\Manager($config);
 
-        $queue = Queue::findFirst("job=".Job::MAIL_DECLARANT_REGISTRATION." AND status=".Status::NEW_ONE);
+        $jobQueue = JobQueue::findFirst("job=".Job::MAIL_DECLARANT_REGISTRATION." AND status=".Status::NEW_ONE);
 
-        if(!$queue) {
+        if(!$jobQueue) {
             $logger->addInfo("no job");
             return;
         } else {
-            $logger->addInfo("processing queue ", ["queue" => $queue]);
+            $logger->addInfo("processing job queue", ["jobQueue" => $jobQueue]);
         }
 
-        $params = unserialize($queue->toArray()['data']);
+        $params = unserialize($jobQueue->toArray()['data']);
 
         $message = $mailer->createMessageFromView('register', $params)
             ->to($params["declarant"]["email"])
@@ -35,12 +35,12 @@ class MailTask extends \Phalcon\Cli\Task
          // Send message
         $result = $message->send();
         if($result) {
-            $logger->addInfo("message sent", ["queue ID" => $queue->id_queue]);
-            $queue->status = Status::DONE;
-            $saver($queue);
+            $logger->addInfo("message sent", ["Job queue ID" => $jobQueue->id]);
+            $jobQueue->status = Status::DONE;
+            $saver($jobQueue);
         }    
         else {
-            $logger->addCritical("mailer fails", ["queue ID" => $queue->id_queue]); 
+            $logger->addCritical("mailer fails", ["Job queue ID" => $jobQueue->id]); 
         }
 
         return;
@@ -49,7 +49,7 @@ class MailTask extends \Phalcon\Cli\Task
     public function formRegisteredQueueAction(array $params=[])
     {
         $db = $this->getDI()->getShared("db");
-        $queue = $this->getDI()->getService("queue")->getDefinition();
+        $jobQueue = $this->getDI()->getService("jobQueue")->getDefinition();
         $query = "SELECT DISTINCT declarant.id_declarant FROM declarant LEFT JOIN competitive_work ON competitive_work.id_declarant = declarant.id_declarant WHERE competitive_work.bet = 1 ORDER BY `declarant`.`id_declarant`  DESC";
         $result = $db->query($query);
         $result->setFetchMode(Phalcon\Db::FETCH_ASSOC);
@@ -67,7 +67,7 @@ class MailTask extends \Phalcon\Cli\Task
             $jobData["declarant"] = $declarant->toArray();
             $jobData["participants"] = Participant::find("idDeclarant={$currentOne["id_declarant"]}")->toArray();
 
-            $queue($jobData, Job::MAIL_DECLARANT_REGISTRATION,Status::NEW_ONE);
+            $jobQueue($jobData, Job::MAIL_DECLARANT_REGISTRATION,Status::NEW_ONE);
             unset($jobData["queueNum"]);
         }
     }

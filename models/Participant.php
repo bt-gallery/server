@@ -19,7 +19,7 @@ class Participant extends \Phalcon\Mvc\Model
      *
      * @var integer
      */
-    public $id_declarant;
+    public $idDeclarant;
 
     /**
      *
@@ -129,11 +129,29 @@ class Participant extends \Phalcon\Mvc\Model
             'surname' => 'surname',
             'patronymic' => 'patronymic',
             'description' => 'description',
-            'specification' => 'specification',
+            'year' => 'year',
             'moderation' => 'moderation',
             'rejection' => 'rejection',
             'team' => 'team'
         );
+    }
+    public function getContributions()
+    {
+        //return Resultset\Simple
+        if($this->id){
+            return Contribution::find("idParticipant={$this->id}");
+        }else {
+            return false;
+        }
+    }
+    public function getDeclarant()
+    {
+        //return Resultset\Simple
+        if($this->idDeclarant){
+            return Declarant::find("id={$this->idDeclarant}");
+        }else {
+            return false;
+        }
     }
 
 }
