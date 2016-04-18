@@ -126,5 +126,14 @@ class Declarant extends \Phalcon\Mvc\Model
             'rejection' => 'rejection'
         );
     }
+    public function getParticipants()
+    {
+        //return Resultset\Simple
+        if($this->id){
+            return Participant::find("idDeclarant={$this->id}");
+        }else {
+            return false;
+        }
+    }
 
 }

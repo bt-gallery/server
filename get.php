@@ -28,7 +28,11 @@ $app->get(
  $app->get(
     '/api/v1/declarant/get/{id:[0-9]+}',
     function ($id) use ($app, $responder) {
-        $result = Declarant::findFirst($id)->toArray();
+        if($model = Declarant::findFirst($id)){
+            $result = $model->toArray();
+        }else{
+            $result = ["error"=>["message"=>"id not found", "legend"=>"Запись с таким идентефикатором не найдена"]];
+        }
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
@@ -52,7 +56,11 @@ $app->get(
 $app->get(
     '/api/v1/participant/get/{id:[0-9]+}',
     function ($id) use ($app, $responder) {
-        $result = Participant::findFirst($id)->toArray();
+        if($model = Participant::findFirst($id)){
+            $result = $model->toArray();
+        }else{
+            $result = ["error"=>["message"=>"id not found", "legend"=>"Запись с таким идентефикатором не найдена"]];
+        }
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
@@ -76,7 +84,23 @@ $app->get(
 $app->get(
     '/api/v1/contribution/get/{id:[0-9]+}',
     function ($id) use ($app, $responder) {
-        $result = Contribution::findFirst($id)->toArray();
+        if($model = Contribution::findFirst($id)){
+            $result = $model->toArray();
+        }else{
+            $result = ["error"=>["message"=>"id not found", "legend"=>"Запись с таким идентефикатором не найдена"]];
+        }
+        $responder($result, ["Content-Type"=>"application/json"]);
+    }
+);
+
+$app->get(
+    '/api/v1/contribution/get/{id:[0-9]+}/votes',
+    function ($id) use ($app, $responder) {
+        if($model = Contribution::findFirst($id)){
+            $result = $model->getVotes();
+        }else{
+            $result = ["error"=>["message"=>"id not found", "legend"=>"Запись с таким идентефикатором не найдена"]];
+        }
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
@@ -100,7 +124,11 @@ $app->get(
 $app->get(
     '/api/v1/stairway/get/{id:[0-9]+}',
     function ($id) use ($app, $responder) {
-        $result = StairwayToModeration::findFirst($id)->toArray();
+        if($model = StairwayToModeration::findFirst($id)){
+            $result = $model->toArray();
+        }else{
+            $result = ["error"=>["message"=>"id not found", "legend"=>"Запись с таким идентефикатором не найдена"]];
+        }
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
@@ -123,7 +151,11 @@ $app->get(
 $app->get(
     '/api/v1/vote/get/{id:[0-9]+}',
     function ($id) use ($app, $responder) {
-        $result = Vote::findFirst($id)->toArray();
+        if($model = Vote::findFirst($id)){
+            $result = $model->toArray();
+        }else{
+            $result = ["error"=>["message"=>"id not found", "legend"=>"Запись с таким идентефикатором не найдена"]];
+        }
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
@@ -137,25 +169,13 @@ $app->get(
 );
 
 $app->get(
-    '/api/v1/specification/get/{id:[0-9]+}',
-    function ($id) use ($app, $responder) {
-        $result = Specification::findFirst($id)->toArray();
-        $responder($result, ["Content-Type"=>"application/json"]);
-    }
-);
-
-$app->get(
-    '/api/v1/specification/getList/{limit:[0-9]+}/{offset:[0-9]+}',
-    function ($limit, $offset) use ($app, $responder) {
-        $result = Specification::find(array("limit" => $limit, "offset" => $offset))->toArray();
-        $responder($result, ["Content-Type"=>"application/json"]);
-    }
-);
-
-$app->get(
     '/api/v1/moderation/get/{id:[0-9]+}',
     function ($id) use ($app, $responder) {
-        $result = ModerationStatus::findFirst($id)->toArray();
+        if($model = ModerationStatus::findFirst($id)){
+            $result = $model->toArray();
+        }else{
+            $result = ["error"=>["message"=>"id not found", "legend"=>"Запись с таким идентефикатором не найдена"]];
+        }
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
@@ -171,7 +191,11 @@ $app->get(
 $app->get(
     '/api/v1/rejection/get/{id:[0-9]+}',
     function ($id) use ($app, $responder) {
-        $result = Rejection::findFirst($id)->toArray();
+        if($model = Rejection::findFirst($id)){
+            $result = $model->toArray();
+        }else{
+            $result = ["error"=>["message"=>"id not found", "legend"=>"Запись с таким идентефикатором не найдена"]];
+        }
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
@@ -187,7 +211,11 @@ $app->get(
 $app->get(
     '/api/v1/category/get/{id:[0-9]+}',
     function ($id) use ($app, $responder) {
-        $result = Category::findFirst($id)->toArray();
+        if($model = Category::findFirst($id)){
+            $result = $model->toArray();
+        }else{
+            $result = ["error"=>["message"=>"id not found", "legend"=>"Запись с таким идентефикатором не найдена"]];
+        }
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
@@ -203,7 +231,23 @@ $app->get(
 $app->get(
     '/api/v1/contributionSigned/get/{id:[0-9]+}',
     function ($id) use ($app, $responder) {
-        $result = ContributionSigned::findFirst($id)->toArray();
+        if($model = ContributionSigned::findFirst($id)){
+            $result = $model->toArray();
+        }else{
+            $result = ["error"=>["message"=>"id not found", "legend"=>"Запись с таким идентефикатором не найдена"]];
+        }
+        $responder($result, ["Content-Type"=>"application/json"]);
+    }
+);
+
+$app->get(
+    '/api/v1/contributionSigned/get/{id:[0-9]+}/votes',
+    function ($id) use ($app, $responder) {
+        if($model = ContributionSigned::findFirst($id)){
+            $result = $model->getVotes();
+        }else{
+            $result = ["error"=>["message"=>"id not found", "legend"=>"Запись с таким идентефикатором не найдена"]];
+        }
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
@@ -213,206 +257,5 @@ $app->get(
     function ($limit, $offset) use ($app, $responder) {
         $result = ContributionSigned::find(array("limit" => $limit, "offset" => $offset))->toArray();
         $responder($result, ["Content-Type"=>"application/json"]);
-    }
-);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-$app->get(
-    '/declarant', function () use ($app) {
-    }
-);
-
-$app->get(
-    '/api/v1/search/bymail', function () use ($app, $responder) {
-        $filter = new Filter();
-        $db = $app->getDI()->getShared("db");
-
-        $rawQuery = $app->request->getQuery("q");
-        $query = $filter->sanitize($rawQuery, "email");
-
-        $sqlQuery = "SELECT * FROM moderation_stack_grouped WHERE email='{$query}'";
-
-        $resultSet = $db->query($sqlQuery);
-        $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
-        $result = $resultSet->fetchAll();
-        $responder($result, ["Content-Type"=>"application/json"]);
-    }
-);
-
-$app->get(
-    '/gallery/list/{limit}/{offset}/ages/{minAge}/{maxAge}',
-    function ($limit, $offset, $minAge, $maxAge) use ($app, $responder, $logger) {
-        $result = array();
-        $db = $app->getDI()->getShared("db");
-        $filter = new Filter();
-        $limit = $filter->sanitize($limit, "int");
-        $offset = $filter->sanitize($offset, "int");
-        $minAge = $filter->sanitize($minAge, "int");
-        $maxAge = $filter->sanitize($maxAge, "int");
-        if( !($limit >= 0 and $offset >= 0 and $minAge >= 0 and $maxAge > $minAge) ) {
-            echo $app['view']->render('404');
-            return false;
-        }
-        $sql = "SELECT * FROM moderation_stack_grouped WHERE age BETWEEN '{$minAge}' AND '{$maxAge}' AND result='одобрено' LIMIT {$limit} OFFSET {$offset}";
-        try {
-            $resultSet = $db->query($sql);
-            $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
-            $targetWorks = $resultSet->fetchAll();
-
-            $sql = "SELECT * FROM moderation_stack_grouped WHERE age BETWEEN '{$minAge}' AND '{$maxAge}' AND result='одобрено'";
-            $resultSetTmp = $db->query($sql);
-            $resultSetTmp->setFetchMode(Phalcon\Db::FETCH_ASSOC);
-            $targetWorksTmp = $resultSetTmp->fetchAll();
-            $resultSetCount = count($targetWorksTmp);
-        } catch (\Exception $e) {
-            echo $app['view']->render('404');
-            return false;
-        }
-        foreach ($targetWorks as $key=>&$work){
-            $age = $work["age"];
-            $t1 = $age % 10;
-            $t2 = $age % 100;
-            $age = ($t1 == 1 && $t2 != 11 ? "год" : ($t1 >= 2 && $t1 <= 4 && ($t2 < 10 || $t2 >= 20) ? "года" : "лет"));
-            $work['age_string'] = $age;
-            $work['participant'] = $work['name'] . " " .$work["surname"];
-            $work['webPath'] = $work['web_url'];
-            $work['idCompetitiveWork'] = $work['id_competitive_work'];
-            $tmpId = $work['id_competitive_work'];
-            $work['votes'] = Vote::count("competitiveWorkIdCompetitiveWork = '$tmpId'");
-        }
-        $result['targetWorks'] = $targetWorks;
-
-        if ($offset!=0) {
-            if($limit > $offset){
-                $result['prev_page_offset'] = 0;
-                $result['first_page_offset'] = 0;
-            }else{
-                if($offset-$limit > $resultSetCount){
-                    $result['prev_page_offset'] = $resultSetCount-$limit;
-                    $result['first_page_offset'] = 0;
-                }else{
-                    $result['prev_page_offset'] = $offset-$limit;
-                    $result['first_page_offset'] = 0;
-                }
-            }
-        }
-        if ($resultSetCount-$offset > $limit) {
-            $result['next_page_offset'] = $offset+$limit;
-            $result['last_page_offset'] = $resultSetCount-$limit;
-        }
-        if ($minAge >= 0 and $maxAge > $minAge){
-            $result['min_age'] = $minAge;
-            $result['max_age'] = $maxAge;
-        }
-        if($limit>0){
-            $result['limit'] = $limit;
-        }
-
-        echo $app['view']->render('gallery', $result);
-    }
-);
-
-$app->get(
-    '/gallery/final', function () use ($app) {
-        $db = $app->getDI()->getShared("db");
-
-        $sql = "SELECT * FROM final_child LIMIT 3";
-        $resultSet = $db->query($sql);
-        $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
-        $finalChild = $resultSet->fetchAll();
-        $result['finalChild'] = $finalChild;
-
-        $sql = "SELECT * FROM final_child WHERE id_competitive_work IN (4117, 4300, 4314)";
-        $resultSet = $db->query($sql);
-        $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
-        $finalBestChild = $resultSet->fetchAll();
-        $result['finalBestChild'] = $finalBestChild;
-
-        $sql = "SELECT * FROM final_junior LIMIT 3";
-        $resultSet = $db->query($sql);
-        $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
-        $finalJunior = $resultSet->fetchAll();
-        $result['finalJunior'] = $finalJunior;
-
-        $sql = "SELECT * FROM final_junior WHERE id_competitive_work IN (819, 312, 2969)";
-        $resultSet = $db->query($sql);
-        $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
-        $finalBestJunior= $resultSet->fetchAll();
-        $result['finalBestJunior'] = $finalBestJunior;
-
-        $sql = "SELECT * FROM final_teen LIMIT 3";
-        $resultSet = $db->query($sql);
-        $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
-        $finalTeen = $resultSet->fetchAll();
-        $result['finalTeen'] = $finalTeen;
-
-        $sql = "SELECT * FROM final_teen WHERE id_competitive_work IN (357, 5309, 1548)";
-        $resultSet = $db->query($sql);
-        $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
-        $finalBestTeen= $resultSet->fetchAll();
-        $result['finalBestTeen'] = $finalBestTeen;
-
-        echo $app['view']->render('results', $result);
     }
 );
