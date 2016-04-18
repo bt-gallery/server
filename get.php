@@ -92,7 +92,7 @@ $app->get(
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
-
+/*!!!!!*/
 $app->get(
     '/api/v1/contribution/get/{id:[0-9]+}/votes',
     function ($id) use ($app, $responder) {
@@ -104,7 +104,7 @@ $app->get(
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
-
+/*!!!!*/
 $app->get(
     '/api/v1/contribution/getList/{limit:[0-9]+}/{offset:[0-9]+}',
     function ($limit, $offset) use ($app, $responder) {
@@ -231,7 +231,7 @@ $app->get(
 $app->get(
     '/api/v1/contributionSigned/get/{id:[0-9]+}',
     function ($id) use ($app, $responder) {
-        if($model = ContributionSigned::findFirst($id)){
+        if($model = ContributionSigned::findFirst("type = $id")){
             $result = $model->toArray();
         }else{
             $result = ["error"=>["message"=>"id not found", "legend"=>"Запись с таким идентефикатором не найдена"]];
@@ -239,11 +239,11 @@ $app->get(
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
-
+/*!!!!!!!*/
 $app->get(
     '/api/v1/contributionSigned/get/{id:[0-9]+}/votes',
     function ($id) use ($app, $responder) {
-        if($model = ContributionSigned::findFirst($id)){
+        if($model = ContributionSigned::findFirst("type = $id")){
             $result = $model->getVotes();
         }else{
             $result = ["error"=>["message"=>"id not found", "legend"=>"Запись с таким идентефикатором не найдена"]];
@@ -251,11 +251,13 @@ $app->get(
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
-
+/*!!!!*/
 $app->get(
     '/api/v1/contributionSigned/getList/{limit:[0-9]+}/{offset:[0-9]+}',
     function ($limit, $offset) use ($app, $responder) {
-        $result = ContributionSigned::find(array("limit" => $limit, "offset" => $offset))->toArray();
+        $dataModel = ContributionSigned::find(array("limit" => $limit, "offset" => $offset))->toArray();
+        $countModel = ContributionSigned:: count();
+        $result=["data"=>$dataModel, "meta"=>$countModel];
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
