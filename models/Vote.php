@@ -31,7 +31,7 @@ class Vote extends \Phalcon\Mvc\Model
      *
      * @var integer
      */
-    public $id_contribution;
+    public $idContribution;
 
     /**
      *
@@ -95,6 +95,19 @@ class Vote extends \Phalcon\Mvc\Model
     public function getSource()
     {
         return 'vote';
+    }
+    public function getContribution()
+    {
+        //return Resultset\Simple
+        if ($this->idContribution) {
+            return Contribution::find("id={$this->idContribution}");
+        }else{
+            return false;
+        }
+    }
+    public function check()
+    {
+        
     }
 
 }

@@ -55,6 +55,7 @@ $app->post(
             $saver = $app->di->getService("saver")->getDefinition();
             foreach ($app->request->getUploadedFiles() as $key => $file) {
                 $model = new Contribution;
+                $saver($model);
 
                 $fileExtension = pathinfo($file->getName(), PATHINFO_EXTENSION);
                 $fileName      = floor(microtime(true)) . "_{$key}.{$fileExtension}";
@@ -88,11 +89,11 @@ $app->post(
                     $model->type = $fileExtension;
                     $model->fileSize = $fileTmpSize;
                     $modelResult = $saver($model);
+                    $result[] = $modelResult;
                     $logger->addInfo("file: {$fileFullPath} saved");
                 } else {
                     $logger->addError("file: {$fileFullPath} saving failed");
                 }
-                $result[] = $modelResult;
             }
             $responder($result, ["Content-Type"=>"application/json"]);
         }
@@ -122,7 +123,6 @@ $app->post(
         $model = new StairwayToModeration;
         $data = $app->request->getPost();
         if(isset($data['id']))unset($data['id']);
-        if(isset($data['time']))unset($data['time']);
         $mapper = $servant("mapper");
         $saver = $servant("saver");
         $result = $saver(
@@ -136,9 +136,9 @@ $app->post(
 $app->post(
     '/api/v1/moderation/add',
     function () use ($app, $responder, $servant) {
-        $model = new Moderation;
+        $model = new ModerationStatus;
         $data = $app->request->getPost();
-        if(Category::findFirst($data['id']) and isset($data['id'])){
+        if(Category::findFirst($data['id']) && isset($data['id'])){
             $result = ["error"=>["message"=>"id already exists", "legend"=>"Запись с таким идентефикатором уже существует"]];
         }else{
             if(isset($data['time']))unset($data['time']);
@@ -158,10 +158,9 @@ $app->post(
     function () use ($app, $responder, $servant) {
         $model = new Rejection;
         $data = $app->request->getPost();
-        if(Category::findFirst($data['id']) and isset($data['id'])){
+        if(Category::findFirst($data['id']) && isset($data['id'])){
             $result = ["error"=>["message"=>"id already exists", "legend"=>"Запись с таким идентефикатором уже существует"]];
         }else{
-            if(isset($data['time']))unset($data['time']);
             $mapper = $servant("mapper");
             $saver = $servant("saver");
             $result = $saver(
@@ -178,10 +177,9 @@ $app->post(
     function () use ($app, $responder, $servant) {
         $model = new Category;
         $data = $app->request->getPost();
-        if(Category::findFirst($data['id']) and isset($data['id'])){
+        if(Category::findFirst($data['id']) && isset($data['id'])){
             $result = ["error"=>["message"=>"id already exists", "legend"=>"Запись с таким идентефикатором уже существует"]];
         }else{
-            if(isset($data['time']))unset($data['time']);
             $mapper = $servant("mapper");
             $saver = $servant("saver");
             $result = $saver(

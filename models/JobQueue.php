@@ -1,6 +1,6 @@
 <?php
 
-class Rejection extends \Phalcon\Mvc\Model
+class JobQueue extends \Phalcon\Mvc\Model
 {
 
     /**
@@ -13,35 +13,41 @@ class Rejection extends \Phalcon\Mvc\Model
      *
      * @var string
      */
-    public $label;
+    public $time;
 
     /**
      *
      * @var string
      */
-    public $description;
+    public $data;
+
+    /**
+     *
+     * @var integer
+     */
+    public $job;
 
     /**
      *
      * @var string
      */
-    public $correctionMessage;
+    public $status;
 
     /**
-     * Initialize method for model.
+     * Returns table name mapped in the model.
+     *
+     * @return string
      */
-    public function initialize()
+    public function getSource()
     {
-        $this->hasMany('id', 'Contribution', 'rejection', array('alias' => 'Contribution'));
-        $this->hasMany('id', 'Declarant', 'rejection', array('alias' => 'Declarant'));
-        $this->hasMany('id', 'Participant', 'rejection', array('alias' => 'Participant'));
+        return 'job_queue';
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return Rejection[]
+     * @return JobQueue[]
      */
     public static function find($parameters = null)
     {
@@ -52,21 +58,11 @@ class Rejection extends \Phalcon\Mvc\Model
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return Rejection
+     * @return JobQueue
      */
     public static function findFirst($parameters = null)
     {
         return parent::findFirst($parameters);
-    }
-
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'rejection';
     }
 
     /**
@@ -79,9 +75,10 @@ class Rejection extends \Phalcon\Mvc\Model
     {
         return array(
             'id' => 'id',
-            'label' => 'label',
-            'description' => 'description',
-            'correction_message' => 'correctionMessage'
+            'time' => 'time',
+            'data' => 'data',
+            'job' => 'job',
+            'status' => 'status'
         );
     }
 
