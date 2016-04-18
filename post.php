@@ -55,6 +55,7 @@ $app->post(
             $saver = $app->di->getService("saver")->getDefinition();
             foreach ($app->request->getUploadedFiles() as $key => $file) {
                 $model = new Contribution;
+                $saver($model);
 
                 $fileExtension = pathinfo($file->getName(), PATHINFO_EXTENSION);
                 $fileName      = floor(microtime(true)) . "_{$key}.{$fileExtension}";
@@ -88,11 +89,11 @@ $app->post(
                     $model->type = $fileExtension;
                     $model->fileSize = $fileTmpSize;
                     $modelResult = $saver($model);
+                    $result[] = $modelResult;
                     $logger->addInfo("file: {$fileFullPath} saved");
                 } else {
                     $logger->addError("file: {$fileFullPath} saving failed");
                 }
-                $result[] = $modelResult;
             }
             $responder($result, ["Content-Type"=>"application/json"]);
         }
