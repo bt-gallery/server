@@ -273,7 +273,7 @@ $app->get(
     function ($limit, $offset) use ($app, $responder) {
         $dataModel = ContributionSigned::find(array("limit" => $limit, "offset" => $offset))->toArray();
         $countModel = ContributionSigned:: count();
-        $result=["data"=>$dataModel, "meta"=>$countModel];
+        $result=["data"=>$dataModel, "meta"=>array('total'=>$countModel)];
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
