@@ -60,7 +60,7 @@ $app->post(
                 $fileExtension = pathinfo($file->getName(), PATHINFO_EXTENSION);
                 $fileName      = floor(microtime(true)) . "_{$key}.{$fileExtension}";
                 $fileTmpPath   = $file->getTempName();
-                $fileDirectory = $config->application->uploadDir . "works/{$model->id}/";
+                $fileDirectory = $config->application->uploadDir . "files/works/{$model->id}/";
                 $fileFullPath  = $fileDirectory . $fileName;
                 $fileTmpSize   = $file->getSize();
 
