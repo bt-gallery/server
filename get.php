@@ -14,6 +14,7 @@ use Phalcon\Mvc\Model\Query;
 
 /* GET routes */
 
+
 $app->get(
     '/', function () use ($app) {
         $app->response->redirect("hiddenСave")->sendHeaders();
@@ -40,7 +41,9 @@ $app->get(
 $app->get(
     '/api/v1/declarant/getList/{limit:[0-9]+}/{offset:[0-9]+}',
     function ($limit, $offset) use ($app, $responder) {
-        $result = Declarant::find(array("limit" => $limit, "offset" => $offset))->toArray();
+        $dataModel = Declarant::find(array("limit" => $limit, "offset" => $offset))->toArray();
+        $countModel = Declarant:: count();
+        $result=["data"=>$dataModel, "meta"=>$countModel];
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
@@ -68,7 +71,9 @@ $app->get(
 $app->get(
     '/api/v1/participant/getList/{limit:[0-9]+}/{offset:[0-9]+}', 
     function ($limit, $offset) use ($app, $responder) {
-        $result = Participant::find(array("limit" => $limit, "offset" => $offset))->toArray();
+        $dataModel = Participant::find(array("limit" => $limit, "offset" => $offset))->toArray();
+        $countModel = Participant:: count();
+        $result=["data"=>$dataModel, "meta"=>$countModel];
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
@@ -92,7 +97,7 @@ $app->get(
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
-/*!!!!!*/
+
 $app->get(
     '/api/v1/contribution/get/{id:[0-9]+}/votes',
     function ($id) use ($app, $responder) {
@@ -104,11 +109,13 @@ $app->get(
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
-/*!!!!*/
+
 $app->get(
     '/api/v1/contribution/getList/{limit:[0-9]+}/{offset:[0-9]+}',
     function ($limit, $offset) use ($app, $responder) {
-        $result = Contribution::find(array("limit" => $limit, "offset" => $offset))->toArray();
+        $dataModel = Contribution::find(array("limit" => $limit, "offset" => $offset))->toArray();
+        $countModel = Contribution:: count();
+        $result=["data"=>$dataModel, "meta"=>$countModel];
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
@@ -136,7 +143,9 @@ $app->get(
 $app->get(
     '/api/v1/stairway/getList/{limit:[0-9]+}/{offset:[0-9]+}',
     function ($limit, $offset) use ($app, $responder) {
-        $result = StairwayToModeration::find(array("limit" => $limit, "offset" => $offset))->toArray();
+        $dataModel = StairwayToModeration::find(array("limit" => $limit, "offset" => $offset))->toArray();
+        $countModel = StairwayToModeration:: count();
+        $result=["data"=>$dataModel, "meta"=>$countModel];
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
@@ -163,7 +172,9 @@ $app->get(
 $app->get(
     '/api/v1/vote/getList/{limit:[0-9]+}/{offset:[0-9]+}',
     function ($limit, $offset) use ($app, $responder) {
-        $result = Vote::find(array("limit" => $limit, "offset" => $offset))->toArray();
+        $dataModel = Vote::find(array("limit" => $limit, "offset" => $offset))->toArray();
+        $countModel = Vote:: count();
+        $result=["data"=>$dataModel, "meta"=>$countModel];
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
@@ -183,7 +194,9 @@ $app->get(
 $app->get(
     '/api/v1/moderation/getList/{limit:[0-9]+}/{offset:[0-9]+}',
     function ($limit, $offset) use ($app, $responder) {
-        $result = ModerationStatus::find(array("limit" => $limit, "offset" => $offset))->toArray();
+        $dataModel = ModerationStatus::find(array("limit" => $limit, "offset" => $offset))->toArray();
+        $countModel = ModerationStatus:: count();
+        $result=["data"=>$dataModel, "meta"=>$countModel];
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
@@ -203,7 +216,9 @@ $app->get(
 $app->get(
     '/api/v1/rejection/getList/{limit:[0-9]+}/{offset:[0-9]+}',
     function ($limit, $offset) use ($app, $responder) {
-        $result = Rejection::find(array("limit" => $limit, "offset" => $offset))->toArray();
+        $dataModel = Rejection::find(array("limit" => $limit, "offset" => $offset))->toArray();
+        $countModel = Rejection:: count();
+        $result=["data"=>$dataModel, "meta"=>$countModel];
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
@@ -223,7 +238,9 @@ $app->get(
 $app->get(
     '/api/v1/category/getList/{limit:[0-9]+}/{offset:[0-9]+}',
     function ($limit, $offset) use ($app, $responder) {
-        $result = Category::find(array("limit" => $limit, "offset" => $offset))->toArray();
+        $dataModel = Category::find(array("limit" => $limit, "offset" => $offset))->toArray();
+        $countModel = Category:: count();
+        $result=["data"=>$dataModel, "meta"=>$countModel];
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
@@ -239,7 +256,6 @@ $app->get(
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
-/*!!!!!!!*/
 $app->get(
     '/api/v1/contributionSigned/get/{id:[0-9]+}/votes',
     function ($id) use ($app, $responder) {
@@ -251,7 +267,7 @@ $app->get(
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
-/*!!!!*/
+
 $app->get(
     '/api/v1/contributionSigned/getList/{limit:[0-9]+}/{offset:[0-9]+}',
     function ($limit, $offset) use ($app, $responder) {
