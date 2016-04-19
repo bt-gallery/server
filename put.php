@@ -86,9 +86,9 @@ $app->put(
     '/api/v1/contributionSigned/bind',
     function () use ($app, $responder, $servant) {
         $data = $app->request->getPut();
-        $dataId[] = $data['idDeclarant'];
-        $dataId[] = $data['idParticipant'];
-        $dataId[] = $data['idContribution'];
+        $dataId['idDeclarant'] = $data['idDeclarant'];
+        $dataId['idParticipant'] = $data['idParticipant'];
+        $dataId['idContribution'] = $data['idContribution'];
         if ((!Declarant::findFirst($data['idDeclarant'])) && isset($data['idDeclarant'])) {
             $result = ["error"=>["message"=>"Declarant id not found", "legend"=>"Заявитель с таким идентефикатором не найден"]];
             $responder($result, ["Content-Type"=>"application/json"]);
