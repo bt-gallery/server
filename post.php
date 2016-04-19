@@ -190,3 +190,45 @@ $app->post(
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
+
+$app->post(
+    '/api/v1/contributionSigned/bind',
+    function () use ($app, $responder, $servant) {
+        $data = $app->request->getPost();
+        if ((!Declarant::findFirst($data['idDeclarant'])) && isset($data['idDeclarant'])) {
+            $result = ["error"=>["message"=>"Declarant id not found", "legend"=>"Заявитель с таким идентефикатором не найден"]];
+            $responder($result, ["Content-Type"=>"application/json"]);
+            return;
+        }
+        if ((!Participant::findFirst($data['idParticipant'])) && isset($data['idParticipant'])) {
+            $result = ["error"=>["message"=>"Participant id not found", "legend"=>"Участник с таким идентефикатором не найден"]];
+            $responder($result, ["Content-Type"=>"application/json"]);
+            return;
+        }
+        if (Contribution::findFirst($data['idContribution']) && isset($data['idContribution'])) {
+            $model = Contribution::findFirst($data['idContribution']);
+            $mapper = $servant("mapper");
+            $saver = $servant("saver");
+            $result[] = $saver(
+                $mapper($model,$data)
+            );
+        }else {
+            $result = ["error"=>["message"=>"Contribution id not found", "legend"=>"Работа с таким идентефикатором не найдена"]];
+            $responder($result, ["Content-Type"=>"application/json"]);
+            return;
+        }
+        if (Participant::findFirst($data['idParticipant']) && isset($data['idParticipant'])) {
+            $model = Participant::findFirst($data['idParticipant']);
+            $mapper = $servant("mapper");
+            $saver = $servant("saver");
+            $result[] = $saver(
+                $mapper($model,$data)
+            );
+        }else {
+            $result = ["error"=>["message"=>"Participant id not found", "legend"=>"Участник с таким идентефикатором не найден"]];
+            $responder($result, ["Content-Type"=>"application/json"]);
+            return;
+        }
+        $responder($result, ["Content-Type"=>"application/json"]);
+    }
+);
