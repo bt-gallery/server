@@ -38,7 +38,7 @@ $app->put(
     '/api/v1/participant/update',
     function () use ($app, $responder, $servant) {
         $data = $app->request->getPut();
-        if (!(Declarant::findFirst($data['idDeclarant']) && isset($data['idDeclarant']))) {
+        if ((!Declarant::findFirst($data['idDeclarant'])) && isset($data['idDeclarant'])) {
             $result = ["error"=>["message"=>"Declarant id not found", "legend"=>"Заявитель с таким идентефикатором не найден"]];
             $responder($result, ["Content-Type"=>"application/json"]);
             return;
@@ -62,7 +62,7 @@ $app->put(
     '/api/v1/contribution/update',
     function () use ($app, $responder, $servant) {
         $data = $app->request->getPut();
-        if (!(Participant::findFirst($data['idParticipant']) && isset($data['idParticipant']))) {
+        if ((!Participant::findFirst($data['idParticipant'])) && isset($data['idParticipant'])) {
             $result = ["error"=>["message"=>"Participant id not found", "legend"=>"Участник с таким идентефикатором не найден"]];
             $responder($result, ["Content-Type"=>"application/json"]);
             return;
@@ -83,16 +83,15 @@ $app->put(
 );
 
 $app->put(
-    '/api/v1/contributionSigned/update',
+    '/api/v1/contributionSigned/bind',
     function () use ($app, $responder, $servant) {
         $data = $app->request->getPut();
-        if(isset($data['time']))unset($data['time']);
-        if (!(Declarant::findFirst($data['idDeclarant']) && isset($data['idDeclarant']))) {
+        if ((!Declarant::findFirst($data['idDeclarant'])) && isset($data['idDeclarant'])) {
             $result = ["error"=>["message"=>"Declarant id not found", "legend"=>"Заявитель с таким идентефикатором не найден"]];
             $responder($result, ["Content-Type"=>"application/json"]);
             return;
         }
-        if (!(Participant::findFirst($data['idParticipant']) && isset($data['idParticipant']))) {
+        if ((!Participant::findFirst($data['idParticipant'])) && isset($data['idParticipant'])) {
             $result = ["error"=>["message"=>"Participant id not found", "legend"=>"Участник с таким идентефикатором не найден"]];
             $responder($result, ["Content-Type"=>"application/json"]);
             return;
@@ -117,7 +116,7 @@ $app->put(
                 $mapper($model,$data)
             );
         }else {
-            $result = ["error"=>["message"=>"Contribution id not found", "legend"=>"Работа с таким идентефикатором не найдена"]];
+            $result = ["error"=>["message"=>"Participant id not found", "legend"=>"Участник с таким идентефикатором не найден"]];
             $responder($result, ["Content-Type"=>"application/json"]);
             return;
         }
