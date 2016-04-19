@@ -64,23 +64,6 @@ class Declarant extends \Phalcon\Mvc\Model
      *
      * @return boolean
      */
-    public function validation()
-    {
-        $this->validate(
-            new Email(
-                array(
-                    'field'    => 'email',
-                    'required' => true,
-                )
-            )
-        );
-
-        if ($this->validationHasFailed() == true) {
-            return false;
-        }
-
-        return true;
-    }
 
     /**
      * Initialize method for model.
@@ -142,6 +125,15 @@ class Declarant extends \Phalcon\Mvc\Model
             'moderation' => 'moderation',
             'rejection' => 'rejection'
         );
+    }
+    public function getParticipants()
+    {
+        //return Resultset\Simple
+        if($this->id){
+            return Participant::find("idDeclarant={$this->id}");
+        }else {
+            return false;
+        }
     }
 
 }

@@ -14,6 +14,7 @@ use Phalcon\Mvc\Model\Query;
 
 /* GET routes */
 
+
 $app->get(
     '/', function () use ($app) {
         $app->response->redirect("hiddenСave")->sendHeaders();
@@ -25,401 +26,254 @@ $app->get(
         echo "<p>It's dangerous to go alone! Take this.</p><p>finest_sword.jpg</p>";
     }
 );
-
-$app->get(
-    '/api/v1/declarant/get', 
-    function () use ($app, $responder) {
-
-
-        $responder($result, ["Content-Type"=>"application/json"]);
-    }
-);
-
-$app->get(
-    '/api/v1/declarant/getList', 
-    function () use ($app, $responder) {
-
-
-        $responder($result, ["Content-Type"=>"application/json"]);
-    }
-);
-
-$app->get(
-    '/api/v1/declarant/search', 
-    function () use ($app, $responder) {
-
-
-        $responder($result, ["Content-Type"=>"application/json"]);
-    }
-);
-
-$app->get(
-    '/api/v1/participant/get', 
-    function () use ($app, $responder) {
-
-
-        $responder($result, ["Content-Type"=>"application/json"]);
-    }
-);
-
-$app->get(
-    '/api/v1/participant/getList', 
-    function () use ($app, $responder) {
-
-
-        $responder($result, ["Content-Type"=>"application/json"]);
-    }
-);
-
-$app->get(
-    '/api/v1/participant/search', 
-    function () use ($app, $responder) {
-
-
-        $responder($result, ["Content-Type"=>"application/json"]);
-    }
-);
-
-$app->get(
-    '/api/v1/contribution/get', 
-    function () use ($app, $responder) {
-
-
-        $responder($result, ["Content-Type"=>"application/json"]);
-    }
-);
-
-$app->get(
-    '/api/v1/contribution/getList', 
-    function () use ($app, $responder) {
-
-
-        $responder($result, ["Content-Type"=>"application/json"]);
-    }
-);
-
-$app->get(
-    '/api/v1/contribution/search', 
-    function () use ($app, $responder) {
-
-
-        $responder($result, ["Content-Type"=>"application/json"]);
-    }
-);
-
-$app->get(
-    '/api/v1/stairway/get', 
-    function () use ($app, $responder) {
-
-
-        $responder($result, ["Content-Type"=>"application/json"]);
-    }
-);
-
-$app->get(
-    '/api/v1/stairway/getList', 
-    function () use ($app, $responder) {
-
-
-        $responder($result, ["Content-Type"=>"application/json"]);
-    }
-);
-$app->get(
-    '/api/v1/stairway/search', 
-    function () use ($app, $responder) {
-
-
-        $responder($result, ["Content-Type"=>"application/json"]);
-    }
-);
-
-$app->get(
-    '/api/v1/vote/get', 
-    function () use ($app, $responder) {
-
-
-        $responder($result, ["Content-Type"=>"application/json"]);
-    }
-);
-
-$app->get(
-    '/api/v1/vote/getList', 
-    function () use ($app, $responder) {
-
-
-        $responder($result, ["Content-Type"=>"application/json"]);
-    }
-);
-
-$app->get(
-    '/api/v1/specification/get', 
-    function () use ($app, $responder) {
-
-
-        $responder($result, ["Content-Type"=>"application/json"]);
-    }
-);
-
-$app->get(
-    '/api/v1/specification/getList', 
-    function () use ($app, $responder) {
-
-
-        $responder($result, ["Content-Type"=>"application/json"]);
-    }
-);
-
-$app->get(
-    '/api/v1/moderation/get', 
-    function () use ($app, $responder) {
-
-
-        $responder($result, ["Content-Type"=>"application/json"]);
-    }
-);
-
-$app->get(
-    '/api/v1/moderation/getList', 
-    function () use ($app, $responder) {
-
-
-        $responder($result, ["Content-Type"=>"application/json"]);
-    }
-);
-
-$app->get(
-    '/api/v1/rejection/get', 
-    function () use ($app, $responder) {
-
-
-        $responder($result, ["Content-Type"=>"application/json"]);
-    }
-);
-
-$app->get(
-    '/api/v1/rejection/getList', 
-    function () use ($app, $responder) {
-
-
-        $responder($result, ["Content-Type"=>"application/json"]);
-    }
-);
-
-$app->get(
-    '/api/v1/category/get', 
-    function () use ($app, $responder) {
-
-
-        $responder($result, ["Content-Type"=>"application/json"]);
-    }
-);
-
-$app->get(
-    '/api/v1/category/getList', 
-    function () use ($app, $responder) {
-
-
-        $responder($result, ["Content-Type"=>"application/json"]);
-    }
-);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-$app->get(
-    '/declarant', function () use ($app) {
-    }
-);
-
-$app->get(
-    '/api/v1/search/bymail', function () use ($app, $responder) {
-        $filter = new Filter();
-        $db = $app->getDI()->getShared("db");
-
-        $rawQuery = $app->request->getQuery("q");
-        $query = $filter->sanitize($rawQuery, "email");
-
-        $sqlQuery = "SELECT * FROM moderation_stack_grouped WHERE email='{$query}'";
-
-        $resultSet = $db->query($sqlQuery);
-        $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
-        $result = $resultSet->fetchAll();
-        $responder($result, ["Content-Type"=>"application/json"]);
-    }
-);
-
-$app->get(
-    '/gallery/list/{limit}/{offset}/ages/{minAge}/{maxAge}',
-    function ($limit, $offset, $minAge, $maxAge) use ($app, $responder, $logger) {
-        $result = array();
-        $db = $app->getDI()->getShared("db");
-        $filter = new Filter();
-        $limit = $filter->sanitize($limit, "int");
-        $offset = $filter->sanitize($offset, "int");
-        $minAge = $filter->sanitize($minAge, "int");
-        $maxAge = $filter->sanitize($maxAge, "int");
-        if( !($limit >= 0 and $offset >= 0 and $minAge >= 0 and $maxAge > $minAge) ) {
-            echo $app['view']->render('404');
-            return false;
+ $app->get(
+    '/api/v1/declarant/get/{id:[0-9]+}',
+    function ($id) use ($app, $responder) {
+        if($model = Declarant::findFirst($id)){
+            $result = $model->toArray();
+        }else{
+            $result = ["error"=>["message"=>"id not found", "legend"=>"Запись с таким идентефикатором не найдена"]];
         }
-        $sql = "SELECT * FROM moderation_stack_grouped WHERE age BETWEEN '{$minAge}' AND '{$maxAge}' AND result='одобрено' LIMIT {$limit} OFFSET {$offset}";
-        try {
-            $resultSet = $db->query($sql);
-            $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
-            $targetWorks = $resultSet->fetchAll();
-
-            $sql = "SELECT * FROM moderation_stack_grouped WHERE age BETWEEN '{$minAge}' AND '{$maxAge}' AND result='одобрено'";
-            $resultSetTmp = $db->query($sql);
-            $resultSetTmp->setFetchMode(Phalcon\Db::FETCH_ASSOC);
-            $targetWorksTmp = $resultSetTmp->fetchAll();
-            $resultSetCount = count($targetWorksTmp);
-        } catch (\Exception $e) {
-            echo $app['view']->render('404');
-            return false;
-        }
-        foreach ($targetWorks as $key=>&$work){
-            $age = $work["age"];
-            $t1 = $age % 10;
-            $t2 = $age % 100;
-            $age = ($t1 == 1 && $t2 != 11 ? "год" : ($t1 >= 2 && $t1 <= 4 && ($t2 < 10 || $t2 >= 20) ? "года" : "лет"));
-            $work['age_string'] = $age;
-            $work['participant'] = $work['name'] . " " .$work["surname"];
-            $work['webPath'] = $work['web_url'];
-            $work['idCompetitiveWork'] = $work['id_competitive_work'];
-            $tmpId = $work['id_competitive_work'];
-            $work['votes'] = Vote::count("competitiveWorkIdCompetitiveWork = '$tmpId'");
-        }
-        $result['targetWorks'] = $targetWorks;
-
-        if ($offset!=0) {
-            if($limit > $offset){
-                $result['prev_page_offset'] = 0;
-                $result['first_page_offset'] = 0;
-            }else{
-                if($offset-$limit > $resultSetCount){
-                    $result['prev_page_offset'] = $resultSetCount-$limit;
-                    $result['first_page_offset'] = 0;
-                }else{
-                    $result['prev_page_offset'] = $offset-$limit;
-                    $result['first_page_offset'] = 0;
-                }
-            }
-        }
-        if ($resultSetCount-$offset > $limit) {
-            $result['next_page_offset'] = $offset+$limit;
-            $result['last_page_offset'] = $resultSetCount-$limit;
-        }
-        if ($minAge >= 0 and $maxAge > $minAge){
-            $result['min_age'] = $minAge;
-            $result['max_age'] = $maxAge;
-        }
-        if($limit>0){
-            $result['limit'] = $limit;
-        }
-
-        echo $app['view']->render('gallery', $result);
+        $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
 
 $app->get(
-    '/gallery/final', function () use ($app) {
-        $db = $app->getDI()->getShared("db");
+    '/api/v1/declarant/getList/{limit:[0-9]+}/{offset:[0-9]+}',
+    function ($limit, $offset) use ($app, $responder) {
+        $dataModel = Declarant::find(array("limit" => $limit, "offset" => $offset))->toArray();
+        $countModel = Declarant:: count();
+        $result=["data"=>$dataModel, "meta"=>$countModel];
+        $responder($result, ["Content-Type"=>"application/json"]);
+    }
+);
 
-        $sql = "SELECT * FROM final_child LIMIT 3";
-        $resultSet = $db->query($sql);
-        $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
-        $finalChild = $resultSet->fetchAll();
-        $result['finalChild'] = $finalChild;
+$app->get(
+    '/api/v1/declarant/search',
+    function () use ($app, $responder) {
 
-        $sql = "SELECT * FROM final_child WHERE id_competitive_work IN (4117, 4300, 4314)";
-        $resultSet = $db->query($sql);
-        $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
-        $finalBestChild = $resultSet->fetchAll();
-        $result['finalBestChild'] = $finalBestChild;
+        $responder($result, ["Content-Type"=>"application/json"]);
+    }
+);
 
-        $sql = "SELECT * FROM final_junior LIMIT 3";
-        $resultSet = $db->query($sql);
-        $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
-        $finalJunior = $resultSet->fetchAll();
-        $result['finalJunior'] = $finalJunior;
+$app->get(
+    '/api/v1/participant/get/{id:[0-9]+}',
+    function ($id) use ($app, $responder) {
+        if($model = Participant::findFirst($id)){
+            $result = $model->toArray();
+        }else{
+            $result = ["error"=>["message"=>"id not found", "legend"=>"Запись с таким идентефикатором не найдена"]];
+        }
+        $responder($result, ["Content-Type"=>"application/json"]);
+    }
+);
 
-        $sql = "SELECT * FROM final_junior WHERE id_competitive_work IN (819, 312, 2969)";
-        $resultSet = $db->query($sql);
-        $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
-        $finalBestJunior= $resultSet->fetchAll();
-        $result['finalBestJunior'] = $finalBestJunior;
+$app->get(
+    '/api/v1/participant/getList/{limit:[0-9]+}/{offset:[0-9]+}', 
+    function ($limit, $offset) use ($app, $responder) {
+        $dataModel = Participant::find(array("limit" => $limit, "offset" => $offset))->toArray();
+        $countModel = Participant:: count();
+        $result=["data"=>$dataModel, "meta"=>$countModel];
+        $responder($result, ["Content-Type"=>"application/json"]);
+    }
+);
 
-        $sql = "SELECT * FROM final_teen LIMIT 3";
-        $resultSet = $db->query($sql);
-        $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
-        $finalTeen = $resultSet->fetchAll();
-        $result['finalTeen'] = $finalTeen;
+$app->get(
+    '/api/v1/participant/search',
+    function () use ($app, $responder) {
 
-        $sql = "SELECT * FROM final_teen WHERE id_competitive_work IN (357, 5309, 1548)";
-        $resultSet = $db->query($sql);
-        $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
-        $finalBestTeen= $resultSet->fetchAll();
-        $result['finalBestTeen'] = $finalBestTeen;
+        $responder($result, ["Content-Type"=>"application/json"]);
+    }
+);
 
-        echo $app['view']->render('results', $result);
+$app->get(
+    '/api/v1/contribution/get/{id:[0-9]+}',
+    function ($id) use ($app, $responder) {
+        if($model = Contribution::findFirst($id)){
+            $result = $model->toArray();
+        }else{
+            $result = ["error"=>["message"=>"id not found", "legend"=>"Запись с таким идентефикатором не найдена"]];
+        }
+        $responder($result, ["Content-Type"=>"application/json"]);
+    }
+);
+
+$app->get(
+    '/api/v1/contribution/get/{id:[0-9]+}/votes',
+    function ($id) use ($app, $responder) {
+        if($model = Contribution::findFirst($id)){
+            $result = $model->getVotes();
+        }else{
+            $result = ["error"=>["message"=>"id not found", "legend"=>"Запись с таким идентефикатором не найдена"]];
+        }
+        $responder($result, ["Content-Type"=>"application/json"]);
+    }
+);
+
+$app->get(
+    '/api/v1/contribution/getList/{limit:[0-9]+}/{offset:[0-9]+}',
+    function ($limit, $offset) use ($app, $responder) {
+        $dataModel = Contribution::find(array("limit" => $limit, "offset" => $offset))->toArray();
+        $countModel = Contribution:: count();
+        $result=["data"=>$dataModel, "meta"=>$countModel];
+        $responder($result, ["Content-Type"=>"application/json"]);
+    }
+);
+
+$app->get(
+    '/api/v1/contribution/search',
+    function () use ($app, $responder) {
+
+        $responder($result, ["Content-Type"=>"application/json"]);
+    }
+);
+
+$app->get(
+    '/api/v1/stairway/get/{id:[0-9]+}',
+    function ($id) use ($app, $responder) {
+        if($model = StairwayToModeration::findFirst($id)){
+            $result = $model->toArray();
+        }else{
+            $result = ["error"=>["message"=>"id not found", "legend"=>"Запись с таким идентефикатором не найдена"]];
+        }
+        $responder($result, ["Content-Type"=>"application/json"]);
+    }
+);
+
+$app->get(
+    '/api/v1/stairway/getList/{limit:[0-9]+}/{offset:[0-9]+}',
+    function ($limit, $offset) use ($app, $responder) {
+        $dataModel = StairwayToModeration::find(array("limit" => $limit, "offset" => $offset))->toArray();
+        $countModel = StairwayToModeration:: count();
+        $result=["data"=>$dataModel, "meta"=>$countModel];
+        $responder($result, ["Content-Type"=>"application/json"]);
+    }
+);
+$app->get(
+    '/api/v1/stairway/search',
+    function () use ($app, $responder) {
+
+        $responder($result, ["Content-Type"=>"application/json"]);
+    }
+);
+
+$app->get(
+    '/api/v1/vote/get/{id:[0-9]+}',
+    function ($id) use ($app, $responder) {
+        if($model = Vote::findFirst($id)){
+            $result = $model->toArray();
+        }else{
+            $result = ["error"=>["message"=>"id not found", "legend"=>"Запись с таким идентефикатором не найдена"]];
+        }
+        $responder($result, ["Content-Type"=>"application/json"]);
+    }
+);
+
+$app->get(
+    '/api/v1/vote/getList/{limit:[0-9]+}/{offset:[0-9]+}',
+    function ($limit, $offset) use ($app, $responder) {
+        $dataModel = Vote::find(array("limit" => $limit, "offset" => $offset))->toArray();
+        $countModel = Vote:: count();
+        $result=["data"=>$dataModel, "meta"=>$countModel];
+        $responder($result, ["Content-Type"=>"application/json"]);
+    }
+);
+
+$app->get(
+    '/api/v1/moderation/get/{id:[0-9]+}',
+    function ($id) use ($app, $responder) {
+        if($model = ModerationStatus::findFirst($id)){
+            $result = $model->toArray();
+        }else{
+            $result = ["error"=>["message"=>"id not found", "legend"=>"Запись с таким идентефикатором не найдена"]];
+        }
+        $responder($result, ["Content-Type"=>"application/json"]);
+    }
+);
+
+$app->get(
+    '/api/v1/moderation/getList/{limit:[0-9]+}/{offset:[0-9]+}',
+    function ($limit, $offset) use ($app, $responder) {
+        $dataModel = ModerationStatus::find(array("limit" => $limit, "offset" => $offset))->toArray();
+        $countModel = ModerationStatus:: count();
+        $result=["data"=>$dataModel, "meta"=>$countModel];
+        $responder($result, ["Content-Type"=>"application/json"]);
+    }
+);
+
+$app->get(
+    '/api/v1/rejection/get/{id:[0-9]+}',
+    function ($id) use ($app, $responder) {
+        if($model = Rejection::findFirst($id)){
+            $result = $model->toArray();
+        }else{
+            $result = ["error"=>["message"=>"id not found", "legend"=>"Запись с таким идентефикатором не найдена"]];
+        }
+        $responder($result, ["Content-Type"=>"application/json"]);
+    }
+);
+
+$app->get(
+    '/api/v1/rejection/getList/{limit:[0-9]+}/{offset:[0-9]+}',
+    function ($limit, $offset) use ($app, $responder) {
+        $dataModel = Rejection::find(array("limit" => $limit, "offset" => $offset))->toArray();
+        $countModel = Rejection:: count();
+        $result=["data"=>$dataModel, "meta"=>$countModel];
+        $responder($result, ["Content-Type"=>"application/json"]);
+    }
+);
+
+$app->get(
+    '/api/v1/category/get/{id:[0-9]+}',
+    function ($id) use ($app, $responder) {
+        if($model = Category::findFirst($id)){
+            $result = $model->toArray();
+        }else{
+            $result = ["error"=>["message"=>"id not found", "legend"=>"Запись с таким идентефикатором не найдена"]];
+        }
+        $responder($result, ["Content-Type"=>"application/json"]);
+    }
+);
+
+$app->get(
+    '/api/v1/category/getList/{limit:[0-9]+}/{offset:[0-9]+}',
+    function ($limit, $offset) use ($app, $responder) {
+        $dataModel = Category::find(array("limit" => $limit, "offset" => $offset))->toArray();
+        $countModel = Category:: count();
+        $result=["data"=>$dataModel, "meta"=>$countModel];
+        $responder($result, ["Content-Type"=>"application/json"]);
+    }
+);
+
+$app->get(
+    '/api/v1/contributionSigned/get/{id:[0-9]+}',
+    function ($id) use ($app, $responder) {
+        if($model = ContributionSigned::findFirst("type = $id")){
+            $result = $model->toArray();
+        }else{
+            $result = ["error"=>["message"=>"id not found", "legend"=>"Запись с таким идентефикатором не найдена"]];
+        }
+        $responder($result, ["Content-Type"=>"application/json"]);
+    }
+);
+$app->get(
+    '/api/v1/contributionSigned/get/{id:[0-9]+}/votes',
+    function ($id) use ($app, $responder) {
+        if($model = ContributionSigned::findFirst("type = $id")){
+            $result = $model->getVotes();
+        }else{
+            $result = ["error"=>["message"=>"id not found", "legend"=>"Запись с таким идентефикатором не найдена"]];
+        }
+        $responder($result, ["Content-Type"=>"application/json"]);
+    }
+);
+
+$app->get(
+    '/api/v1/contributionSigned/getList/{limit:[0-9]+}/{offset:[0-9]+}',
+    function ($limit, $offset) use ($app, $responder) {
+        $dataModel = ContributionSigned::find(array("limit" => $limit, "offset" => $offset))->toArray();
+        $countModel = ContributionSigned:: count();
+        $result=["data"=>$dataModel, "meta"=>array('total'=>$countModel)];
+        $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
