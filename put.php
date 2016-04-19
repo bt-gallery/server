@@ -86,9 +86,6 @@ $app->put(
     '/api/v1/contributionSigned/bind',
     function () use ($app, $responder, $servant) {
         $data = $app->request->getPut();
-        $dataId['idDeclarant'] = $data['idDeclarant'];
-        $dataId['idParticipant'] = $data['idParticipant'];
-        $dataId['idContribution'] = $data['idContribution'];
         if ((!Declarant::findFirst($data['idDeclarant'])) && isset($data['idDeclarant'])) {
             $result = ["error"=>["message"=>"Declarant id not found", "legend"=>"Заявитель с таким идентефикатором не найден"]];
             $responder($result, ["Content-Type"=>"application/json"]);
@@ -104,7 +101,7 @@ $app->put(
             $mapper = $servant("mapper");
             $saver = $servant("saver");
             $result[] = $saver(
-                $mapper($model,$dataId)
+                $mapper($model,$data)
             );
         }else {
             $result = ["error"=>["message"=>"Contribution id not found", "legend"=>"Работа с таким идентефикатором не найдена"]];
@@ -116,7 +113,7 @@ $app->put(
             $mapper = $servant("mapper");
             $saver = $servant("saver");
             $result[] = $saver(
-                $mapper($model,$dataId)
+                $mapper($model,$data)
             );
         }else {
             $result = ["error"=>["message"=>"Participant id not found", "legend"=>"Участник с таким идентефикатором не найден"]];
