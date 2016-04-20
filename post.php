@@ -38,7 +38,7 @@ $app->post(
         $data = $app->request->getPost();
         if(isset($data['id']))unset($data['id']);
         if(isset($data['time']))unset($data['time']);
-        if ((Participant::findFirst($data['idParticipant'])) && (isset($data['photoInfo'])) && (Participant::findFirst($data['idContribution']))) {
+        if ((Participant::findFirst($data['idParticipant'])) && (isset($data['photoInfo']))) {
               if (Contribution::findFirst($data['idContribution'])) {
             $contr = Contribution::findFirst($data['idContribution']);
               $contr->description = $data['photoInfo'];
