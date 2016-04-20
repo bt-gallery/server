@@ -45,6 +45,6 @@ class InsertModerationStatus extends AbstractMigration
     }
     public function down()
     {
-        $this->execute('DELETE FROM moderation_status WHERE id IN (0, 1, 2)');
+        $this->execute('DELETE FROM moderation_status WHERE id IN (0, 1, 2, 3)');
     }
 }
