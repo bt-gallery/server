@@ -39,10 +39,12 @@ $app->post(
         if(isset($data['id']))unset($data['id']);
         if(isset($data['time']))unset($data['time']);
         if ((Participant::findFirst($data['idParticipant'])) && (isset($data['photoInfo'])) && (Participant::findFirst($data['idContribution']))) {
-              if ($contr = Contribution::findFirst($data['idContribution'])) {
+              if (Contribution::findFirst($data['idContribution'])) {
+            $contr = Contribution::findFirst($data['idContribution']);
               $contr->description = $data['photoInfo'];
               $contr->save();
               unset($data['photoInfo']);
+              unset($data['idContribution']);
                 } else {
                 $result = ["error"=>["message"=>"Contribution id not found", "legend"=>"Работа с таким идентефикатором не найдена"]];
                 $responder($result,["Content-Type"=>"application/json"]);
