@@ -45,7 +45,7 @@ $app->post(
               unset($data['photoInfo']);
                 } else {
                 $result = ["error"=>["message"=>"Contribution id not found", "legend"=>"Работа с таким идентефикатором не найдена"]];
-                $responder($result,["Content-Type"=>"application/json"])
+                $responder($result,["Content-Type"=>"application/json"]);
             }
         } else {
             $result = ["error"=>["message"=>"Participant id not found", "legend"=>"Участник с таким идентефикатором не найден"]];
