@@ -193,9 +193,9 @@ $app->put(
         $stairway = new StairwayToModeration;
         $data = $app->request->getPut();
         $declarant = Declarant::findFirst($data["idDeclarant"]);
-        $declarant->moderation = 0;
+        $declarant->moderation = 1;
         $saveResult = $saver($declarant);
-        
+
         if($saveResult) {
             $result["success"][] = $saveResult;
             $logger->addInfo("Declarant status: awaiting moderation", ["idDeclarant"=>$declarant->id]);
@@ -210,7 +210,7 @@ $app->put(
         $jobData["participants"] = $participants->toArray();
 
         foreach($participants as $participant){
-            $participant->moderation = 0;
+            $participant->moderation = 1;
             $saveResult = $saver($participant);
 
             if($saveResult) {
@@ -220,7 +220,7 @@ $app->put(
                 $contributions = $participant->getContributions();
                 $jobData["contributions"] = $contributions->toArray();
                 foreach($contributions as $contribution){
-                    $contribution->moderation = 0;
+                    $contribution->moderation = 1;
                     $saveResult = $saver($contribution);
 
                     if($saveResult) {
