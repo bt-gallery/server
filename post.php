@@ -39,7 +39,8 @@ $app->post(
         if(isset($data['id']))unset($data['id']);
         if(isset($data['time']))unset($data['time']);
         if (isset($data['idContribution']) && isset($data['photoInfo'])) {
-            if ($contr = Contribution::findFirst($data['idContribution'])) {
+            if (Contribution::findFirst($data['idContribution'])) {
+            $contr = Contribution::findFirst($data['idContribution']);
             $contr->description = $data['photoInfo'];
             $contr->save();
             unset($data['photoInfo']);
