@@ -19,6 +19,12 @@ class Contribution extends \Phalcon\Mvc\Model
      *
      * @var integer
      */
+    public $idDeclarant;
+
+    /**
+     *
+     * @var integer
+     */
     public $idParticipant;
 
     /**
@@ -32,6 +38,12 @@ class Contribution extends \Phalcon\Mvc\Model
      * @var string
      */
     public $description;
+
+    /**
+     *
+     * @var string
+     */
+    public $persons;
 
     /**
      *
@@ -88,14 +100,38 @@ class Contribution extends \Phalcon\Mvc\Model
     public $fileSize;
 
     /**
+     *
+     * @var string
+     */
+    public $thumbStorePath;
+
+    /**
+     *
+     * @var string
+     */
+    public $thumbWebPath;
+
+    /**
      * Initialize method for model.
      */
     public function initialize()
     {
+        $this->hasMany('id', 'StairwayToModeration', 'id_contribution', array('alias' => 'StairwayToModeration'));
         $this->hasMany('id', 'Vote', 'id_contribution', array('alias' => 'Vote'));
+        $this->belongsTo('id_declarant', 'Declarant', 'id', array('alias' => 'Declarant'));
         $this->belongsTo('id_participant', 'Participant', 'id', array('alias' => 'Participant'));
         $this->belongsTo('moderation', 'ModerationStatus', 'id', array('alias' => 'ModerationStatus'));
         $this->belongsTo('rejection', 'Rejection', 'id', array('alias' => 'Rejection'));
+    }
+
+    /**
+     * Returns table name mapped in the model.
+     *
+     * @return string
+     */
+    public function getSource()
+    {
+        return 'contribution';
     }
 
     /**
@@ -131,9 +167,11 @@ class Contribution extends \Phalcon\Mvc\Model
         return array(
             'id' => 'id',
             'time' => 'time',
+            'id_declarant' => 'idDeclarant',
             'id_participant' => 'idParticipant',
             'name' => 'name',
             'description' => 'description',
+            'persons' => 'persons',
             'store_path' => 'storePath',
             'web_path' => 'webPath',
             'file_name' => 'fileName',
@@ -142,36 +180,10 @@ class Contribution extends \Phalcon\Mvc\Model
             'category' => 'category',
             'priority' => 'priority',
             'type' => 'type',
-            'file_size' => 'fileSize'
+            'file_size' => 'fileSize',
+            'thumb_store_path' => 'thumbStorePath',
+            'thumb_web_path' => 'thumbWebPath'
         );
-    }
-
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'contribution';
-    }
-    public function getParticipant()
-    {
-        //return Resultset\Simple
-        if ($this->idParticipant) {
-            return Participant::find("id={$this->idParticipant}");
-        }else{
-            return false;
-        }
-    }
-    public function getVotes()
-    {
-        //return Resultset\Simple
-        if ($this->id) {
-            return Vote::find("idContribution={$this->id}");
-        }else{
-            return false;
-        }
     }
 
 }
