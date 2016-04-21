@@ -38,7 +38,7 @@ $app->put(
     '/api/v1/participant/update',
     function () use ($app, $responder, $servant) {
         $data = $app->request->getPut();
-        if (!(Declarant::findFirst($data['idDeclarant']) && isset($data['idDeclarant']))) {
+        if ((!Declarant::findFirst($data['idDeclarant'])) && isset($data['idDeclarant'])) {
             $result = ["error"=>["message"=>"Declarant id not found", "legend"=>"Заявитель с таким идентефикатором не найден"]];
             $responder($result, ["Content-Type"=>"application/json"]);
             return;
@@ -62,7 +62,7 @@ $app->put(
     '/api/v1/contribution/update',
     function () use ($app, $responder, $servant) {
         $data = $app->request->getPut();
-        if (!(Participant::findFirst($data['idParticipant']) && isset($data['idParticipant']))) {
+        if ((!Participant::findFirst($data['idParticipant'])) && isset($data['idParticipant'])) {
             $result = ["error"=>["message"=>"Participant id not found", "legend"=>"Участник с таким идентефикатором не найден"]];
             $responder($result, ["Content-Type"=>"application/json"]);
             return;
@@ -83,16 +83,15 @@ $app->put(
 );
 
 $app->put(
-    '/api/v1/contributionSigned/update',
+    '/api/v1/contributionSigned/bind',
     function () use ($app, $responder, $servant) {
         $data = $app->request->getPut();
-        if(isset($data['time']))unset($data['time']);
-        if (!(Declarant::findFirst($data['idDeclarant']) && isset($data['idDeclarant']))) {
+        if ((!Declarant::findFirst($data['idDeclarant'])) && isset($data['idDeclarant'])) {
             $result = ["error"=>["message"=>"Declarant id not found", "legend"=>"Заявитель с таким идентефикатором не найден"]];
             $responder($result, ["Content-Type"=>"application/json"]);
             return;
         }
-        if (!(Participant::findFirst($data['idParticipant']) && isset($data['idParticipant']))) {
+        if ((!Participant::findFirst($data['idParticipant'])) && isset($data['idParticipant'])) {
             $result = ["error"=>["message"=>"Participant id not found", "legend"=>"Участник с таким идентефикатором не найден"]];
             $responder($result, ["Content-Type"=>"application/json"]);
             return;
@@ -117,7 +116,7 @@ $app->put(
                 $mapper($model,$data)
             );
         }else {
-            $result = ["error"=>["message"=>"Contribution id not found", "legend"=>"Работа с таким идентефикатором не найдена"]];
+            $result = ["error"=>["message"=>"Participant id not found", "legend"=>"Участник с таким идентефикатором не найден"]];
             $responder($result, ["Content-Type"=>"application/json"]);
             return;
         }
@@ -194,9 +193,9 @@ $app->put(
         $stairway = new StairwayToModeration;
         $data = $app->request->getPut();
         $declarant = Declarant::findFirst($data["idDeclarant"]);
-        $declarant->moderation = 0;
+        $declarant->moderation = 1;
         $saveResult = $saver($declarant);
-        
+
         if($saveResult) {
             $result["success"][] = $saveResult;
             $logger->addInfo("Declarant status: awaiting moderation", ["idDeclarant"=>$declarant->id]);
@@ -211,7 +210,7 @@ $app->put(
         $jobData["participants"] = $participants->toArray();
 
         foreach($participants as $participant){
-            $participant->moderation = 0;
+            $participant->moderation = 1;
             $saveResult = $saver($participant);
 
             if($saveResult) {
@@ -221,7 +220,7 @@ $app->put(
                 $contributions = $participant->getContributions();
                 $jobData["contributions"] = $contributions->toArray();
                 foreach($contributions as $contribution){
-                    $contribution->moderation = 0;
+                    $contribution->moderation = 1;
                     $saveResult = $saver($contribution);
 
                     if($saveResult) {

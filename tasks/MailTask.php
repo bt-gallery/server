@@ -50,20 +50,24 @@ class MailTask extends \Phalcon\Cli\Task
     {
         $db = $this->getDI()->getShared("db");
         $jobQueue = $this->getDI()->getService("jobQueue")->getDefinition();
-        $query = "SELECT DISTINCT declarant.id_declarant FROM declarant LEFT JOIN competitive_work ON competitive_work.id_declarant = declarant.id_declarant WHERE competitive_work.bet = 1 ORDER BY `declarant`.`id_declarant`  DESC";
+        $query = "SELECT `declarant`.`id` FROM `declarant` WHERE `declarant`.`moderation` IS NOT NULL ORDER BY `declarant`.`id`  DESC";
         $result = $db->query($query);
         $result->setFetchMode(Phalcon\Db::FETCH_ASSOC);
         $result = $result->fetchAll($result);
 
         foreach($result as $currentOne) {
-            $declarant = Declarant::findFirst($currentOne["id_declarant"]);
-            $competitiveWork = CompetitiveWork::find("idDeclarant={$currentOne["id_declarant"]} AND bet=1");
-            foreach($competitiveWork as $currentWork){
-                $moderationStack = ModerationStack::findFirst("idCompetitiveWork={$currentWork->idCompetitiveWork}");
-                if(!$moderationStack) $queueNum = 0;
-                else $queueNum = $moderationStack->queueNum;
-                $jobData["queueNum"][$currentWork->idParticipant] = $queueNum;
+            $declarant = Declarant::findFirst($currentOne["id"]);
+            $participants = Participant::find("idDeclarant={$currentOne["id"]} AND moderation IS NOT NULL");
+            foreach ($participants as $participant) {
+                $contributions = Contribution::find("idParticipant={$participant["id"]} AND moderation IS NOT NULL");
+                foreach($contributions as $currentWork){
+                    $stairway = StairwayToModeration::findFirst("idContribution={$currentWork->id}");
+                    if(!$stairway) $queueNum = 0;
+                    else $queueNum = $stairway->queueNum;
+                    $jobData["queueNum"][$currentWork->idParticipant] = $queueNum;
+                }
             }
+            
             $jobData["declarant"] = $declarant->toArray();
             $jobData["participants"] = Participant::find("idDeclarant={$currentOne["id_declarant"]}")->toArray();
 
