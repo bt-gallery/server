@@ -38,23 +38,18 @@ $app->post(
         $data = $app->request->getPost();
         if(isset($data['id']))unset($data['id']);
         if(isset($data['time']))unset($data['time']);
-        if ((Participant::findFirst($data['idParticipant'])) && (isset($data['photoInfo']))) {
-              if (Contribution::findFirst($data['idContribution'])) {
-            $contr = Contribution::findFirst($data['idContribution']);
-              $contr->description = $data['photoInfo'];
-              $contr->save();
-              unset($data['photoInfo']);
-              unset($data['idContribution']);
-                } else {
+        if (isset($data['idContribution']) && isset($data['photoInfo'])) {
+            if ($contr = Contribution::findFirst($data['idContribution'])) {
+            $contr->description = $data['photoInfo'];
+            $contr->save();
+            unset($data['photoInfo']);
+            unset($data['idContribution']);
+            } else {
                 $result = ["error"=>["message"=>"Contribution id not found", "legend"=>"Работа с таким идентефикатором не найдена"]];
-                $responder($result,["Content-Type"=>"application/json"]);
+                $responder($result, ["Content-Type"=>"application/json"]);
+                return;
             }
-        } else {
-            $result = ["error"=>["message"=>"Participant id not found", "legend"=>"Участник с таким идентефикатором не найден"]];
-            $responder($result, ["Content-Type"=>"application/json"]);
-            return;
         }
-
         $mapper = $servant("mapper");
         $saver = $servant("saver");
         $result = $saver(
