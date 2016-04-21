@@ -271,8 +271,8 @@ $app->get(
 $app->get(
     '/api/v1/contributionSigned/getList/{limit:[0-9]+}/{offset:[0-9]+}',
     function ($limit, $offset) use ($app, $responder) {
-        $dataModel = ContributionSigned::find(array("limit" => $limit, "offset" => $offset))->toArray();
-        $countModel = ContributionSigned:: count();
+        $dataModel = ContributionSigned::find(array("contributionModeration = '3'", "limit" => $limit, "offset" => $offset))->toArray();
+        $countModel = ContributionSigned:: count("contributionModeration = '3'");
         $result=["data"=>$dataModel, "meta"=>array('total'=>$countModel)];
         $responder($result, ["Content-Type"=>"application/json"]);
     }
