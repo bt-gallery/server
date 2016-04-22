@@ -31,7 +31,7 @@ $app->post(
     }
 );
 
-$app->put(
+$app->post(
     '/api/v1/participant/add',
     function () use ($app, $responder, $servant) {
         $model = new Participant;
