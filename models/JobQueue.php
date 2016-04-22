@@ -74,7 +74,7 @@ class JobQueue extends \Phalcon\Mvc\Model
     public function columnMap()
     {
         return array(
-            'id' => 'id',
+            'id' => 'idJobQueue',
             'time' => 'time',
             'data' => 'data',
             'job' => 'job',

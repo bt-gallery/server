@@ -122,7 +122,7 @@ class Participant extends \Phalcon\Mvc\Model
     public function columnMap()
     {
         return array(
-            'id' => 'id',
+            'id' => 'idParticipant',
             'time' => 'time',
             'id_declarant' => 'idDeclarant',
             'name' => 'name',
