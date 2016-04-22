@@ -19,7 +19,7 @@ $app->post(
     function () use ($app, $responder, $servant) {
         $model = new Declarant;
         $data = $app->request->getPost();
-        if(isset($data['id']))unset($data['id']);
+        if(isset($data['idDeclarant']))unset($data['idDeclarant']);
         if(isset($data['time']))unset($data['time']);
         $mapper = $servant("mapper");
         $saver = $servant("saver");
@@ -36,7 +36,7 @@ $app->post(
     function () use ($app, $responder, $servant) {
         $model = new Participant;
         $data = $app->request->getPost();
-        if(isset($data['id']))unset($data['id']);
+        if(isset($data['idParticipant']))unset($data['idParticipant']);
         if(isset($data['time']))unset($data['time']);
         if (isset($data['idContribution']) && isset($data['photoInfo'])) {
             if ($contr = Contribution::findFirst($data['idContribution'])) {
@@ -116,7 +116,7 @@ $app->post(
     function () use ($app, $responder, $servant) {
         $model = new Vote;
         $data = $app->request->getPost();
-        if(isset($data['id']))unset($data['id']);
+        if(isset($data['idVote']))unset($data['idVote']);
         if(isset($data['time']))unset($data['time']);
         $mapper = $servant("mapper");
         $saver = $servant("saver");
@@ -133,7 +133,7 @@ $app->post(
     function () use ($app, $responder, $servant) {
         $model = new StairwayToModeration;
         $data = $app->request->getPost();
-        if(isset($data['id']))unset($data['id']);
+        if(isset($data['idStairwayToModeration']))unset($data['idStairwayToModeration']);
         $mapper = $servant("mapper");
         $saver = $servant("saver");
         $result = $saver(
@@ -149,7 +149,7 @@ $app->post(
     function () use ($app, $responder, $servant) {
         $model = new ModerationStatus;
         $data = $app->request->getPost();
-        if(Category::findFirst($data['id']) && isset($data['id'])){
+        if(Category::findFirst($data['idModerationStatus']) && isset($data['idModerationStatus'])){
             $result = ["error"=>["message"=>"id already exists", "legend"=>"Запись с таким идентефикатором уже существует"]];
         }else{
             if(isset($data['time']))unset($data['time']);
@@ -169,7 +169,7 @@ $app->post(
     function () use ($app, $responder, $servant) {
         $model = new Rejection;
         $data = $app->request->getPost();
-        if(Category::findFirst($data['id']) && isset($data['id'])){
+        if(Category::findFirst($data['idRejection']) && isset($data['idRejection'])){
             $result = ["error"=>["message"=>"id already exists", "legend"=>"Запись с таким идентефикатором уже существует"]];
         }else{
             $mapper = $servant("mapper");
@@ -188,7 +188,7 @@ $app->post(
     function () use ($app, $responder, $servant) {
         $model = new Category;
         $data = $app->request->getPost();
-        if(Category::findFirst($data['id']) && isset($data['id'])){
+        if(Category::findFirst($data['idCategory']) && isset($data['idCategory'])){
             $result = ["error"=>["message"=>"id already exists", "legend"=>"Запись с таким идентефикатором уже существует"]];
         }else{
             $mapper = $servant("mapper");
