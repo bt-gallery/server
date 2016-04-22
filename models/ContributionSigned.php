@@ -212,7 +212,7 @@ class ContributionSigned extends \Phalcon\Mvc\Model
     public function columnMap()
     {
         return array(
-            'id' => 'id',
+            'id' => 'idContributionSigned',
             'contribution_time' => 'contributionTime',
             'contribution_id_declarant' => 'contributionIdDeclarant',
             'contribution_name' => 'contributionName',

@@ -78,7 +78,7 @@ class Rejection extends \Phalcon\Mvc\Model
     public function columnMap()
     {
         return array(
-            'id' => 'id',
+            'id' => 'idRejection',
             'label' => 'label',
             'description' => 'description',
             'correction_message' => 'correctionMessage'
