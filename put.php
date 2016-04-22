@@ -83,7 +83,7 @@ $app->put(
 );
 
 $app->put(
-    '/api/v1/contributionSigned/bind',
+    '/api/v1/bind',
     function () use ($app, $responder, $servant) {
         $data = $app->request->getPut();
         if ((!Declarant::findFirst($data['idDeclarant'])) && isset($data['idDeclarant'])) {
@@ -96,29 +96,27 @@ $app->put(
             $responder($result, ["Content-Type"=>"application/json"]);
             return;
         }
-        if (Contribution::findFirst($data['idContribution']) && isset($data['idContribution'])) {
-            $model = Contribution::findFirst($data['idContribution']);
-            $mapper = $servant("mapper");
-            $saver = $servant("saver");
-            $result[] = $saver(
-                $mapper($model,$data)
-            );
-        }else {
+        if ((!Contribution::findFirst($data['idContribution'])) && isset($data['idContribution'])) {
             $result = ["error"=>["message"=>"Contribution id not found", "legend"=>"Работа с таким идентефикатором не найдена"]];
             $responder($result, ["Content-Type"=>"application/json"]);
             return;
         }
-        if (Participant::findFirst($data['idParticipant']) && isset($data['idParticipant'])) {
+
+        if (isset($data['idParticipant'])) {
             $model = Participant::findFirst($data['idParticipant']);
             $mapper = $servant("mapper");
             $saver = $servant("saver");
             $result[] = $saver(
-                $mapper($model,$data)
+            $mapper($model,$data)
             );
-        }else {
-            $result = ["error"=>["message"=>"Participant id not found", "legend"=>"Участник с таким идентефикатором не найден"]];
-            $responder($result, ["Content-Type"=>"application/json"]);
-            return;
+        }
+        if (isset($data['idContribution'])) {
+            $model = Contribution::findFirst($data['idContribution']);
+            $mapper = $servant("mapper");
+            $saver = $servant("saver");
+            $result[] = $saver(
+            $mapper($model,$data)
+            );
         }
         $responder($result, ["Content-Type"=>"application/json"]);
     }

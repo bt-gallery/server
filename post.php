@@ -11,6 +11,7 @@
 use Phalcon\Filter;
 use Phalcon\Crypt;
 use Phalcon\Mvc\Model\Query;
+use Phalcon\Image\Adapter\Imagick;
 
 /* POST routes */
 
@@ -75,8 +76,18 @@ $app->post(
                 $fileFullPath  = $fileDirectory . $fileName;
                 $fileTmpSize   = $file->getSize();
 
+                $imagine = new \Imagine\Imagick\Imagine();
+                $image = $imagine->open($fileTmpPath);
+                $size = new \Imagine\Image\Box(600, 1000);
+                $mode = Imagine\Image\ImageInterface::THUMBNAIL_INSET;
+                $thumbName = 'thumbnail.png';
+                $thumbDirectory = $fileDirectory;
+                $thumbFullPath = $thumbDirectory . $thumbName;
+                $thumb = $image->thumbnail($size, $mode);
+
                 mkdir($fileDirectory, 0755, true);
                 $moveRes = move_uploaded_file($fileTmpPath, $fileFullPath);
+                $thumb->save($thumbFullPath);
 
                 $pathExists     = file_exists($fileDirectory) ? "yes" : "no";
                 $isWritable     = is_writable($fileDirectory) ? "yes" : "no";
@@ -88,8 +99,11 @@ $app->post(
                 $logger->addDebug("is writable: " . $isWritable);
 
                 if ($moveRes) {
+                    $model->idDeclarant = $app->request->getPost("idDeclarant");
+                    $model->idParicipant = $app->request->getPost("idParicipant");
                     $model->name = $app->request->getPost("name");
                     $model->description = $app->request->getPost("description");
+                    $model->persons = $app->request->getPost("persons");
                     $model->storePath = $fileFullPath;
                     $model->webPath = "/files/works/{$model->id}/{$fileName}";
                     $model->fileName = $fileName;
@@ -99,6 +113,8 @@ $app->post(
                     $model->priority = $app->request->getPost("priority");
                     $model->type = $fileExtension;
                     $model->fileSize = $fileTmpSize;
+                    $model->thumbStorePath = $thumbFullPath;
+                    $model->thumbWebPath = "/" . $thumbFullPath;
                     $modelResult = $saver($model);
                     $result[] = $modelResult;
                     $logger->addInfo("file: {$fileFullPath} saved");
@@ -198,48 +214,6 @@ $app->post(
             );
         }
 
-        $responder($result, ["Content-Type"=>"application/json"]);
-    }
-);
-
-$app->post(
-    '/api/v1/contributionSigned/bind',
-    function () use ($app, $responder, $servant) {
-        $data = $app->request->getPost();
-        if ((!Declarant::findFirst($data['idDeclarant'])) && isset($data['idDeclarant'])) {
-            $result = ["error"=>["message"=>"Declarant id not found", "legend"=>"Заявитель с таким идентефикатором не найден"]];
-            $responder($result, ["Content-Type"=>"application/json"]);
-            return;
-        }
-        if ((!Participant::findFirst($data['idParticipant'])) && isset($data['idParticipant'])) {
-            $result = ["error"=>["message"=>"Participant id not found", "legend"=>"Участник с таким идентефикатором не найден"]];
-            $responder($result, ["Content-Type"=>"application/json"]);
-            return;
-        }
-        if (Contribution::findFirst($data['idContribution']) && isset($data['idContribution'])) {
-            $model = Contribution::findFirst($data['idContribution']);
-            $mapper = $servant("mapper");
-            $saver = $servant("saver");
-            $result[] = $saver(
-                $mapper($model,$data)
-            );
-        }else {
-            $result = ["error"=>["message"=>"Contribution id not found", "legend"=>"Работа с таким идентефикатором не найдена"]];
-            $responder($result, ["Content-Type"=>"application/json"]);
-            return;
-        }
-        if (Participant::findFirst($data['idParticipant']) && isset($data['idParticipant'])) {
-            $model = Participant::findFirst($data['idParticipant']);
-            $mapper = $servant("mapper");
-            $saver = $servant("saver");
-            $result[] = $saver(
-                $mapper($model,$data)
-            );
-        }else {
-            $result = ["error"=>["message"=>"Participant id not found", "legend"=>"Участник с таким идентефикатором не найден"]];
-            $responder($result, ["Content-Type"=>"application/json"]);
-            return;
-        }
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
