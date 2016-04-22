@@ -165,7 +165,7 @@ class Contribution extends \Phalcon\Mvc\Model
     public function columnMap()
     {
         return array(
-            'id' => 'id',
+            'id' => 'idContribution',
             'time' => 'time',
             'id_declarant' => 'idDeclarant',
             'id_participant' => 'idParticipant',

@@ -13,7 +13,6 @@ use Phalcon\Crypt;
 use Phalcon\Mvc\Model\Query;
 
 /* PUT routes */
-
 $app->put(
     '/api/v1/declarant/update',
     function () use ($app, $responder, $servant) {

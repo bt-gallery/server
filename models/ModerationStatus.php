@@ -65,7 +65,7 @@ class ModerationStatus extends \Phalcon\Mvc\Model
     public function columnMap()
     {
         return array(
-            'id' => 'id',
+            'id' => 'idModerationStatus',
             'status' => 'status'
         );
     }

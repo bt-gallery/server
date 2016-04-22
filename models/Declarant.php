@@ -115,7 +115,7 @@ class Declarant extends \Phalcon\Mvc\Model
     public function columnMap()
     {
         return array(
-            'id' => 'id',
+            'id' => 'idDeclarant',
             'time' => 'time',
             'name' => 'name',
             'surname' => 'surname',

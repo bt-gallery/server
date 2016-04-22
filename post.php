@@ -31,7 +31,7 @@ $app->post(
     }
 );
 
-$app->post(
+$app->put(
     '/api/v1/participant/add',
     function () use ($app, $responder, $servant) {
         $model = new Participant;
@@ -58,7 +58,7 @@ $app->post(
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
-
+/*!!!*/
 $app->post(
     '/api/v1/contribution/add',
     function () use ($app, $responder, $servant, $logger) {

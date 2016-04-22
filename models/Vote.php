@@ -78,7 +78,7 @@ class Vote extends \Phalcon\Mvc\Model
     public function columnMap()
     {
         return array(
-            'id' => 'id',
+            'id' => 'idVote',
             'time' => 'time',
             'ip' => 'ip',
             'agent' => 'agent',
