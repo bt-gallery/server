@@ -197,8 +197,8 @@ class Contribution extends \Phalcon\Mvc\Model
     public function getVotes()
     {
         //return Resultset\Simple
-        if ($this->id) {
-            return Vote::find("idContribution={$this->id}");
+        if ($this->idContribution) {
+            return Vote::find("idContribution={$this->idContribution}");
         }else{
             return false;
         }
