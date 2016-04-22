@@ -185,5 +185,23 @@ class Contribution extends \Phalcon\Mvc\Model
             'thumb_web_path' => 'thumbWebPath'
         );
     }
+    public function getParticipant()
+    {
+       //return Resultset\Simple
+        if ($this->idParticipant) {
+            return Participant::find("id={$this->idParticipant}");
+        }else{
+            return false;
+        }
+    }
+    public function getVotes()
+    {
+        //return Resultset\Simple
+        if ($this->id) {
+            return Vote::find("idContribution={$this->id}");
+        }else{
+            return false;
+        }
+    }
 
 }
