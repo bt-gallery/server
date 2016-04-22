@@ -138,8 +138,8 @@ class Participant extends \Phalcon\Mvc\Model
     public function getContributions()
     {
         //return Resultset\Simple
-        if($this->id){
-            return Contribution::find("idParticipant={$this->id}");
+        if($this->idParticipant){
+            return Contribution::find("idParticipant={$this->idParticipant}");
         }else {
             return false;
         }
