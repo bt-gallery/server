@@ -72,7 +72,7 @@ $app->post(
                 $fileExtension = pathinfo($file->getName(), PATHINFO_EXTENSION);
                 $fileName      = floor(microtime(true)) . "_{$key}.{$fileExtension}";
                 $fileTmpPath   = $file->getTempName();
-                $fileDirectory = $config->application->uploadDir . "files/works/{$model->id}/";
+                $fileDirectory = $config->application->uploadDir . "files/works/{$model->idContribution}/";
                 $fileFullPath  = $fileDirectory . $fileName;
                 $fileTmpSize   = $file->getSize();
 
@@ -105,7 +105,7 @@ $app->post(
                     $model->description = $app->request->getPost("description");
                     $model->persons = $app->request->getPost("persons");
                     $model->storePath = $fileFullPath;
-                    $model->webPath = "/files/works/{$model->id}/{$fileName}";
+                    $model->webPath = "/files/works/{$model->idContribution}/{$fileName}";
                     $model->fileName = $fileName;
                     $model->moderation = $app->request->getPost("moderation");
                     $model->rejection = $app->request->getPost("rejection");
