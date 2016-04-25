@@ -59,7 +59,7 @@ $app->post(
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
-/*!!!*/
+
 $app->post(
     '/api/v1/contribution/add',
     function () use ($app, $responder, $servant, $logger) {
@@ -70,7 +70,8 @@ $app->post(
                 $saver($model);
 
                 $fileExtension = pathinfo($file->getName(), PATHINFO_EXTENSION);
-                $fileName      = floor(microtime(true)) . "_{$key}.{$fileExtension}";
+                $fileNameBase  = floor(microtime(true)) . "_{$key}";
+                $fileName      = $fileNameBase . ".{$fileExtension}";
                 $fileTmpPath   = $file->getTempName();
                 $fileDirectory = $config->application->uploadDir . "files/works/{$model->idContribution}/";
                 $fileFullPath  = $fileDirectory . $fileName;
@@ -80,7 +81,7 @@ $app->post(
                 $image = $imagine->open($fileTmpPath);
                 $size = new \Imagine\Image\Box(600, 1000);
                 $mode = Imagine\Image\ImageInterface::THUMBNAIL_INSET;
-                $thumbName = 'thumbnail.png';
+                $thumbName = 'thumb_'. $fileNameBase . ".png";
                 $thumbDirectory = $fileDirectory;
                 $thumbFullPath = $thumbDirectory . $thumbName;
                 $thumb = $image->thumbnail($size, $mode);
