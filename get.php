@@ -42,7 +42,7 @@ $app->get(
     '/api/v1/declarant/getList/{limit:[0-9]+}/{offset:[0-9]+}',
     function ($limit, $offset) use ($app, $responder) {
         $dataModel = Declarant::find(array("limit" => $limit, "offset" => $offset))->toArray();
-        $countModel = Declarant:: count();
+        $countModel = Declarant:: count("moderation = '3'");
         $result=["data"=>$dataModel, "meta"=>$countModel];
         $responder($result, ["Content-Type"=>"application/json"]);
     }
@@ -72,7 +72,7 @@ $app->get(
     '/api/v1/participant/getList/{limit:[0-9]+}/{offset:[0-9]+}', 
     function ($limit, $offset) use ($app, $responder) {
         $dataModel = Participant::find(array("limit" => $limit, "offset" => $offset))->toArray();
-        $countModel = Participant:: count();
+        $countModel = Participant:: count("moderation = '3'");
         $result=["data"=>$dataModel, "meta"=>$countModel];
         $responder($result, ["Content-Type"=>"application/json"]);
     }
@@ -113,8 +113,8 @@ $app->get(
 $app->get(
     '/api/v1/contribution/getList/{limit:[0-9]+}/{offset:[0-9]+}',
     function ($limit, $offset) use ($app, $responder) {
-        $dataModel = Contribution::find(array("limit" => $limit, "offset" => $offset))->toArray();
-        $countModel = Contribution:: count();
+        $dataModel = Contribution::find(array("moderation = '3'", "order" => "priority DESC", "limit" => $limit, "offset" => $offset))->toArray();
+        $countModel = Contribution:: count("moderation = '3'");
         $result=["data"=>$dataModel, "meta"=>$countModel];
         $responder($result, ["Content-Type"=>"application/json"]);
     }
@@ -271,7 +271,7 @@ $app->get(
 $app->get(
     '/api/v1/contributionSigned/getList/{limit:[0-9]+}/{offset:[0-9]+}',
     function ($limit, $offset) use ($app, $responder) {
-        $dataModel = ContributionSigned::find(array("contributionModeration = '3'", "limit" => $limit, "offset" => $offset))->toArray();
+        $dataModel = ContributionSigned::find(array("order" => "priority DESC", "contributionModeration = '3'", "limit" => $limit, "offset" => $offset))->toArray();
         $countModel = ContributionSigned:: count("contributionModeration = '3'");
         $result=["data"=>$dataModel, "meta"=>array('total'=>$countModel)];
         $responder($result, ["Content-Type"=>"application/json"]);

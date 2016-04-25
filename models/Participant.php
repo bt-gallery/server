@@ -122,7 +122,7 @@ class Participant extends \Phalcon\Mvc\Model
     public function columnMap()
     {
         return array(
-            'id' => 'id',
+            'id' => 'idParticipant',
             'time' => 'time',
             'id_declarant' => 'idDeclarant',
             'name' => 'name',
@@ -138,8 +138,8 @@ class Participant extends \Phalcon\Mvc\Model
     public function getContributions()
     {
         //return Resultset\Simple
-        if($this->id){
-            return Contribution::find("idParticipant={$this->id}");
+        if($this->idParticipant){
+            return Contribution::find("idParticipant={$this->idParticipant}");
         }else {
             return false;
         }

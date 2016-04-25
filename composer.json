@@ -1,6 +1,7 @@
 {
     "require": {
         "monolog/monolog": "^1.18",
+        "imagine/imagine": "~0.6.3",
         "phalcon-ext/mailer": "^2.0",
         "swiftmailer/swiftmailer": "^5.4",
         "robmorgan/phinx": "^0.5.3"

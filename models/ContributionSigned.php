@@ -17,6 +17,12 @@ class ContributionSigned extends \Phalcon\Mvc\Model
 
     /**
      *
+     * @var integer
+     */
+    public $contributionIdDeclarant;
+
+    /**
+     *
      * @var string
      */
     public $contributionName;
@@ -26,6 +32,12 @@ class ContributionSigned extends \Phalcon\Mvc\Model
      * @var string
      */
     public $contributionDescription;
+
+    /**
+     *
+     * @var string
+     */
+    public $persons;
 
     /**
      *
@@ -83,21 +95,21 @@ class ContributionSigned extends \Phalcon\Mvc\Model
 
     /**
      *
+     * @var string
+     */
+    public $thumbStorePath;
+
+    /**
+     *
+     * @var string
+     */
+    public $thumbWebPath;
+
+    /**
+     *
      * @var integer
      */
     public $idParticipant;
-
-    /**
-     *
-     * @var integer
-     */
-    public $age;
-
-    /**
-     *
-     * @var integer
-     */
-    public $year;
 
     /**
      *
@@ -109,7 +121,7 @@ class ContributionSigned extends \Phalcon\Mvc\Model
      *
      * @var integer
      */
-    public $idDeclarant;
+    public $participantIdDeclarant;
 
     /**
      *
@@ -139,7 +151,7 @@ class ContributionSigned extends \Phalcon\Mvc\Model
      *
      * @var integer
      */
-    public $specification;
+    public $year;
 
     /**
      *
@@ -200,51 +212,35 @@ class ContributionSigned extends \Phalcon\Mvc\Model
     public function columnMap()
     {
         return array(
-            'id' => 'id',
+            'id' => 'idContributionSigned',
             'contribution_time' => 'contributionTime',
+            'contribution_id_declarant' => 'contributionIdDeclarant',
             'contribution_name' => 'contributionName',
             'contribution_description' => 'contributionDescription',
+            'persons' => 'persons',
             'store_path' => 'storePath',
             'web_path' => 'webPath',
-            'file_name' => 'fileName',
+            'file_name' => 'file_name',
             'contribution_moderation' => 'contributionModeration',
             'contribution_rejection' => 'contributionRejection',
             'category' => 'category',
             'priority' => 'priority',
             'type' => 'type',
             'file_size' => 'fileSize',
+            'thumb_store_path' => 'thumbStorePath',
+            'thumb_web_path' => 'thumbWebPath',
             'id_participant' => 'idParticipant',
-            'age' => 'age',
-            'year' => 'year',
             'participant_time' => 'participantTime',
-            'id_declarant' => 'idDeclarant',
+            'participant_id_declarant' => 'participantIdDeclarant',
             'participant_name' => 'participantName',
             'surname' => 'surname',
             'patronymic' => 'patronymic',
             'participant_description' => 'participantDescription',
-            'specification' => 'specification',
+            'year' => 'year',
             'participant_moderation' => 'participantModeration',
             'participant_rejection' => 'participantRejection',
             'team' => 'team'
         );
-    }
-    public function getVotes()
-    {
-        //return Resultset\Simple
-        if ($this->id) {
-            return Vote::find("idContribution={$this->id}");
-        }else{
-            return false;
-        }
-    }
-    public function getDeclarant()
-    {
-        //return Resultset\Simple
-        if($this->idDeclarant){
-            return Declarant::find("id={$this->idDeclarant}");
-        }else {
-            return false;
-        }
     }
 
 }

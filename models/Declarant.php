@@ -115,7 +115,7 @@ class Declarant extends \Phalcon\Mvc\Model
     public function columnMap()
     {
         return array(
-            'id' => 'id',
+            'id' => 'idDeclarant',
             'time' => 'time',
             'name' => 'name',
             'surname' => 'surname',
@@ -129,8 +129,8 @@ class Declarant extends \Phalcon\Mvc\Model
     public function getParticipants()
     {
         //return Resultset\Simple
-        if($this->id){
-            return Participant::find("idDeclarant={$this->id}");
+        if($this->idDeclarant){
+            return Participant::find("idDeclarant={$this->idDeclarant}");
         }else {
             return false;
         }

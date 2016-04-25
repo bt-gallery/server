@@ -62,7 +62,7 @@ class Category extends \Phalcon\Mvc\Model
     public function columnMap()
     {
         return array(
-            'id' => 'id',
+            'id' => 'idCategory',
             'label' => 'label',
             'description' => 'description'
         );

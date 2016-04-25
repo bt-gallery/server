@@ -68,7 +68,7 @@ class StairwayToModeration extends \Phalcon\Mvc\Model
     public function columnMap()
     {
         return array(
-            'id' => 'id',
+            'id' => 'idStairwayToModeration',
             'time' => 'time',
             'id_contribution' => 'idContribution',
             'ticket' => 'ticket'
