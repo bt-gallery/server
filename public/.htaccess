@@ -2,6 +2,24 @@ AddDefaultCharset UTF-8
 
 <IfModule mod_rewrite.c>
     RewriteEngine On
+
+    RewriteCond %{REQUEST_URI} \/photo\/
+    RewriteRule ^(.*)$ index.html [QSA,L]
+
+    RewriteCond %{REQUEST_URI} \/gallery
+    RewriteRule ^(.*)$ index.html [QSA,L]
+
+    RewriteCond %{REQUEST_URI} \/declarant
+    RewriteCond %{REQUEST_URI} !\/api\/
+    RewriteRule ^(.*)$ index.html [QSA,L]
+
+    RewriteCond %{REQUEST_URI} \/search
+    RewriteRule ^(.*)$ index.html [QSA,L]
+
+    RewriteCond %{REQUEST_URI} \/participant
+    RewriteCond %{REQUEST_URI} !\/api\/
+    RewriteRule ^(.*)$ index.html [QSA,L]
+
     RewriteCond %{REQUEST_URI} \/api\/
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^(.*)$ index.php?_url=/$1 [QSA,L]
