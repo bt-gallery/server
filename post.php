@@ -67,8 +67,6 @@ $app->post(
         if ($app->request->hasFiles()) {
             $saver = $app->di->getService("saver")->getDefinition();
             foreach ($app->request->getUploadedFiles() as $key => $file) {
-                $model = new Contribution;
-                $saver($model);
 
                 $fileExtension = strtolower(pathinfo($file->getName(), PATHINFO_EXTENSION));
                 if (!($fileExtension=="jpe" or $fileExtension=="jpeg" or $fileExtension=="png" or $fileExtension=="jpg")) {
@@ -79,6 +77,8 @@ $app->post(
                 $fileNameBase  = floor(microtime(true)) . "_{$key}";
                 $fileName      = $fileNameBase . ".{$fileExtension}";
                 $fileTmpPath   = $file->getTempName();
+                $model = new Contribution;
+                $saver($model);
                 $fileDirectory = $config->application->uploadDir . "files/works/{$model->idContribution}/";
                 $fileFullPath  = $fileDirectory . $fileName;
                 $fileTmpSize   = $file->getSize();
