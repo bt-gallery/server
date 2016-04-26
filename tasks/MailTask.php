@@ -30,7 +30,7 @@ class MailTask extends \Phalcon\Cli\Task
 
         $message = $mailer->createMessageFromView('register', $params)
             ->to($params["declarant"]["email"])
-            ->subject('Конкурс рисунка');
+            ->subject('Мир без войны');
         $message->bcc('d.yurchev@mail.ru');
          // Send message
         $result = $message->send();
@@ -59,17 +59,17 @@ class MailTask extends \Phalcon\Cli\Task
             $declarant = Declarant::findFirst($currentOne["id"]);
             $participants = Participant::find("idDeclarant={$currentOne["id"]} AND moderation IS NOT NULL");
             foreach ($participants as $participant) {
-                $contributions = Contribution::find("idParticipant={$participant["id"]} AND moderation IS NOT NULL");
+                $contributions = Contribution::find("idParticipant={$participant->id} AND moderation IS NOT NULL");
                 foreach($contributions as $currentWork){
                     $stairway = StairwayToModeration::findFirst("idContribution={$currentWork->id}");
                     if(!$stairway) $queueNum = 0;
-                    else $queueNum = $stairway->queueNum;
+                    else $queueNum = $stairway->id;
                     $jobData["queueNum"][$currentWork->idParticipant] = $queueNum;
                 }
             }
             
             $jobData["declarant"] = $declarant->toArray();
-            $jobData["participants"] = Participant::find("idDeclarant={$currentOne["id_declarant"]}")->toArray();
+            $jobData["participants"] = Participant::find("idDeclarant={$currentOne["id"]}")->toArray();
 
             $jobQueue($jobData, Job::MAIL_DECLARANT_REGISTRATION,Status::NEW_ONE);
             unset($jobData["queueNum"]);
