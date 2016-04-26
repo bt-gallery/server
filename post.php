@@ -70,7 +70,7 @@ $app->post(
                 $model = new Contribution;
                 $saver($model);
 
-                $fileExtension = pathinfo($file->getName(), PATHINFO_EXTENSION);
+                $fileExtension = strtolower(pathinfo($file->getName(), PATHINFO_EXTENSION));
                 if (!($fileExtension=="jpe" or $fileExtension=="jpeg" or $fileExtension=="png" or $fileExtension=="jpg")) {
                     $result = ["error"=>["message"=>"Bad file format", "legend"=>"К сожалению, Ваше изображение не подходит. Пожалуйста, загрузите изображение допустимого формата: PNG или JPEG."]];
                     $responder($result, ["Content-Type"=>"application/json"]);
@@ -87,7 +87,7 @@ $app->post(
                 $image = $imagine->open($fileTmpPath);
                 $size = new \Imagine\Image\Box(600, 1000);
                 $mode = Imagine\Image\ImageInterface::THUMBNAIL_INSET;
-                $thumbName = 'thumb_'. $fileNameBase . ".png";
+                $thumbName = 'thumb_'. $fileNameBase . ".jpg";
                 $thumbDirectory = $fileDirectory;
                 $thumbFullPath = $thumbDirectory . $thumbName;
                 $thumb = $image->thumbnail($size, $mode);
