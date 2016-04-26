@@ -279,7 +279,7 @@ $app->get(
 );
 
 $app->get(
-    '/photo/{id:[0-9]+}', function () use ($app, $responder) {
+    '/photo/{id:[0-9]+}', function ($id) use ($app, $responder) {
         if($model = Contribution::findFirst($id)){
             $result = $model->toArray();
         }else{
