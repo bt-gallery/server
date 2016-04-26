@@ -35,12 +35,12 @@ class MailTask extends \Phalcon\Cli\Task
          // Send message
         $result = $message->send();
         if($result) {
-            $logger->addInfo("message sent", ["Job queue ID" => $jobQueue->id]);
+            $logger->addInfo("message sent", ["Job queue ID" => $jobQueue->idJobQueue]);
             $jobQueue->status = Status::DONE;
             $saver($jobQueue);
         }    
         else {
-            $logger->addCritical("mailer fails", ["Job queue ID" => $jobQueue->id]); 
+            $logger->addCritical("mailer fails", ["Job queue ID" => $jobQueue->idJobQueue]);
         }
 
         return;
@@ -59,11 +59,11 @@ class MailTask extends \Phalcon\Cli\Task
             $declarant = Declarant::findFirst($currentOne["id"]);
             $participants = Participant::find("idDeclarant={$currentOne["id"]} AND moderation IS NOT NULL");
             foreach ($participants as $participant) {
-                $contributions = Contribution::find("idParticipant={$participant->id} AND moderation IS NOT NULL");
+                $contributions = Contribution::find("idParticipant={$participant->idParticipant} AND moderation IS NOT NULL");
                 foreach($contributions as $currentWork){
-                    $stairway = StairwayToModeration::findFirst("idContribution={$currentWork->id}");
+                    $stairway = StairwayToModeration::findFirst("idContribution={$currentWork->idContribution}");
                     if(!$stairway) $queueNum = 0;
-                    else $queueNum = $stairway->id;
+                    else $queueNum = $stairway->idStairwayToModeration;
                     $jobData["queueNum"][$currentWork->idParticipant] = $queueNum;
                 }
             }
