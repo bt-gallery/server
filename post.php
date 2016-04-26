@@ -40,7 +40,8 @@ $app->post(
         if(isset($data['idParticipant']))unset($data['idParticipant']);
         if(isset($data['time']))unset($data['time']);
         if (isset($data['idContribution']) && isset($data['photoInfo'])) {
-            if ($contr = Contribution::findFirst($data['idContribution'])) {
+            if (Contribution::findFirst($data['idContribution'])) {
+            $contr = Contribution::findFirst($data['idContribution']);
             $contr->description = $data['photoInfo'];
             $contr->save();
             unset($data['photoInfo']);
@@ -70,6 +71,11 @@ $app->post(
                 $saver($model);
 
                 $fileExtension = pathinfo($file->getName(), PATHINFO_EXTENSION);
+                if (!($fileExtension=="jpe" or $fileExtension=="jpeg" or $fileExtension=="png" or $fileExtension=="jpg")) {
+                    $result = ["error"=>["message"=>"Bad file format", "legend"=>"К сожалению, Ваше изображение не подходит. Пожалуйста, загрузите изображение допустимого формата: PNG или JPEG."]];
+                    $responder($result, ["Content-Type"=>"application/json"]);
+                    return;
+                }
                 $fileNameBase  = floor(microtime(true)) . "_{$key}";
                 $fileName      = $fileNameBase . ".{$fileExtension}";
                 $fileTmpPath   = $file->getTempName();
@@ -123,6 +129,9 @@ $app->post(
                     $logger->addError("file: {$fileFullPath} saving failed");
                 }
             }
+            $responder($result, ["Content-Type"=>"application/json"]);
+        }else{
+            $result = ["error"=>["message"=>"No images sent", "legend"=>"Нет изображений для обработки"]];
             $responder($result, ["Content-Type"=>"application/json"]);
         }
     }
