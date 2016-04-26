@@ -14,18 +14,12 @@ use Phalcon\Mvc\Model\Query;
 
 /* GET routes */
 
-
-$app->get(
-    '/', function () use ($app) {
-        $app->response->redirect("hiddenСave")->sendHeaders();
-    }
-);
-
 $app->get(
     '/hiddenСave', function () use ($app) {
         echo "<p>It's dangerous to go alone! Take this.</p><p>finest_sword.jpg</p>";
     }
 );
+
  $app->get(
     '/api/v1/declarant/get/{id:[0-9]+}',
     function ($id) use ($app, $responder) {
@@ -275,5 +269,23 @@ $app->get(
         $countModel = ContributionSigned:: count("contributionModeration = '3'");
         $result=["data"=>$dataModel, "meta"=>array('total'=>$countModel)];
         $responder($result, ["Content-Type"=>"application/json"]);
+    }
+);
+
+$app->get(
+    '/photo/{id:[0-9]+}', function () use ($app, $responder) {
+        if($model = Contribution::findFirst($id)){
+            $result = $model->toArray();
+        }else{
+            $result = ["error"=>["message"=>"id not found", "legend"=>"Запись с таким идентефикатором не найдена"]];
+            $responder($result, ["Content-Type"=>"application/json"]);
+            return;
+        }
+
+        if (stristr($app->request->getUserAgent(), "facebookexternalhit")) {
+            echo $app['view']->render('bot_detail', $result);
+        }else{
+            echo file_get_contents("index.html");
+        }
     }
 );
