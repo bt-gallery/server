@@ -15,6 +15,12 @@ use Phalcon\Mvc\Model\Query;
 /* GET routes */
 
 $app->get(
+    '/', function () use ($app) {
+        $app->response->redirect("hiddenСave")->sendHeaders();
+    }
+);
+
+$app->get(
     '/hiddenСave', function () use ($app) {
         echo "<p>It's dangerous to go alone! Take this.</p><p>finest_sword.jpg</p>";
     }
