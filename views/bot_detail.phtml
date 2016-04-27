@@ -9,12 +9,13 @@
         name="viewport"
         content="width=device-width, initial-scale=1, user-scalable=0, maximum-scale=1, minimum-scale=1"
     >
+    <meta property="fb:app_id" content="1158653494156812" />
     <meta property="og:title" content="Мир без войны"/>
     <meta property="og:type" content="website"/>
-    <meta property="og:url" content="http://<?=$_SERVER["SERVER_NAME"]?>/photo/<?= $result['idContribution'] ?>"/>
-    <meta property="og:image" content="http://<?=$_SERVER["SERVER_NAME"]?><?= $result['webPath'] ?>"/>
+    <meta property="og:url" content="http://<?=$_SERVER["SERVER_NAME"]?>/photo/<?= $idContribution ?>"/>
+    <meta property="og:image" content="http://<?=$_SERVER["SERVER_NAME"]?><?= $thumbWebPath ?>"/>
     <meta property="og:site_name" content="Мир без войны"/>
-    <meta property="og:description" content="<?= $result['description'] ?>"/>
+    <meta property="og:description" content="<?= $description ?>"/>
 </head>
 <body>
 <p>Мир без войны: Детальная</p>
