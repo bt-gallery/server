@@ -295,3 +295,20 @@ $app->get(
         }
     }
 );
+
+$app->get(
+    '/api/v1/search/bymail', function () use ($app, $responder) {
+        $filter = new Filter();
+        $db = $app->getDI()->getShared("db");
+
+        $rawQuery = $app->request->getQuery("q");
+        $query = $filter->sanitize($rawQuery, "email");
+
+        $sqlQuery = "SELECT * FROM contribution LEFT JOIN declarant on contribution.id_declarant = declarant.id WHERE declarant.email='{$query}'";
+
+        $resultSet = $db->query($sqlQuery);
+        $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
+        $result = $resultSet->fetchAll();
+        $responder($result, ["Content-Type"=>"application/json"]);
+    }
+);
