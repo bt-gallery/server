@@ -54,6 +54,11 @@ class JobQueue extends \Phalcon\Mvc\Model
         return parent::find($parameters);
     }
 
+    public function initialize()
+    {
+        $this->skipAttributes(array('time'));
+    }
+
     /**
      * Allows to query the first record that match the specified conditions
      *

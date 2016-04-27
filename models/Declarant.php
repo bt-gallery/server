@@ -71,7 +71,9 @@ class Declarant extends \Phalcon\Mvc\Model
     public function initialize()
     {
         $this->hasMany('id', 'Participant', 'id_declarant', array('alias' => 'Participant'));
+        $this->hasMany('id', 'Contribution', 'id_declarant', array('alias' => 'Contribution'));
         $this->belongsTo('rejection', 'Rejection', 'id', array('alias' => 'Rejection'));
+        $this->skipAttributes(array('time'));
     }
 
     /**

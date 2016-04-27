@@ -122,6 +122,7 @@ class Contribution extends \Phalcon\Mvc\Model
         $this->belongsTo('id_participant', 'Participant', 'id', array('alias' => 'Participant'));
         $this->belongsTo('moderation', 'ModerationStatus', 'id', array('alias' => 'ModerationStatus'));
         $this->belongsTo('rejection', 'Rejection', 'id', array('alias' => 'Rejection'));
+        $this->skipAttributes(array('time'));
     }
 
     /**
