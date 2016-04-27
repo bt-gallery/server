@@ -135,5 +135,14 @@ class Declarant extends \Phalcon\Mvc\Model
             return false;
         }
     }
+    public function getContributions()
+    {
+        //return Resultset\Simple
+        if($this->idDeclarant){
+            return Contribution::find("idDeclarant={$this->idDeclarant}");
+        }else {
+            return false;
+        }
+    }
 
 }
