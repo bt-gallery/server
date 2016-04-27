@@ -288,7 +288,7 @@ $app->get(
             return;
         }
 
-        if (stristr($app->request->getUserAgent(), "facebookexternalhit") || stristr($app->request->getUserAgent(), "OdklBot")) {
+        if (stristr($app->request->getUserAgent(), "facebookexternalhit") || stristr($app->request->getUserAgent(), "Facebot") || stristr($app->request->getUserAgent(), "OdklBot")) {
             echo $app['view']->render('bot_detail', $result);
         }else{
             echo file_get_contents("index.html");
