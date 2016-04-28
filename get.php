@@ -281,7 +281,7 @@ $app->get(
 $app->get(
     '/api/v1/search/bysurname/{name}/{limit:[0-9]+}/{offset:[0-9]+}',
     function ($name, $limit, $offset) use ($app, $responder){
-        $dataModel = Contribution::find(array("limit" => $limit, "offset" => $offset, "conditions" => "persons LIKE '%".$name."%'"))->toArray();
+        $dataModel = Contribution::find(array("moderation = '3'", "limit" => $limit, "offset" => $offset, "conditions" => "persons LIKE '%".$name."%'"))->toArray();
         $countModel =count($dataModel);
         $result=["data"=>$dataModel, "meta"=>$countModel];
         $responder($result, ["Content-Type"=>"application/json"]);
