@@ -40,7 +40,8 @@ $app->post(
         if(isset($data['idParticipant']))unset($data['idParticipant']);
         if(isset($data['time']))unset($data['time']);
         if (isset($data['idContribution']) && isset($data['photoInfo'])) {
-            if ($contr = Contribution::findFirst($data['idContribution'])) {
+            if (Contribution::findFirst($data['idContribution'])) {
+            $contr = Contribution::findFirst($data['idContribution']);
             $contr->description = $data['photoInfo'];
             $contr->save();
             unset($data['photoInfo']);
@@ -59,19 +60,25 @@ $app->post(
         $responder($result, ["Content-Type"=>"application/json"]);
     }
 );
-/*!!!*/
+
 $app->post(
     '/api/v1/contribution/add',
     function () use ($app, $responder, $servant, $logger) {
         if ($app->request->hasFiles()) {
             $saver = $app->di->getService("saver")->getDefinition();
             foreach ($app->request->getUploadedFiles() as $key => $file) {
+
+                $fileExtension = strtolower(pathinfo($file->getName(), PATHINFO_EXTENSION));
+                if (!($fileExtension=="jpe" or $fileExtension=="jpeg" or $fileExtension=="png" or $fileExtension=="jpg")) {
+                    $result = ["error"=>["message"=>"Bad file format", "legend"=>"К сожалению, Ваше изображение не подходит. Пожалуйста, загрузите изображение допустимого формата: PNG или JPEG."]];
+                    $responder($result, ["Content-Type"=>"application/json"]);
+                    return;
+                }
+                $fileNameBase  = floor(microtime(true)) . "_{$key}";
+                $fileName      = $fileNameBase . ".{$fileExtension}";
+                $fileTmpPath   = $file->getTempName();
                 $model = new Contribution;
                 $saver($model);
-
-                $fileExtension = pathinfo($file->getName(), PATHINFO_EXTENSION);
-                $fileName      = floor(microtime(true)) . "_{$key}.{$fileExtension}";
-                $fileTmpPath   = $file->getTempName();
                 $fileDirectory = $config->application->uploadDir . "files/works/{$model->idContribution}/";
                 $fileFullPath  = $fileDirectory . $fileName;
                 $fileTmpSize   = $file->getSize();
@@ -80,7 +87,7 @@ $app->post(
                 $image = $imagine->open($fileTmpPath);
                 $size = new \Imagine\Image\Box(600, 1000);
                 $mode = Imagine\Image\ImageInterface::THUMBNAIL_INSET;
-                $thumbName = 'thumbnail.png';
+                $thumbName = 'thumb_'. $fileNameBase . ".jpg";
                 $thumbDirectory = $fileDirectory;
                 $thumbFullPath = $thumbDirectory . $thumbName;
                 $thumb = $image->thumbnail($size, $mode);
@@ -122,6 +129,9 @@ $app->post(
                     $logger->addError("file: {$fileFullPath} saving failed");
                 }
             }
+            $responder($result, ["Content-Type"=>"application/json"]);
+        }else{
+            $result = ["error"=>["message"=>"No images sent", "legend"=>"Нет изображений для обработки"]];
             $responder($result, ["Content-Type"=>"application/json"]);
         }
     }
