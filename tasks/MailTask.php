@@ -31,7 +31,7 @@ class MailTask extends \Phalcon\Cli\Task
         $message = $mailer->createMessageFromView('register', $params)
             ->to($params["declarant"]["email"])
             ->subject('Мир без войны');
-        $message->bcc('d.yurchev@mail.ru');
+        $message->bcc('foto1945@mirtv.ru');
          // Send message
         $result = $message->send();
         if($result) {
