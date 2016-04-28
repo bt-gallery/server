@@ -78,14 +78,14 @@ $app->post(
                 $fileName      = $fileNameBase . ".{$fileExtension}";
                 $fileTmpPath   = $file->getTempName();
                 $model = new Contribution;
-                $saver($model);
+                $model->create();
                 $fileDirectory = $config->application->uploadDir . "files/works/{$model->idContribution}/";
                 $fileFullPath  = $fileDirectory . $fileName;
                 $fileTmpSize   = $file->getSize();
 
                 $imagine = new \Imagine\Imagick\Imagine();
                 $image = $imagine->open($fileTmpPath);
-                $size = new \Imagine\Image\Box(600, 1000);
+                $size = new \Imagine\Image\Box(300, 500);
                 $mode = Imagine\Image\ImageInterface::THUMBNAIL_INSET;
                 $thumbName = 'thumb_'. $fileNameBase . ".jpg";
                 $thumbDirectory = $fileDirectory;

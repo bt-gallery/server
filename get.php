@@ -288,10 +288,27 @@ $app->get(
             return;
         }
 
-        if (stristr($app->request->getUserAgent(), "facebookexternalhit") || stristr($app->request->getUserAgent(), "OdklBot")) {
+        if (stristr($app->request->getUserAgent(), "facebookexternalhit") || stristr($app->request->getUserAgent(), "Facebot") || stristr($app->request->getUserAgent(), "OdklBot")) {
             echo $app['view']->render('bot_detail', $result);
         }else{
             echo file_get_contents("index.html");
         }
+    }
+);
+
+$app->get(
+    '/api/v1/search/bymail', function () use ($app, $responder) {
+        $filter = new Filter();
+        $db = $app->getDI()->getShared("db");
+
+        $rawQuery = $app->request->getQuery("q");
+        $query = $filter->sanitize($rawQuery, "email");
+
+        $sqlQuery = "SELECT * FROM contribution LEFT JOIN declarant on contribution.id_declarant = declarant.id WHERE declarant.email='{$query}'";
+
+        $resultSet = $db->query($sqlQuery);
+        $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
+        $result = $resultSet->fetchAll();
+        $responder($result, ["Content-Type"=>"application/json"]);
     }
 );

@@ -45,6 +45,7 @@ class Vote extends \Phalcon\Mvc\Model
     public function initialize()
     {
         $this->belongsTo('id_contribution', 'Contribution', 'id', array('alias' => 'Contribution'));
+        $this->skipAttributes(array('time'));
     }
 
     /**
