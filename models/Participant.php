@@ -79,6 +79,7 @@ class Participant extends \Phalcon\Mvc\Model
         $this->belongsTo('id_declarant', 'Declarant', 'id', array('alias' => 'Declarant'));
         $this->belongsTo('specification', 'Specification', 'id', array('alias' => 'Specification'));
         $this->belongsTo('moderation', 'ModerationStatus', 'id', array('alias' => 'ModerationStatus'));
+        $this->skipAttributes(array('time'));
     }
 
     /**

@@ -288,10 +288,38 @@ $app->get(
             return;
         }
 
-        if (stristr($app->request->getUserAgent(), "facebookexternalhit") || stristr($app->request->getUserAgent(), "OdklBot")) {
+        if (stristr($app->request->getUserAgent(), "facebookexternalhit") || stristr($app->request->getUserAgent(), "Facebot") || stristr($app->request->getUserAgent(), "OdklBot")) {
             echo $app['view']->render('bot_detail', $result);
         }else{
             echo file_get_contents("index.html");
         }
+    }
+);
+
+$app->get(
+    '/api/v1/search/bymail', function () use ($app, $responder) {
+        $filter = new Filter();
+        $db = $app->getDI()->getShared("db");
+
+        $rawQuery = $app->request->getQuery("q");
+        $query = $filter->sanitize($rawQuery, "email");
+
+        $sqlQuery = "SELECT * FROM contribution LEFT JOIN declarant on contribution.id_declarant = declarant.id WHERE declarant.email='{$query}'";
+
+        $resultSet = $db->query($sqlQuery);
+        $resultSet->setFetchMode(Phalcon\Db::FETCH_ASSOC);
+        $result = $resultSet->fetchAll();
+        $responder($result, ["Content-Type"=>"application/json"]);
+    }
+);
+
+$app->get(
+    '/api/v1/search/bysurname/{name}/{limit:[0-9]+}/{offset:[0-9]+}',
+    function ($name, $limit, $offset) use ($app, $responder){
+        $dataModel = Contribution::find(array("limit" => $limit, "offset" => $offset, "conditions" => "moderation = '3' and persons LIKE '%".$name."%'"))->toArray();
+        $count = Contribution::find(array("conditions" => "moderation = '3' and persons LIKE '%".$name."%'"))->toArray();
+        $countModel =count($count);
+        $result=["data"=>$dataModel, "meta"=>$countModel];
+        $responder($result, ["Content-Type"=>"application/json"]);
     }
 );

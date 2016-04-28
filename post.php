@@ -78,7 +78,7 @@ $app->post(
                 $fileName      = $fileNameBase . ".{$fileExtension}";
                 $fileTmpPath   = $file->getTempName();
                 $model = new Contribution;
-                $saver($model);
+                $model->create();
                 $fileDirectory = $config->application->uploadDir . "files/works/{$model->idContribution}/";
                 $fileFullPath  = $fileDirectory . $fileName;
                 $fileTmpSize   = $file->getSize();

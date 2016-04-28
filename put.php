@@ -13,6 +13,7 @@ use Phalcon\Crypt;
 use Phalcon\Mvc\Model\Query;
 
 /* PUT routes */
+
 $app->put(
     '/api/v1/declarant/update',
     function () use ($app, $responder, $servant) {
@@ -213,49 +214,49 @@ $app->put(
             if($saveResult) {
                 $result["success"][] = $saveResult;
                 $logger->addInfo("Participant status: awaiting moderation", ["idParticipant"=>$participant->id]);
-
-                $contributions = $participant->getContributions();
-                $jobData["contributions"] = $contributions->toArray();
-                foreach($contributions as $contribution){
-                    $contribution->moderation = 1;
-                    $saveResult = $saver($contribution);
-
-                    if($saveResult) {
-                        $result["success"][] = $saveResult;
-                        $logger->addInfo("Contribution status: awaiting moderation", ["idContribution"=>$contribution->id]);
-
-                        $stairway->idContribution = $contribution->id;
-                        $saveResult = $saver($stairway);
-                        if($saveResult) {
-                            $result["success"][] = $saveResult;
-                            $logger->addInfo(
-                                "Contribution stepped on the stairway",
-                                [
-                                    "idStairwayToModeration"=>$stairway->id,
-                                    "idContribution"=>$contribution->id,
-                                    "idDeclarant"=>$declarant->id
-                                ]
-                            );
-                            $logger->addInfo("Stairway appended", ["result" => $stairway->id]);
-                            //end
-                        }else {
-                            $logger->addError("Contribution step failed", ["idDeclarant"=>$declarant->id, "idContribution"=>$contribution->id]);
-                            $responder(
-                                ["error"=>["message"=>"Contribution stairway step failed", "legend"=>"Не удалось отправить работу на модерацию", "idContribution"=>$contribution->id]], ["Content-Type"=>"application/json"]);
-                            return;
-                        }
-                    }else {
-                        $logger->addError("Contribution status change failed", ["idContribution"=>$contribution->id]);
-                        $responder(["error"=>["message"=>"Contribution register failed", "legend"=>"Не удалось зарегистрировать работу", "idContribution"=>$contribution->id]], ["Content-Type"=>"application/json"]);
-                        return;
-                    }
-                }
             }else {
                 $logger->addError("Participant status change failed", ["idParticipant"=>$participant->id]);
                 $responder(["error"=>["message"=>"Participant register failed", "legend"=>"Не удалось зарегистрировать участника", "idParticipant"=>$participant->id]], ["Content-Type"=>"application/json"]);
                 return;
             }
             $jobData["queueNum"][$participant->id] = $stairway->id;
+        }
+        
+        $contributions = $declarant->getContributions();
+        $jobData["contributions"] = $contributions->toArray();
+        foreach($contributions as $contribution){
+            $contribution->moderation = 1;
+            $saveResult = $saver($contribution);
+
+            if($saveResult) {
+                $result["success"][] = $saveResult;
+                $logger->addInfo("Contribution status: awaiting moderation", ["idContribution"=>$contribution->id]);
+
+                $stairway->idContribution = $contribution->id;
+                $saveResult = $saver($stairway);
+                if($saveResult) {
+                    $result["success"][] = $saveResult;
+                    $logger->addInfo(
+                        "Contribution stepped on the stairway",
+                        [
+                            "idStairwayToModeration"=>$stairway->id,
+                            "idContribution"=>$contribution->id,
+                            "idDeclarant"=>$declarant->id
+                        ]
+                    );
+                    $logger->addInfo("Stairway appended", ["result" => $stairway->id]);
+                    //end
+                }else {
+                    $logger->addError("Contribution step failed", ["idDeclarant"=>$declarant->id, "idContribution"=>$contribution->id]);
+                    $responder(
+                        ["error"=>["message"=>"Contribution stairway step failed", "legend"=>"Не удалось отправить работу на модерацию", "idContribution"=>$contribution->id]], ["Content-Type"=>"application/json"]);
+                    return;
+                }
+            }else {
+                $logger->addError("Contribution status change failed", ["idContribution"=>$contribution->id]);
+                $responder(["error"=>["message"=>"Contribution register failed", "legend"=>"Не удалось зарегистрировать работу", "idContribution"=>$contribution->id]], ["Content-Type"=>"application/json"]);
+                return;
+            }
         }
 
         $jobQueue($jobData, Job::MAIL_DECLARANT_REGISTRATION,Status::NEW_ONE);
