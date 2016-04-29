@@ -11,6 +11,7 @@ AddDefaultCharset UTF-8
     RewriteRule ^(.*)$ index.html [QSA,L]
 
     RewriteCond %{REQUEST_URI} \/search
+    RewriteCond %{REQUEST_URI} !\/api\/
     RewriteRule ^(.*)$ index.html [QSA,L]
 
     RewriteCond %{REQUEST_URI} \/participant
